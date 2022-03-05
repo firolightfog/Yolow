@@ -3,28 +3,6 @@ Modules for VCV Rack
 
 ![image](https://user-images.githubusercontent.com/34127628/156898284-8f956e4f-52ce-463b-87d8-10a2267cce81.png)
 
-<!--
-|Module|Short desc.|
-| --- | --- |
-|ChSel2.cpp|Select upto 2 of your favourite channels from a polyphonic input|
-|ChSel6.cpp|Select upto 6 of your favourite channels from a polyphonic input|
-|ChSel8.cpp|Select upto 8 of your favourite channels from a polyphonic input|
-|PolyCopy10.cpp|Polyphonic merge with normalized input sockets in 2HP|
-|PolyCopy16.cpp|Polyphonic merge with normalized input sockets in 4HP|
-|PolyExp10.cpp|Polyphonic split in 2HP|
-|SeqP16.cpp|4 step sequential switch to choose from 16 channels of a polyphonic input|
-|SeqP5.cpp|4 step sequential switch to choose from 5 inputs|
-|MKnob.cpp|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
-|Slide16.cpp|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
-|Slide6.cpp|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
-|TrigPrec2.cpp|Trigger sequence randomizer|
-|TrigPrec6.cpp|Trigger sequence randomizer|
-|tXOr.cpp|Clock divider with XOR output and CV inputs|
-|9lives.cpp|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
-|RandVolt10.cpp|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
-|tHex.cpp :zzz:|[*deprecated*] A 16 step trigger sequencer with random options|
--->
-
 |Module|Short desc.|
 | --- | --- |
 |[ChSel2](#ChSel2)|Select upto 2 of your favourite channels from a polyphonic input|
@@ -48,8 +26,15 @@ Modules for VCV Rack
 -----
 
 ### ChSel2
+Select your favourite channel from a polyphonic input (see PIN). The upper section returns a monophonic output according to the slider. The lower section works the same way but the input at the bottom allows you to modify the slider on the fly. This additional input can create a simple 16-step sequencer from the module. It's only 2HP!
+
+<img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
+
 ### ChSel6
+Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu.
+
 ### ChSel8
+Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 8 in the context menu. It's only 2HP!
 
 -----
 
@@ -103,3 +88,5 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 
 ### tHex 
 This module is *deprecated*:zzz:. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
+<img width="85" alt="image" src="https://user-images.githubusercontent.com/34127628/156899830-e201945d-faca-43bf-bc53-e8606f2f13d3.png">
+
