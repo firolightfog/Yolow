@@ -21,4 +21,4 @@ Modules for VCV Rack
 |TrigPrec6.cpp|Trigger sequence randomizer|
 |tXOr.cpp|Clock divider with XOR output and CV inputs|
 |9lives.cpp|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
-|tHex.cpp :zzz:|[deprecated] A 16 step trigger sequencer with random options|
+|tHex.cpp :zzz:|[*deprecated*] A 16 step trigger sequencer with random options|
