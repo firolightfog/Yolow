@@ -50,21 +50,36 @@ Modules for VCV Rack
 ### ChSel2
 ### ChSel6
 ### ChSel8
+
+-----
+
 ### PolyCopy10
 ### PolyCopy16
 ### PolyExp10
+
+-----
+
 ### RandVolt10
 ### SeqP16
 ### SeqP5
+
+-----
+
 ### MKnob
 ### Slide16
 ### Slide6
+
+-----
+
 ### TrigPrec2
 ### TrigPrec6
+
+-----
+
 ### tXOr
 ### 9lives
 
 -----
 
 ### tHex 
-This module is *deprecated* ::zzz::. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
+This module is *deprecated*:zzz:. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
