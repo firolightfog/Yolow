@@ -12,7 +12,6 @@ Modules for VCV Rack
 |PolyCopy10.cpp|Polyphonic merge with normalized input sockets in 2HP|
 |PolyCopy16.cpp|Polyphonic merge with normalized input sockets in 4HP|
 |PolyExp10.cpp|Polyphonic split in 2HP|
-|RandVolt10.cpp|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |SeqP16.cpp|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |SeqP5.cpp|4 step sequential switch to choose from 5 inputs|
 |MKnob.cpp|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -22,6 +21,7 @@ Modules for VCV Rack
 |TrigPrec6.cpp|Trigger sequence randomizer|
 |tXOr.cpp|Clock divider with XOR output and CV inputs|
 |9lives.cpp|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
+|RandVolt10.cpp|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |tHex.cpp :zzz:|[*deprecated*] A 16 step trigger sequencer with random options|
 -->
 
@@ -33,7 +33,6 @@ Modules for VCV Rack
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
-|[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -43,6 +42,7 @@ Modules for VCV Rack
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
+|[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 
 -----
@@ -59,7 +59,6 @@ Modules for VCV Rack
 
 -----
 
-### RandVolt10
 ### SeqP16
 ### SeqP5
 
@@ -78,6 +77,10 @@ Modules for VCV Rack
 
 ### tXOr
 ### 9lives
+### RandVolt10
+- Without a clock input: it provides ten fix voltages (1V-10V).
+- With a clock input: it provides random voltages.
+- Optionally the range can be set to 0V-10V or -5V to 5V in the context menu.
 
 -----
 
