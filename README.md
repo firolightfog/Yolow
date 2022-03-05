@@ -66,5 +66,5 @@ Modules for VCV Rack
 
 -----
 
-### tHex ::zzz::
-This module is *deprecated*. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
+### tHex 
+This module is *deprecated* ::zzz::. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
