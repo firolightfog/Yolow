@@ -1,0 +1,267 @@
+{
+  "slug": "Yolow",
+  "name": "Yolow",
+  "version": "2.1.1",
+  "license": "GPL-3.0-or-later",
+  "brand": "Yolow",
+  "authorEmail": "firolightfog@gmail.com",
+  "authorUrl": "",
+  "pluginUrl": "",
+  "manualUrl": "https://github.com/firolightfog/Yolow",
+  "sourceUrl": "https://github.com/firolightfog/Yolow/tree/main/src",
+  "donateUrl": "https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "PolyCopy10",
+      "name": "PolyCopy10",
+      "description": "It is channel multiplier with 10 mono repeated inputs and a polyphonic output",
+      "keywords": [
+        "merge",
+        "multiplier",
+        "poly",
+        "copy",
+        "pc",
+        "ten"
+      ],
+      "keywords": [
+        "merge",
+		"poly",
+		"copy",
+		"pc",
+		"ten"
+		],
+	  "tags": [
+        "Polyphonic",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "PolyCopy16",
+      "name": "PolyCopy16",
+      "description": "It is channel multiplier with 16 mono repeated inputs and a polyphonic output",
+      "keywords": [
+        "merge",
+        "multiplier",
+        "poly",
+        "copy",
+        "pc",
+        "sixteen"
+      ],
+      "tags": [
+        "Polyphonic",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "tXOr",
+      "name": "tXOr Pattern Generator",
+      "description": "A simple exclusive disjunction you need. Three knobs acting as clock division and the internal calculation send only excludive pulses to the output.",
+      "keywords": [
+        "xor",
+		"tXOr"
+      ],
+      "keywords": [
+        "tXOr",
+		"trigger",
+		"sequencer"
+		],
+      "tags": [
+        "Clock modulator",
+        "Sequencer"
+      ]
+    },
+    {
+      "slug": "MKnob",
+      "name": "Multiknob Fix Voltages",
+      "description": "Quad manual module to provide fix voltages",
+      "keywords": [
+        "fix",
+		"MKnob",
+        "voltage"
+      ],
+      "tags": [
+        "Manual",
+        "Controller",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "PolyExp10",
+      "name": "Poly Exploder 10",
+      "description": "It splits 10 channels of the polyphonic input. Yes, some channels will be lost.",
+      "keywords": [
+        "split",
+        "poly",
+        "exploder",
+        "pe",
+        "ten"
+      ],
+      "tags": [
+        "Polyphonic",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "SeqP5",
+      "name": "Sequential Switch Programmer 5",
+      "description": "Four knobs define which of the five inputs is forwarded as a monophonic signal.",
+      "keywords": [
+        "SeqP5",
+		"selector"
+		],
+      "tags": [
+        "Sequencer",
+        "Switch",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "tHex",
+      "name": "tHex Trigger Sequencer",
+      "description": "Four knobs allows you to dial the iconic patterns for your tune",
+	  "hidden": true,
+     "keywords": [
+        "tHex",
+		"trigger",
+		"sequencer"
+		],
+      "tags": [
+        "Random",
+        "Sequencer"
+      ]
+    },
+    {
+      "slug": "SeqP16",
+      "name": "Sequential Switch Programmer 16",
+      "description": "Four knobs to choose from the channels of a polyphonic input",
+      "keywords": [
+        "SeqP16",
+		"selector"
+		],
+      "tags": [
+        "Sequencer",
+        "Utility",
+        "Switch"
+      ]
+    },
+    {
+      "slug": "Slide6",
+      "name": "Slide6 Fix Voltages",
+      "description": "Manual module to provide fix voltages within defined ranges",
+      "keywords": [
+        "fix",
+        "voltage",
+		"six"
+      ],
+      "tags": [
+        "Controller",
+        "Utility",
+        "Manual"
+      ]
+    },
+    {
+      "slug": "Slide16",
+      "name": "Slide16 Fix Voltages and Sequencer",
+      "description": "Provides 16 fix voltages in a polyphonic out cable and allows also to loop through them as a sequencer",
+      "keywords": [
+        "fix",
+        "voltage"
+      ],
+      "tags": [
+        "Sequencer",
+        "Controller",
+        "Utility",
+        "Manual"
+      ]
+    },
+    {
+      "slug": "TrigPrec2",
+      "name": "Trigger Precision 2",
+      "description": "Trigger randomizer",
+      "keywords": [
+        "TrigPrec"
+	  ],
+      "tags": [
+        "Random",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "TrigPrec6",
+      "name": "Trigger Precision 6",
+      "description": "Trigger randomizer",
+      "tags": [
+        "Random",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "nineLives",
+      "name": "9Lives",
+      "description": "Trigger sequencer for complex fills",
+      "keywords": [
+        "clock",
+		"modification",
+		"multiplier"
+		],
+      "tags": [
+        "Random",
+        "Sequencer"
+      ]
+    },
+    {
+      "slug": "RandVolt10",
+      "name": "Random Voltage 10",
+      "description": "Provides 10 lovely random voltages in the 0V-10V range for a trigger",
+      "keywords": [
+        "RandVolt",
+		"ten"
+		],
+      "tags": [
+        "Random",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "ChSel6",
+      "name": "Channel Selector 6",
+      "description": "A module to select six of your favorite channels from a polyphonic input",
+      "keywords": [
+        "ChSel",
+		"channel",
+		"selector",
+		"sixteen"
+		],
+      "tags": [
+        "Utility",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "ChSel8",
+      "name": "Channel Selector 8",
+      "description": "A module to select eight of your favorite channels from a polyphonic input",
+      "keywords": [
+        "ChSel",
+		"channel",
+		"selector",
+		"eight"
+		],
+      "tags": [
+        "Utility",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "ChSel2",
+      "name": "Channel Selector 2",
+      "description": "A double module to select by CV/manually your favorite channel from a polyphonic input",
+      "tags": [
+        "Utility",
+        "Switch",
+        "Polyphonic"
+      ]
+    }
+  ]
+}

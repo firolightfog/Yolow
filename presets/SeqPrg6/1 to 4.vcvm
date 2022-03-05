@@ -1,0 +1,23 @@
+{
+  "plugin": "Yolow",
+  "model": "SeqPrg6",
+  "version": "2.0.4",
+  "params": [
+    {
+      "value": 1.0,
+      "id": 0
+    },
+    {
+      "value": 2.0,
+      "id": 1
+    },
+    {
+      "value": 3.0,
+      "id": 2
+    },
+    {
+      "value": 4.0,
+      "id": 3
+    }
+  ]
+}
