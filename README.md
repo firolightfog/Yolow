@@ -17,8 +17,8 @@ Modules for VCV Rack
 |MKnob.cpp|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
 |Slide16.cpp|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |Slide6.cpp|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
-|tHex.cpp|A 16 step trigger sequencer with random options|
 |TrigPrec2.cpp|Trigger sequence randomizer|
 |TrigPrec6.cpp|Trigger sequence randomizer|
 |tXOr.cpp|Clock divider with XOR output and CV inputs|
 |9lives.cpp|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
+|tHex.cpp :zzz:|[deprecated] A 16 step trigger sequencer with random options|
