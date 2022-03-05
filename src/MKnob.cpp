@@ -53,11 +53,11 @@ struct MKnob : Module {
 		paramQuantities[KNOBB_PARAM]->snapEnabled = false;
 		paramQuantities[KNOBC_PARAM]->snapEnabled = false;
 		paramQuantities[KNOBD_PARAM]->snapEnabled = false;
-		configOutput(SOCKETA_OUTPUT, "");
-		configOutput(SOCKETB_OUTPUT, "");
-		configOutput(SOCKETC_OUTPUT, "");
-		configOutput(SOCKETD_OUTPUT, "");
-		configOutput(POLYOUT_OUTPUT, "");
+		configOutput(SOCKETA_OUTPUT, "A");
+		configOutput(SOCKETB_OUTPUT, "B");
+		configOutput(SOCKETC_OUTPUT, "C");
+		configOutput(SOCKETD_OUTPUT, "D");
+		configOutput(POLYOUT_OUTPUT, "Polyphonic");
 	}
 
 // these are OK
