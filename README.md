@@ -36,13 +36,13 @@ Modules for VCV Rack
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
-|[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
+|[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
+|[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
-|[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 
 -----
@@ -65,8 +65,12 @@ Modules for VCV Rack
 -----
 
 ### MKnob
-### Slide16
+### RandVolt10
+- Without a clock input: it provides ten fix voltages (1V-10V).
+- With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
+- Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context menu.
 ### Slide6
+### Slide16
 
 -----
 
@@ -77,10 +81,6 @@ Modules for VCV Rack
 
 ### tXOr
 ### 9lives
-### RandVolt10
-- Without a clock input: it provides ten fix voltages (1V-10V).
-- With a clock input: it provides random voltages.
-- Optionally the range can be set to 0V-10V or -5V to 5V in the context menu.
 
 -----
 
