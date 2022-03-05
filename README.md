@@ -27,23 +27,23 @@ Modules for VCV Rack
 
 |Module|Short desc.|
 | --- | --- |
-|[ChSel2](#ChSel2)|.cpp|Select upto 2 of your favourite channels from a polyphonic input|
-|[ChSel6](#ChSel6)|.cpp|Select upto 6 of your favourite channels from a polyphonic input|
-|[ChSel8](#ChSel8)|.cpp|Select upto 8 of your favourite channels from a polyphonic input|
-|[PolyCopy10](#PolyCopy10)|.cpp|Polyphonic merge with normalized input sockets in 2HP|
-|[PolyCopy16](#PolyCopy16)|.cpp|Polyphonic merge with normalized input sockets in 4HP|
-|[PolyExp10](#PolyExp10)|.cpp|Polyphonic split in 2HP|
-|[RandVolt10](#RandVolt10)|.cpp|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
-|[SeqP16](#SeqP16)|.cpp|4 step sequential switch to choose from 16 channels of a polyphonic input|
-|[SeqP5](#SeqP5)|.cpp|4 step sequential switch to choose from 5 inputs|
-|[MKnob](#MKnob)|.cpp|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
-|[Slide16](#Slide16)|.cpp|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
-|[Slide6](#Slide6)|.cpp|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
-|[TrigPrec2](#TrigPrec2)|.cpp|Trigger sequence randomizer|
-|[TrigPrec6](#TrigPrec6)|.cpp|Trigger sequence randomizer|
-|[tXOr](#tXOr)|.cpp|Clock divider with XOR output and CV inputs|
-|[9lives](#9lives)|.cpp|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
-|[tHex](#tHex)|.cpp :zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
+|[ChSel2](#ChSel2)|Select upto 2 of your favourite channels from a polyphonic input|
+|[ChSel6](#ChSel6)|Select upto 6 of your favourite channels from a polyphonic input|
+|[ChSel8](#ChSel8)|Select upto 8 of your favourite channels from a polyphonic input|
+|[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
+|[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
+|[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
+|[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
+|[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
+|[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
+|[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
+|[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
+|[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
+|[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
+|[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
+|[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
+|[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
+|[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 
 -----
 
