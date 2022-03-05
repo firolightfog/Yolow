@@ -1,6 +1,8 @@
 # Yolow
 Modules for VCV Rack
 
+![image](https://user-images.githubusercontent.com/34127628/156898284-8f956e4f-52ce-463b-87d8-10a2267cce81.png)
+
 |Module|Short desc.|
 | --- | --- |
 |ChSel2.cpp|Select upto 2 of your favourite channels from a polyphonic input|
