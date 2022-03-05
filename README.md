@@ -77,6 +77,9 @@ Optionally the returned channels can be set to `first 10` or `last 10` in the co
 - Without a clock input: it provides ten fix voltages (1V-10V).
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context menu.
+
+<img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
+
 ### Slide6
 ### Slide16
 
