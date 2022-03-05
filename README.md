@@ -52,18 +52,21 @@ Optionally the returned channels can be set to `first 10` or `last 10` in the co
 
 -----
 
-### SeqP16
 ### SeqP5
+A tricky 4-step sequencer that return one of the 5 input sources selected by the four knobs. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly select one of the input sources.
+
+### SeqP16
+A tricky 4-step sequencer that return one of the 16 channels of a polyphonic input (POLY IN). To advance the step you need a clock (see CLK). Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels.
 
 -----
 
 ### MKnob
 A simple fix voltage provider module. The context menu offers
-- Quantize: nope / octave / notes
+- Quantize: `nope` / `octave` / `notes`
 - Range: `0V to 10V` or `-5V to 5V`
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
 
-### RandVolt10
+### RandVolt1 Setting any of the knobs to zero will randomly select one of the input sources.0
 - Without a clock input: it provides ten fix voltages (1V-10V).
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 
@@ -73,7 +76,7 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
-- Quantize: nope / octave / notes
+- Quantize: `nope` / `octave` / `notes`
 - Poly channels: limiting polyphonic output from 1 to 6 channels if needed
 
 ### Slide16
@@ -82,8 +85,8 @@ A module to provide a sixteen channel polyphonic output with the fixed voltages 
 The module can also be used as a 16-step sequencer and return the melody as a monophonic CV (see OUT at the bottom). To step from slider to slider you can use a clock (see STEP input) or alternatively you can use a 0V-10V CV (see JUMP). 
 
 Some keyboard shortcuts are enabled and the context menu offers
-- Quantize: nope / octave / notes
-- Poly channels: limiting polyphonic output from 1 to 6 channels if needed
+- Quantize: `nope` / `octave` / `notes`
+- Poly channels: limiting polyphonic output from 1 to 16 channels if needed
 
 -----
 
@@ -99,6 +102,18 @@ It's the bigger brother of TrigPrec6 with six inputs and outputs. Each knob defi
 This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. *(The module panel is subject to re-design.)*
 
 ### 9lives
+First of all you obviously need a clock (CLK). The module can be used as 
+
+- a buffer: CLK signal is sent unchanged to THR (through).
+- a simple clock divider: CLK input is multiplied by the MUL knob and sent to the relevant output (see MUL at the bottom).
+- a fix voltage provider: CVY return the CV of yellow slider of the currently selected block (CVW is the white slider, CVG is the green slider)
+- a complex clock modifier: LIFE returns the clock signal multipled by the yellow slider value. Please note that the white slider acts as a probabilty setting and may force the clock to be quiet. The green slider serves as a multiplcation probability by forcing a single pulse or a multiplied rhythm.
+- a super complex clock modifier: a 0V-10V CV (see JUMP) allows you to dynamically select one of the blocks. Hence the yellow, white, green parameters are changing accordingly.
+- a 16-step sequencer: a 0V-10V CV (see JUMP) allows you to dynamically select one of the blocks. Hence the CVY, CVW, CVG outputs will provide a changing stepped CV.
+
+Some keyboard shortcuts are enabled to select blocks and randomize parameters.
+
+The concept of the module is based on Sha#Bang! Modules Stochastic Sequencer Grid but the implementation is greatly simplified (clock, layout, operation).
 
 -----
 
