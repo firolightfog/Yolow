@@ -26,7 +26,7 @@ Modules for VCV Rack
 -----
 
 ### ChSel2
-Select your favourite channel from a polyphonic input (see PIN). The upper section returns a single monophonic output as defined by the slider. The lower section works the same way but the input at the bottom allows you to modify the slider on the fly. This transforms this small 2HP module into a simple 16-step sequencer!
+Select your favourite channel from a polyphonic input (see PIN). The upper section returns a single monophonic output as defined by the slider. The lower section works the same way but the input at the bottom allows you to modify the slider on the fly. This transforms the small 2HP module into a simple 16-step sequencer!
 
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
 
@@ -72,18 +72,32 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 <img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
 
 ### Slide6
+A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
+- Quantize: nope / octave / notes
+- Poly channels: limiting polyphonic output from 1 to 6 channels if needed
+
 ### Slide16
+A module to provide a sixteen channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. 
+
+The module can also be used as a 16-step sequencer and return the melody as a monophonic CV (see OUT at the bottom). To step from slider to slider you can use a clock (see STEP input) or alternatively you can use a 0V-10V CV (see JUMP). 
+
+Some keyboard shortcuts are enabled and the context menu offers
+- Quantize: nope / octave / notes
+- Poly channels: limiting polyphonic output from 1 to 6 channels if needed
 
 -----
 
 ### TrigPrec2
-It's a dual trigger precision ruiner. The knobs define the probability to skip Trigger sequence 
+It's a dual trigger precision ruiner. Each knob define the probability to skip triggers from the input sequence (see socket under the knob) and/or add a few trigger from the clock (see CLK on the top). The module follows the concept discussed [here](https://github.com/clone45/voxglitch/issues/74). 
 
 ### TrigPrec6
+It's the bigger brother of TrigPrec6 with six inputs and outputs. Each knob define the probability to skip triggers from the input sequence (see socket left from the knob) and/or add a few trigger from the clock (see CLK on the top). 
 
 -----
 
 ### tXOr
+This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. *(The module panel is subject to re-design.)*
+
 ### 9lives
 
 -----
