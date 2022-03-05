@@ -26,7 +26,7 @@ Modules for VCV Rack
 -----
 
 ### ChSel2
-Select your favourite channel from a polyphonic input (see PIN). The upper section returns a monophonic output according to the slider. The lower section works the same way but the input at the bottom allows you to modify the slider on the fly. This additional input can create a simple 16-step sequencer from the module. It's only 2HP!
+Select your favourite channel from a polyphonic input (see PIN). The upper section returns a single monophonic output as defined by the slider. The lower section works the same way but the input at the bottom allows you to modify the slider on the fly. This transforms this small 2HP module into a simple 16-step sequencer!
 
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
 
@@ -77,6 +77,8 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 -----
 
 ### TrigPrec2
+It's a dual trigger precision ruiner. The knobs define the probability to skip Trigger sequence 
+
 ### TrigPrec6
 
 -----
@@ -88,5 +90,6 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 
 ### tHex 
 This module is *deprecated*:zzz:. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
+
 <img width="85" alt="image" src="https://user-images.githubusercontent.com/34127628/156899830-e201945d-faca-43bf-bc53-e8606f2f13d3.png">
 
