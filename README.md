@@ -112,7 +112,7 @@ First of all you obviously need a clock (CLK). The module can be used as
 - a super complex clock modifier: a 0V-10V CV (see JUMP) allows you to dynamically select one of the blocks. Hence the yellow, white, green parameters are changing accordingly.
 - a 16-step sequencer: a 0V-10V CV (see JUMP) allows you to dynamically select one of the blocks. Hence the CVY, CVW, CVG outputs will provide a changing stepped CV.
 
-The active block is also indicated by the yellow LEDson the top. Some keyboard shortcuts are enabled to select blocks and randomize parameters.
+The active block is also indicated by the yellow LEDs on the top. Some keyboard shortcuts are enabled to select blocks and randomize parameters.
 
 The concept of the module is based on Sha#Bang! Modules Stochastic Sequencer Grid but the implementation is greatly simplified (clock, layout, operation).
 
