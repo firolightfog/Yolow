@@ -40,15 +40,15 @@ Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). Th
 -----
 
 ### PolyCopy10
-As simple merge module with ten normalized inputs.  
+A simple merge module with ten normalized inputs.  
 
 ### PolyCopy16
-As simple merge module with sixteen normalized inputs.  
+A simple merge module with sixteen normalized inputs.  
 
 <img width="250" alt="image" src="https://user-images.githubusercontent.com/34127628/156899500-237c10e8-6976-4130-9836-cf5a6047b056.png">
 
 ### PolyExp10
-As simple split module it returns the first ten channels of a polyphonic input. 
+A simple split module it returns the first ten channels of a polyphonic input. 
 Optionally the returned channels can be set to `first 10` or `last 10` in the context menu.
 
 -----
