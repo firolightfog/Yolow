@@ -63,6 +63,7 @@
       ],
       "keywords": [
         "tXOr",
+		"XOR",
 		"trigger",
 		"sequencer"
 		],
@@ -180,7 +181,8 @@
       "name": "Trigger Precision 2",
       "description": "Trigger randomizer",
       "keywords": [
-        "TrigPrec"
+        "trg",
+		"TrigPrec"
 	  ],
       "tags": [
         "Random",
@@ -191,6 +193,10 @@
       "slug": "TrigPrec6",
       "name": "Trigger Precision 6",
       "description": "Trigger randomizer",
+      "keywords": [
+        "trg",
+		"TrigPrec"
+	  ],
       "tags": [
         "Random",
         "Utility"
@@ -215,6 +221,8 @@
       "name": "Random Voltage 10",
       "description": "Provides 10 lovely random voltages in the 0V-10V range for a trigger",
       "keywords": [
+		"rnd",
+		"fix",
         "RandVolt",
 		"ten"
 		],

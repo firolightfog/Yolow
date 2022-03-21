@@ -1,6 +1,6 @@
 # Yolow
 
-Missing a few simple module from my VCV Rack patches I decided to code a few. But I would like to share them with you. If you successfully use any of them in your project or you like it please let me know. Your [support](https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU) would be also appreciated.  
+Missing a few simple module from my VCV Rack patches I decided to code a bit. But I would also like to share them with you. If you successfully use any of them in your project or you like it please let me know. Your [support](https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU) would be also appreciated.  
 
 <img width="465" alt="image" src="https://user-images.githubusercontent.com/34127628/156902010-fd1c258a-e3e5-47fb-8410-9f27ac50ae27.png">
 
@@ -32,7 +32,7 @@ Select your favourite channel from a polyphonic input (see PIN). The upper secti
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
 
 ### ChSel6
-Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu.
+Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu. Similarly to the suggestion [here](https://github.com/dbgrande/GrandeModular/issues/4).
 
 ### ChSel8
 Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 8 in the context menu. It's only 2HP!
@@ -40,7 +40,7 @@ Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). Th
 -----
 
 ### PolyCopy10
-A simple merge module with ten normalized inputs.  
+A simple merge module with ten normalized inputs. As suggested [here](https://github.com/dbgrande/GrandeModular/issues/3). 
 
 ### PolyCopy16
 A simple merge module with sixteen normalized inputs.  
@@ -54,10 +54,10 @@ Optionally the returned channels can be set to `first 10` or `last 10` in the co
 -----
 
 ### SeqP5
-A tricky 4-step sequencer that return one of the 5 input sources selected by the four knobs. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly select one of the input sources.
+A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
 
 ### SeqP16
-A tricky 4-step sequencer that return one of the 16 channels of a polyphonic input (POLY IN). To advance the step you need a clock (see CLK). Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels.
+A tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step you need a clock (see CLK). Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels.
 
 -----
 
@@ -66,7 +66,6 @@ A simple fix voltage provider module. The context menu offers
 - Quantize: `nope` / `octave` / `notes`
 - Range: `0V to 10V` or `-5V to 5V`
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
-Setting any of the knobs to zero will randomly select one of the input sources.
  
 ### RandVolt10
 - Without a clock input: it provides ten fix voltages (1V-10V).
@@ -123,4 +122,3 @@ The concept of the module is based on Sha#Bang! Modules Stochastic Sequencer Gri
 This module is *deprecated*:zzz:. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
 
 <img width="85" alt="image" src="https://user-images.githubusercontent.com/34127628/156899830-e201945d-faca-43bf-bc53-e8606f2f13d3.png">
-
