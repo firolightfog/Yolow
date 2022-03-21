@@ -135,15 +135,21 @@ struct tXOrWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 55.88)), module, tXOr::MONOIN1_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 66.04)), module, tXOr::MONOIN3_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 76.20)), module, tXOr::MONOIN5_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 76.20)), module, tXOr::MONOIN3_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 106.68)), module, tXOr::MONOIN5_PARAM));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 66.04)), module, tXOr::MONOIN2_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 96.52)), module, tXOr::MONOIN4_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 116.84)), module, tXOr::MONOIN6_INPUT));
+
+		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 55.88)), module, tXOr::MONOIN1_PARAM));
+		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 66.04)), module, tXOr::MONOIN3_PARAM));
+		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 76.20)), module, tXOr::MONOIN5_PARAM));
+		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 96.52)), module, tXOr::MONOIN2_INPUT));
+		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 106.68)), module, tXOr::MONOIN4_INPUT));
+		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 116.84)), module, tXOr::MONOIN6_INPUT));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 25.4)), module, tXOr::MONOIN7_INPUT));
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 25.4)), module, tXOr::MONOIN8_INPUT));
-
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 96.52)), module, tXOr::MONOIN2_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 106.68)), module, tXOr::MONOIN4_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 116.84)), module, tXOr::MONOIN6_INPUT));
 
 		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(10.16+2.5*2.54, 55.88-1.5*2.54)), module, tXOr::DIVA_LIGHT));
 		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(10.16+2.5*2.54, 66.04-1.5*2.54)), module, tXOr::DIVB_LIGHT));
