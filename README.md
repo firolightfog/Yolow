@@ -66,8 +66,9 @@ A simple fix voltage provider module. The context menu offers
 - Quantize: `nope` / `octave` / `notes`
 - Range: `0V to 10V` or `-5V to 5V`
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
-
-### RandVolt1 Setting any of the knobs to zero will randomly select one of the input sources.0
+Setting any of the knobs to zero will randomly select one of the input sources.
+ 
+### RandVolt10
 - Without a clock input: it provides ten fix voltages (1V-10V).
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 
