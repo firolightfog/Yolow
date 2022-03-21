@@ -100,7 +100,7 @@ It's the bigger brother of TrigPrec6 with six inputs and outputs. Each knob defi
 -----
 
 ### tXOr
-This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. *(The module panel is subject to re-design.)*
+This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. 
 
 ### 9lives
 First of all you obviously need a clock (CLK). The module can be used as 
