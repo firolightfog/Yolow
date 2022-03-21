@@ -100,7 +100,7 @@ struct tXOr : Module {
 				else {lights[DIVB_LIGHT].setBrightness(0);};
 				if (divC>0 && (currStep % divC ==0)) {outXorV+=10; lights[DIVC_LIGHT].setBrightness(1);} 
 				else {lights[DIVC_LIGHT].setBrightness(0);};
-				if (outXorV>=10) {outOrV=0;}
+				if (outXorV>=10) {outOrV=10;}
 				if (outXorV!=10) {outXorV=0;}
 			} 
 			outputs[OR_OUTPUT].setVoltage(outOrV);
