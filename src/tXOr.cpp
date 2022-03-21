@@ -16,73 +16,55 @@ This module is a trigger sequencer with three clock dividers and a XOR output.
 - `DIV C` overwritting the relevant knob settings and defining the clock division
 ##### OUTPUTS:
 - `OUT` XOR output of the three divisions 
+- `OUT` XOR output of the three divisions 
 
 */
-
 
 #include "plugin.hpp"
 
 struct tXOr : Module {
-	enum ParamId {
-		MONOIN1_PARAM,
-		MONOIN3_PARAM,
-		MONOIN5_PARAM,
-		PARAMS_LEN
-	};
-	enum InputId {
-		MONOIN7_INPUT,
-		MONOIN8_INPUT,
-		MONOIN2_INPUT,
-		MONOIN4_INPUT,
-		MONOIN6_INPUT,
-		INPUTS_LEN
-	};
-	enum OutputId {
-		POLYOUT_OUTPUT,
-		OUTPUTS_LEN
-	};
-	enum LightId {
-		DIVA_LIGHT,
-		DIVB_LIGHT,
-		DIVC_LIGHT,
-		LIGHTS_LEN
-	};
+	enum ParamId {DIVA_PARAM,DIVB_PARAM,DIVC_PARAM,PARAMS_LEN};
+	enum InputId {DIVA_INPUT,DIVB_INPUT,DIVC_INPUT,RESET_INPUT,CLOCK_INPUT,INPUTS_LEN};
+	enum OutputId {OR_OUTPUT,XOR_OUTPUT,OUTPUTS_LEN};
+	enum LightId {DIVA_LIGHT,DIVB_LIGHT,DIVC_LIGHT,LIGHTS_LEN};
 
 	tXOr() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(MONOIN1_PARAM, 0.f, 64.f, 1.f, "DivA knob","");
-		configParam(MONOIN3_PARAM, 0.f, 64.f, 0.f, "DivB knob","");
-		configParam(MONOIN5_PARAM, 0.f, 64.f, 0.f, "DivC knob","");
-		paramQuantities[MONOIN1_PARAM]->snapEnabled = true;
-		paramQuantities[MONOIN3_PARAM]->snapEnabled = true;
-		paramQuantities[MONOIN5_PARAM]->snapEnabled = true;
-		// paramQuantities[MONOIN1_PARAM]->displayMultiplier=6.4;	// 64/10
-		// paramQuantities[MONOIN3_PARAM]->displayMultiplier=6.4;	// 64/10
-		// paramQuantities[MONOIN5_PARAM]->displayMultiplier=6.4;	// 64/10
-		configInput(MONOIN7_INPUT, "Reset");
-		configInput(MONOIN8_INPUT, "Clock");
-		configInput(MONOIN2_INPUT, "DivA socket");
-		configInput(MONOIN4_INPUT, "DivB socket");
-		configInput(MONOIN6_INPUT, "DivC socket");
-		configOutput(POLYOUT_OUTPUT, "");
+		configParam(DIVA_PARAM, 0.f, 64.f, 0.f, "DivA knob");
+		configParam(DIVB_PARAM, 0.f, 64.f, 0.f, "DivB knob");
+		configParam(DIVC_PARAM, 0.f, 64.f, 0.f, "DivC knob");
+		paramQuantities[DIVA_PARAM]->snapEnabled = true;
+		paramQuantities[DIVB_PARAM]->snapEnabled = true;
+		paramQuantities[DIVC_PARAM]->snapEnabled = true;
+		// paramQuantities[DIVA_PARAM]->displayMultiplier=6.4;	// 64/10
+		// paramQuantities[DIVB_PARAM]->displayMultiplier=6.4;	// 64/10
+		// paramQuantities[DIVC_PARAM]->displayMultiplier=6.4;	// 64/10
+		configInput(RESET_INPUT, "Reset");
+		configInput(CLOCK_INPUT, "Clock");
+		configInput(DIVA_INPUT, "DivA CV");
+		configInput(DIVB_INPUT, "DivB CV");
+		configInput(DIVC_INPUT, "DivC CV");
+		configOutput(XOR_OUTPUT, "XOR Sequence");
+		configOutput(OR_OUTPUT, "OR Sequence");
 	}
 
-int indexPrec=0;	// context menu settings
-int indexMaxLen=2;	// context menu settings
-int indexHitMode=0;	// context menu settings
+	int indexPrec=0;	// context menu settings
+	int indexMaxLen=2;	// context menu settings
+	int indexHitMode=0;	// context menu settings
 
-bool oldRst=false;
-bool newRst=false;
-bool oldClk=false;
-bool newClk=false;
+	bool oldRst=false;
+	bool newRst=false;
+	bool oldClk=false;
+	bool newClk=false;
 
-int loopKnobs=1;	// save some CPU to check the knobs only occaisonly
-int currStep=0;
+	int loopKnobs=1;	// save some CPU to check the knobs only occaisonly
+	int currStep=0;
 
-int divA=1;
-int divB=1;
-int divC=1;
-int outV=0;
+	int divA=1;
+	int divB=1;
+	int divC=1;
+	int outXorV=0;
+	int outOrV=0;
 
 	void process(const ProcessArgs& args) override {
 		
@@ -90,33 +72,39 @@ int outV=0;
 			loopKnobs=500;
 
 			// 0-10V controlls the knobs
-			if (inputs[MONOIN2_INPUT].isConnected()) {params[MONOIN1_PARAM].setValue(abs(inputs[MONOIN2_INPUT].getVoltage()/10*64));}
-			if (inputs[MONOIN4_INPUT].isConnected()) {params[MONOIN3_PARAM].setValue(abs(inputs[MONOIN4_INPUT].getVoltage()/10*64));}
-			if (inputs[MONOIN6_INPUT].isConnected()) {params[MONOIN5_PARAM].setValue(abs(inputs[MONOIN6_INPUT].getVoltage()/10*64));}
+			if (inputs[DIVA_INPUT].isConnected()) {params[DIVA_PARAM].setValue(abs(inputs[DIVA_INPUT].getVoltage()/10*64));}
+			if (inputs[DIVB_INPUT].isConnected()) {params[DIVB_PARAM].setValue(abs(inputs[DIVB_INPUT].getVoltage()/10*64));}
+			if (inputs[DIVC_INPUT].isConnected()) {params[DIVC_PARAM].setValue(abs(inputs[DIVC_INPUT].getVoltage()/10*64));}
 
 			// the knobs define the parameters
-			divA=round(params[MONOIN1_PARAM].getValue());
-			divB=round(params[MONOIN3_PARAM].getValue());
-			divC=round(params[MONOIN5_PARAM].getValue());
+			divA=round(params[DIVA_PARAM].getValue());
+			divB=round(params[DIVB_PARAM].getValue());
+			divC=round(params[DIVC_PARAM].getValue());
 
 		}
 					
 		// to catch the reset signal
-		newRst=inputs[MONOIN7_INPUT].getVoltage()>2;
+		newRst=inputs[RESET_INPUT].getVoltage()>2;
 		if (oldRst!=newRst) {currStep=0;oldRst=newRst;}
 		
 		// to catch the clock signal
-		newClk=inputs[MONOIN8_INPUT].getVoltage()>2;
+		newClk=inputs[CLOCK_INPUT].getVoltage()>2;
 		if (oldClk!=newClk) {
-			outV=0;
+			outOrV=0;
+			outXorV=0;
 			if (newClk) {
 				if (currStep>=64-1) {currStep=0;} else {currStep++;}
-				if (divA>0 && (currStep % divA ==0)) {outV+=10; lights[DIVA_LIGHT].setBrightness(1);} else {lights[DIVA_LIGHT].setBrightness(0);};
-				if (divB>0 && (currStep % divB ==0)) {outV+=10; lights[DIVB_LIGHT].setBrightness(1);} else {lights[DIVB_LIGHT].setBrightness(0);};
-				if (divC>0 && (currStep % divC ==0)) {outV+=10; lights[DIVC_LIGHT].setBrightness(1);} else {lights[DIVC_LIGHT].setBrightness(0);};
-				if (outV!=10) {outV=0;}
+				if (divA>0 && (currStep % divA ==0)) {outXorV+=10; lights[DIVA_LIGHT].setBrightness(1);} 
+				else {lights[DIVA_LIGHT].setBrightness(0);};
+				if (divB>0 && (currStep % divB ==0)) {outXorV+=10; lights[DIVB_LIGHT].setBrightness(1);} 
+				else {lights[DIVB_LIGHT].setBrightness(0);};
+				if (divC>0 && (currStep % divC ==0)) {outXorV+=10; lights[DIVC_LIGHT].setBrightness(1);} 
+				else {lights[DIVC_LIGHT].setBrightness(0);};
+				if (outXorV>=10) {outOrV=0;}
+				if (outXorV!=10) {outXorV=0;}
 			} 
-			outputs[POLYOUT_OUTPUT].setVoltage(outV);
+			outputs[OR_OUTPUT].setVoltage(outOrV);
+			outputs[XOR_OUTPUT].setVoltage(outXorV);
 			oldClk=newClk;
 		}		
 
@@ -125,6 +113,11 @@ int outV=0;
 };
 
 struct tXOrWidget : ModuleWidget {
+
+	tXOr* module;
+	// #include "share/widgetwizard.hpp"   // addChild abbreviations
+	float HP=5.08f;
+	
 	tXOrWidget(tXOr* module) {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/tXOr.svg")));
@@ -134,28 +127,35 @@ struct tXOrWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 55.88)), module, tXOr::MONOIN1_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 76.20)), module, tXOr::MONOIN3_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 106.68)), module, tXOr::MONOIN5_PARAM));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 66.04)), module, tXOr::MONOIN2_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 96.52)), module, tXOr::MONOIN4_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 116.84)), module, tXOr::MONOIN6_INPUT));
+		// childKnob(tXOr::DIVA_PARAM,1,HP*2,HP*11);
+		// childKnob(tXOr::DIVB_PARAM,1,HP*2,HP*16);
+		// childKnob(tXOr::DIVC_PARAM,1,HP*2,HP*21);
+		// childInput(tXOr::DIVA_INPUT,HP*2,HP*13);
+		// childInput(tXOr::DIVB_INPUT,HP*2,HP*18);
+		// childInput(tXOr::DIVC_INPUT,HP*2,HP*23);
+		// childLight(tXOr::DIVA_LIGHT,1,HP*3.25,HP*(13-1));
+		// childLight(tXOr::DIVB_LIGHT,1,HP*3.25,HP*(18-1));
+		// childLight(tXOr::DIVC_LIGHT,1,HP*3.25,HP*(23-1));
+	addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2,HP*11)), module, tXOr::DIVA_PARAM));
+	addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2,HP*16)), module, tXOr::DIVB_PARAM));
+	addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2,HP*21)), module, tXOr::DIVC_PARAM));
+	addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*2,HP*13)), module, tXOr::DIVA_INPUT));
+	addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*2,HP*18)), module, tXOr::DIVB_INPUT));
+	addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*2,HP*23)), module, tXOr::DIVC_INPUT));
+	addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(HP*3.25,HP*(13-1))), module, tXOr::DIVA_LIGHT));
+	addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(HP*3.25,HP*(18-1))), module, tXOr::DIVB_LIGHT));
+	addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(HP*3.25,HP*(23-1))), module, tXOr::DIVC_LIGHT));
 
-		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 55.88)), module, tXOr::MONOIN1_PARAM));
-		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 66.04)), module, tXOr::MONOIN3_PARAM));
-		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 76.20)), module, tXOr::MONOIN5_PARAM));
-		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 96.52)), module, tXOr::MONOIN2_INPUT));
-		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 106.68)), module, tXOr::MONOIN4_INPUT));
-		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10.16, 116.84)), module, tXOr::MONOIN6_INPUT));
+		// childInput(tXOr::RESET_INPUT,HP*1,HP*5);
+		// childInput(tXOr::CLOCK_INPUT,HP*3,HP*5);
+		// childOutput(tXOr::OR_OUTPUT,HP*1,HP*8);
+		// childOutput(tXOr::XOR_OUTPUT,HP*3,HP*8);
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 25.4)), module, tXOr::MONOIN7_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 25.4)), module, tXOr::MONOIN8_INPUT));
+	addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1,HP*5.5)), module, tXOr::RESET_INPUT));
+	addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*3,HP*5.5)), module, tXOr::CLOCK_INPUT));
+	addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1,HP*8.5)), module, tXOr::OR_OUTPUT));
+	addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*3,HP*8.5)), module, tXOr::XOR_OUTPUT));
 
-		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(10.16+2.5*2.54, 55.88-1.5*2.54)), module, tXOr::DIVA_LIGHT));
-		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(10.16+2.5*2.54, 66.04-1.5*2.54)), module, tXOr::DIVB_LIGHT));
-		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(10.16+2.5*2.54, 76.20-1.5*2.54)), module, tXOr::DIVC_LIGHT));
-
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10.16, 40.428)), module, tXOr::POLYOUT_OUTPUT));
 	}
 		
 };
