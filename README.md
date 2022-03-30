@@ -89,6 +89,8 @@ Some keyboard shortcuts are enabled and the context menu offers
 - Quantize: `nope` / `octave` / `notes`
 - Poly channels: limiting polyphonic output from 1 to 16 channels if needed
 
+The 'poly channels' setting doesn't influence the sequence created by the JUMP input. But it does influence the number of steps available with the STEP input.
+
 -----
 
 ### TrigPrec2
