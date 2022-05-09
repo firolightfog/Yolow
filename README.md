@@ -121,6 +121,6 @@ The concept of the module is based on Sha#Bang! Modules Stochastic Sequencer Gri
 -----
 
 ### tHex 
-This module is *deprecated*:zzz:. Nibble Sequencer of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
+This module is *deprecated*:zzz:. [Nibble Sequencer](https://library.vcvrack.com/CountModula/NibbleTriggerSequencer) of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
 
 <img width="85" alt="image" src="https://user-images.githubusercontent.com/34127628/156899830-e201945d-faca-43bf-bc53-e8606f2f13d3.png">
