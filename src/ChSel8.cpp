@@ -68,34 +68,44 @@ struct ChSel8 : Module {
 
 int indexChan=7; 	// this means 8 channels
 int loopKnobs=1;
+bool isInput=false;
 float paramsVal[PARAMS_LEN]={1,1,1,1,1,1,1,1};
 
 	void process(const ProcessArgs& args) override {
 		
 		// occasionly collect the knob values 
 		if (loopKnobs-- ==0) {
-			loopKnobs=500;
+			loopKnobs=2500;
 			for (int c=0;c<PARAMS_LEN;c++) {paramsVal[c]=params[c].getValue()-1;}
+			isInput=inputs[POLYIN_INPUT].isConnected();
+			if (isInput==false) {indexChan=7;}
 		}
 		
 		// always collect and forward the input values
 		for (int c=0;c<=indexChan;c++) {
-			outputs[POLYOUT_OUTPUT].setVoltage(inputs[POLYIN_INPUT].getVoltage(paramsVal[c]), c);
+			if (isInput==true) {
+				outputs[POLYOUT_OUTPUT].setVoltage(inputs[POLYIN_INPUT].getVoltage(paramsVal[c]), c);
+			} 
+			else {
+				outputs[POLYOUT_OUTPUT].setVoltage(paramsVal[c],c);
+			}
 		}
 
 		outputs[POLYOUT_OUTPUT].channels=indexChan+1;
 	}
 
 	// this block is to save and reload a variable
+/*
 	json_t* dataToJson() override {
 	json_t* rootJ = json_object();
 	json_object_set_new(rootJ, "mode", json_integer(indexChan));
 	return rootJ;}
 
-	void dataFromJson(json_t* rootJ) override {
+ 	void dataFromJson(json_t* rootJ) override {
 	json_t *modeJ = json_object_get(rootJ, "mode");
 	if (modeJ) indexChan = json_integer_value(modeJ);}
-
+ */
+ 
 };
 
 
@@ -128,14 +138,15 @@ struct ChSel8Widget : ModuleWidget {
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 15.24)), module, ChSel8::POLYOUT_OUTPUT));
 	}
 
-
+/* 
 	void appendContextMenu(Menu* menu) override {
 		ChSel8* module = dynamic_cast<ChSel8*>(this->module);
 		assert(module);
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Poly channels", {"1","2","3","4","5","6","7","8"}, &module->indexChan));
 	}
-
+ */
+ 
 };
 
 
