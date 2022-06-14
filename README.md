@@ -20,6 +20,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
+|[Enveloop](#Enveloop)|Looping envelope generator|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
@@ -100,6 +101,9 @@ It's a dual trigger precision ruiner. Each knob define the probability to skip t
 It's the bigger brother of TrigPrec6 with six inputs and outputs. Each knob define the probability to skip triggers from the input sequence (see socket left from the knob) and/or add a few trigger from the clock (see CLK on the top). 
 
 -----
+
+### Enveloop
+This is an ADR (attack, decay, release) envelope generator with built in VCA. Separate knobs are available for A, D and R settings. The range can be set by a switch an the starting voltage for A is also definable. At the bottom a gate input, a noise input and an audio input allows the modification of the controll voltages. The module was inspired by the mighty [Arido](https://solcitomusica.blogspot.com/p/virtuales.html) VST of Solcitomusic. It was also motivating that I found only a few envelope generators with a built in VCA in the VCV Library. 
 
 ### tXOr
 This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. 
