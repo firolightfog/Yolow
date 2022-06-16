@@ -105,6 +105,8 @@ It's the bigger brother of TrigPrec6 with six inputs and outputs. Each knob defi
 ### Enveloop
 This is an ADR (attack, decay, release) envelope generator with built in VCA. Separate knobs are available for A, D and R settings. The range can be set by a switch on the top, and the starting voltage for A is also definable. At the bottom there is a gate, a noise and an audio input allowing modification of the controll voltages. The module was inspired by the mighty [Arido](https://solcitomusica.blogspot.com/p/virtuales.html) VST of Solcitomusic. It was also motivating that I found only a few envelope generators with a built in VCA in the VCV Library. 
 
+<img width="298" alt="image" src="https://user-images.githubusercontent.com/34127628/173998298-82dfa826-579d-4bc5-b02e-202e10c019b4.png">
+
 ### tXOr
 This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. 
 
