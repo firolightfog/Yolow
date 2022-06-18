@@ -39,7 +39,7 @@ struct ChSel2 : Module {
 
 	ChSel2() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configInput(POLYIN_INPUT, "Polyphonic input");
+		configInput(POLYIN_INPUT, "Polyphonic");
 		configParam(SLIDER1_PARAM, 1.f, 16.f, 0.f, "Pick channel A");
 		configParam(SLIDER2_PARAM, 1.f, 16.f, 0.f, "Pick channel B");
 		paramQuantities[SLIDER1_PARAM]->snapEnabled = true;
@@ -54,7 +54,7 @@ struct ChSel2 : Module {
 	float voltA=0;
 	float voltB=0;
 	int loopKnobs=0;	// CPU saviour for knob changes
-
+	// int polyChannels=1;
 
     // the main routine
 	void process(const ProcessArgs& args) override {
@@ -62,6 +62,8 @@ struct ChSel2 : Module {
 		if (loopKnobs--==0) {
 			loopKnobs=500;
 			if (inputs[CV2_INPUT].isConnected()) {
+					// polyChannels=inputs[POLYIN_INPUT].channels;
+					// params[SLIDER2_PARAM].setValue(1+abs(floor((inputs[CV2_INPUT].getVoltage())/10*polyChannels)));
 					params[SLIDER2_PARAM].setValue(1+abs(floor((inputs[CV2_INPUT].getVoltage())/10*16)));
 					}
 				voltA=inputs[POLYIN_INPUT].getVoltage((int)params[SLIDER1_PARAM].getValue()-1);
