@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.3",
+  "version": "2.1.5",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -177,11 +177,26 @@
       ]
     },
     {
+      "slug": "TrigPrec1",
+      "name": "Trigger Precision 1",
+      "description": "Trigger randomizer",
+      "keywords": [
+        "trg",
+		"TRP",
+		"TrigPrec"
+	  ],
+      "tags": [
+        "Random",
+        "Utility"
+      ]
+    },
+    {
       "slug": "TrigPrec2",
       "name": "Trigger Precision 2",
       "description": "Trigger randomizer",
       "keywords": [
         "trg",
+		"TRP",
 		"TrigPrec"
 	  ],
       "tags": [
@@ -195,6 +210,7 @@
       "description": "Trigger randomizer",
       "keywords": [
         "trg",
+		"TRP",
 		"TrigPrec"
 	  ],
       "tags": [
@@ -223,6 +239,7 @@
       "keywords": [
 		"rnd",
 		"fix",
+		"RV10",
         "RandVolt",
 		"ten"
 		],
@@ -259,6 +276,16 @@
       "tags": [
         "Utility",
         "Polyphonic"
+      ]
+    },
+    {
+      "slug": "Enveloop",
+      "name": "Enveloop",
+      "description": "Envelope generator with VCA",
+      "tags": [
+        "Envelope generator",
+        "VCA",
+        "ADR"
       ]
     },
     {
