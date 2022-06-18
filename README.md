@@ -18,6 +18,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
+|[TrigPrec1](#TrigPrec1)|Trigger sequence randomizer|
 |[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
 |[Enveloop](#Enveloop)|Looping envelope generator|
@@ -93,6 +94,9 @@ Some keyboard shortcuts are enabled and the context menu offers
 The 'poly channels' setting doesn't influence the sequence created by the JUMP input. But it does influence the number of steps available with the STEP input.
 
 -----
+
+### TrigPrec1
+It's a simple trigger precision ruiner. Probability can be set by a knob or CV input. Probability allows to skip triggers from the input sequence (see IN socket) and/or add a few trigger from the clock (see CLK socket on the top). 
 
 ### TrigPrec2
 It's a dual trigger precision ruiner. Each knob define the probability to skip triggers from the input sequence (see socket under the knob) and/or add a few trigger from the clock (see CLK on the top). The module follows the concept discussed [here](https://github.com/clone45/voxglitch/issues/74). 
