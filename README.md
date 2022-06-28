@@ -33,11 +33,14 @@ Select your favourite channel from a polyphonic input (see PIN). The upper secti
 
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
 
+2.1.6 update: if there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour.
+
 ### ChSel6
 Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu. Similarly to the suggestion [here](https://github.com/dbgrande/GrandeModular/issues/4).
 
 ### ChSel8
 Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 8 in the context menu. It's only 2HP!
+2.1.6 update: if there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour. 
 
 -----
 
