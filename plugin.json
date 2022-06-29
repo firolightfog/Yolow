@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -286,6 +286,14 @@
         "Envelope generator",
         "VCA",
         "ADR"
+      ]
+    },
+    {
+      "slug": "Celesta",
+      "name": "Celesta Sequencer",
+      "description": "Celestial spheres sequencer as proposed by Andre_M on the VCV Community forum",
+      "tags": [
+        "Sequencer"
       ]
     },
     {
