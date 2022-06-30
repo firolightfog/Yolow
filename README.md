@@ -66,6 +66,7 @@ As an additional feature every step has a "precision" feature. Setting the switc
 - '0' "mr perfect": the note is always played as expected
 - '1' “missed notes”: occasionally plays another note from the same sequence
 - '2' “sticky fingers”: occasionally keeps playing the previous note
+
 On the left you find a “precision” knob to influence how often these anomalies happen.
 
 ### SeqP5
