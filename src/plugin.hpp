@@ -32,3 +32,4 @@ extern Model* modelnineLives;
 extern Model* modelRandVolt10;
 extern Model* modelEnveloop;
 extern Model* modelCelesta;
+extern Model* modelCelei;
