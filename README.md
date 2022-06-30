@@ -12,6 +12,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
+|[Celesta](#Celesta)|3x8 step CV sequencer|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -57,6 +58,15 @@ A simple split module it returns the first ten channels of a polyphonic input.
 Optionally the returned channels can be set to `first 10` or `last 10` in the context menu.
 
 -----
+
+### Celesta
+Celesta is a unquantized note sequencer based on the [idea of Andre_M](https://community.vcvrack.com/t/ideas-for-any-interested-developers/17697?u=firolfo) in the VCV Community forum. Practically it's a module with three 8 step sequencers (A, B, C) with adjustable pattern length. However sequencer B advances to the next step only when A has finished. Similary sequencer C takes the next step only if B has completed its pattern.
+
+As an additional feature every step has a "precision" feature. Setting the switch to 
+- '0' "mr perfect": the note is always played as expected
+- '1' “missed notes”: occasionally plays another note from the same sequence
+- '2' “sticky fingers”: occasionally keeps playing the previous note
+On the left you find a “precision” knob to influence how often these anomalies happen.
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
