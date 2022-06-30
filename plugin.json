@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -292,6 +292,14 @@
       "slug": "Celesta",
       "name": "Celesta Sequencer",
       "description": "Celestial spheres sequencer as proposed by Andre_M on the VCV Community forum",
+      "tags": [
+        "Sequencer"
+      ]
+    },
+    {
+      "slug": "Celei",
+      "name": "Celei Sequencer",
+      "description": "Celei is a simple 8 step CV sequencer",
       "tags": [
         "Sequencer"
       ]
