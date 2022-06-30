@@ -12,7 +12,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
-|[Celesta](#Celesta)|3x8 step CV sequencer|
+|[Celesta](#Celesta)|three 8 step CV sequencers|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
