@@ -41,6 +41,7 @@ Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). Th
 
 ### ChSel8
 Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 8 in the context menu. It's only 2HP!
+
 2.1.6 update: if there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour. 
 
 -----
@@ -60,14 +61,16 @@ Optionally the returned channels can be set to `first 10` or `last 10` in the co
 -----
 
 ### Celesta
-Celesta is a unquantized note sequencer based on the [idea of Andre_M](https://community.vcvrack.com/t/ideas-for-any-interested-developers/17697?u=firolfo) in the VCV Community forum. Practically it's a module with three 8 step sequencers (A, B, C) with adjustable pattern length. However sequencer B advances to the next step only when A has finished. Similary sequencer C takes the next step only if B has completed its pattern.
+Celesta is a unquantized note sequencer based on [Andre_M's idea](https://community.vcvrack.com/t/ideas-for-any-interested-developers/17697?u=firolfo) in the VCV Community forum. Practically it's a module with three 8 step sequencers (A, B, C). Pattern length is adjustable. However sequencer B advances to the next step only when A has finished. Similary sequencer C takes the next step only if B has completed its pattern.
 
-As an additional feature every step has a "precision" feature. Setting the switch to 
-- '0' "mr perfect": the note is always played as expected
-- '1' “missed notes”: occasionally plays another note from the same sequence
-- '2' “sticky fingers”: occasionally keeps playing the previous note
+As an additional feature is that every step has a "precision" switch. Setting it to 
+- `0` "mr perfect": the note is always played as expected
+- `1` “missed notes”: occasionally plays another note from the same sequence
+- `2` “sticky fingers”: occasionally keeps playing the previous note
 
 On the left you find a “precision” knob to influence how often these anomalies happen.
+
+2.1.7 update: reset behaviour was reshaped.
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
