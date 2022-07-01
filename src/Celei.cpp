@@ -97,7 +97,7 @@ struct Celei : Module {
 		// let's see the reset signal
 		newReset=inputs[RESET_INPUT].getVoltage();
 		if (newReset>0.2f && oldReset<=0.2f) {
-			lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);
+			if (stepA>0) {lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);}
 			lights[SEQ_1_LED_LIGHT].setBrightness(10);
 			stepA=0; 
 			}
@@ -110,7 +110,7 @@ struct Celei : Module {
 		newClock=inputs[CLOCK_INPUT].getVoltage();
 		if (newClock>0.2f && oldClock<=0.2f) {			
 			// take the next step
-			lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);
+			if (stepA>0) {lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);}
 			stepA++; 
 			if (stepA>pSteps || stepA<1) {stepA=1;}
 			if (stepA==pTrg) {outputs[TRIGGER_STEP_OUTPUT].setVoltage(10);}
