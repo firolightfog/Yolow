@@ -13,6 +13,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
 |[Celesta](#Celesta)|three 8 step CV sequencers|
+|[Celei](#Celesta)|single 8 step CV sequencer|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -71,6 +72,9 @@ As an additional feature is that every step has a "precision" switch. Setting it
 On the left you find a “precision” knob to influence how often these anomalies happen.
 
 2.1.7 update: reset behaviour was reshaped.
+
+### Celei
+Celei is the smaller sister of Celesta. Basically it's a simple unquantized note sequencer upto 8 steps with OCT (octave) and RNG (range) settings. A unique feature that you can get a clock signal once a selected step is active. (Setting it to step #1 would return a common EOC signal.) An external TRANSP (transpose) input is also accepted. Special thanks to Andre_M for all the contribution!
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
