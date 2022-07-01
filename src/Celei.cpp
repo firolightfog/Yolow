@@ -37,10 +37,10 @@ struct Celei : Module {
 		configParam(SEQ_6_VOLTAGE_PARAM, 	0.0f, 1.0f, 0.0f, "Seq 6 voltage");
 		configParam(SEQ_7_VOLTAGE_PARAM, 	0.0f, 1.0f, 0.0f, "Seq 7 voltage");
 		configParam(SEQ_8_VOLTAGE_PARAM, 	0.0f, 1.0f, 0.0f, "Seq 8 voltage");
-		configParam(STEPS_PARAM, 	1, 8, 8, "Steps");
-		configParam(OCTAVE_PARAM, 	-5, 5, 0, "Octave");
-		configParam(RANGE_PARAM, 	1, 7, 1, "Range");
-		configParam(TRIGGER_STEP_PARAM, 	1, 8, 1, "Trigger step");
+		configParam(STEPS_PARAM, 			1.0f, 8.0f, 8.0f, "Steps");
+		configParam(OCTAVE_PARAM, 			-5.0f, 5.0f, 0.0f, "Octave");
+		configParam(RANGE_PARAM, 			1.0f, 7.0f, 1.0f, "Range");
+		configParam(TRIGGER_STEP_PARAM, 	1.0f, 8.0f, 1.0f, "Trigger step");
 		paramQuantities[STEPS_PARAM]->snapEnabled = true;
 		paramQuantities[OCTAVE_PARAM]->snapEnabled = true;
 		paramQuantities[RANGE_PARAM]->snapEnabled = true;
@@ -57,21 +57,22 @@ struct Celei : Module {
 // --------------------------------------------------
 
 	int loop=0;     // save some CPU in process()
-	int stepA=0;
-	float voltA=0.0f;
+	int stepA=0;	// position of current step (ie. 1-8)
+	float voltA=0.0f;	// calculated voltage output
 	
+	// for managing the RESET and CLOCK signals
 	float newReset=0.0f;
 	float oldReset=0.0f;
 	float newClock=0.0f;
 	float oldClock=0.0f;
 
+	// storing parameter positions occaisonly
+	float pSx[8]={0.0f};
 	float pSteps=0.0f;
 	float pOct=0.0f;
 	float pRng=0.0f;
 	float pTrg=0.0f;
-	bool iTrans=false;
-
-	float pSx[8]={0};
+	bool iTrans=false;	// any transpose cable available?
 
 	void process(const ProcessArgs& args) override {
 
@@ -97,7 +98,8 @@ struct Celei : Module {
 		newReset=inputs[RESET_INPUT].getVoltage();
 		if (newReset>0.2f && oldReset<=0.2f) {
 			lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);
-			stepA=-1; 
+			lights[SEQ_1_LED_LIGHT].setBrightness(10);
+			stepA=0; 
 			}
 		// else if (newReset>0.2 && oldReset>0.2) {}
 		// else if (newReset<=0.2 && oldReset>0.2) {}
