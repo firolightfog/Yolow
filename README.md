@@ -73,8 +73,22 @@ On the left you find a “precision” knob to influence how often these anomali
 
 2.1.7 update: reset behaviour was reshaped.
 
+Since 2.1.8 Keyboard shortcuts are available:
+- `i`: alternate values for all note knobs
+- `r`: random values for all note knobs
+
 ### Celei
 Celei is the smaller sister of Celesta. Basically it's a simple unquantized note sequencer upto 8 steps with OCT (octave) and RNG (range) settings. A unique feature that you can get a clock signal once a selected step is active. (Setting it to step #1 would return a common EOC signal.) An external TRANSP (transpose) input is also accepted. Special thanks to Andre_M for all the contribution!
+
+Since 2.1.8 Keyboard shortcuts are available:
+- `1-8`: alternate value for the selected note knob
+- `i`: alternate values for all note knobs
+- `r`: random values for all note knobs
+- `u`: move knob values upwards
+- `d`: move knob values downwards
+- `g`/`v`: change between 'gate mode' and 'voltage mode'
+
+<img width="664" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
