@@ -54,6 +54,70 @@ struct Celei : Module {
 		configOutput(TRIGGER_STEP_OUTPUT, "Trigger step"); 
 	}
 
+// pressing a number provides a variation for that specific knob
+void keyKnob(int knobRef) {
+	params[SEQ_1_VOLTAGE_PARAM+knobRef].setValue(abs(1-params[SEQ_1_VOLTAGE_PARAM+knobRef].getValue()));
+}
+
+// pressing i provides a variation of the same tune
+void invKnob() {
+	for (int k=0;k<8;k++) {
+		params[SEQ_1_VOLTAGE_PARAM+k].setValue(abs(1-params[SEQ_1_VOLTAGE_PARAM+k].getValue()));
+	}
+}
+
+// pressing r randomizes the note knobs only
+void rndKnob() {
+		
+	params[STEPS_PARAM].setValue(rand() % 7 + 2);	// random steps between 2-8
+	for (int k=0;k<8;k++) {
+		params[SEQ_1_VOLTAGE_PARAM+k].setValue(rack::random::uniform());
+	}
+	
+	// https://github.com/Ahornberg/Ahornberg-VCV-Modules/blob/master/src/modules/FlyingFader/FlyingFaderWidget.cpp
+	// Push ParamChange history action
+	// history::ComplexAction* complexAction = new history::ComplexAction;
+	// complexAction->name = "randomize knobs";
+	// history::ParamChange* oldKnobValue = new history::ParamChange;
+	// oldKnobValue->name = "randomize knobs";
+	// oldKnobValue->moduleId = paramQuantity->module->id;
+	// oldKnobValue->paramId = Celei::STEPS_PARAM;
+	// oldKnobValue->oldValue = pSteps;
+	// oldKnobValue->newValue = params[STEPS_PARAM].getValue();
+	// complexAction->push(oldKnobValue);
+	// APP->history->push(complexAction);
+
+}
+
+// pressing u moves knobvalues upwards
+void supKnob() {
+	float tempVal=params[SEQ_1_VOLTAGE_PARAM].getValue();
+	params[SEQ_1_VOLTAGE_PARAM].setValue(params[SEQ_2_VOLTAGE_PARAM].getValue());
+	params[SEQ_2_VOLTAGE_PARAM].setValue(params[SEQ_3_VOLTAGE_PARAM].getValue());
+	params[SEQ_3_VOLTAGE_PARAM].setValue(params[SEQ_4_VOLTAGE_PARAM].getValue());
+	params[SEQ_4_VOLTAGE_PARAM].setValue(params[SEQ_5_VOLTAGE_PARAM].getValue());
+	params[SEQ_5_VOLTAGE_PARAM].setValue(params[SEQ_6_VOLTAGE_PARAM].getValue());
+	params[SEQ_6_VOLTAGE_PARAM].setValue(params[SEQ_7_VOLTAGE_PARAM].getValue());
+	params[SEQ_7_VOLTAGE_PARAM].setValue(params[SEQ_8_VOLTAGE_PARAM].getValue());
+	params[SEQ_8_VOLTAGE_PARAM].setValue(tempVal);
+}
+
+// pressing d moves knobvalues downwards
+void sdnKnob() {
+	float tempVal=params[SEQ_8_VOLTAGE_PARAM].getValue();
+	params[SEQ_8_VOLTAGE_PARAM].setValue(params[SEQ_7_VOLTAGE_PARAM].getValue());
+	params[SEQ_7_VOLTAGE_PARAM].setValue(params[SEQ_6_VOLTAGE_PARAM].getValue());
+	params[SEQ_6_VOLTAGE_PARAM].setValue(params[SEQ_5_VOLTAGE_PARAM].getValue());
+	params[SEQ_5_VOLTAGE_PARAM].setValue(params[SEQ_4_VOLTAGE_PARAM].getValue());
+	params[SEQ_4_VOLTAGE_PARAM].setValue(params[SEQ_3_VOLTAGE_PARAM].getValue());
+	params[SEQ_3_VOLTAGE_PARAM].setValue(params[SEQ_2_VOLTAGE_PARAM].getValue());
+	params[SEQ_2_VOLTAGE_PARAM].setValue(params[SEQ_1_VOLTAGE_PARAM].getValue());
+	params[SEQ_1_VOLTAGE_PARAM].setValue(tempVal);
+}
+
+// pressing f allows freezing the nore for a step (not very useful imo)
+int freezCv=0;
+
 // --------------------------------------------------
 
 	int loop=0;     // save some CPU in process()
@@ -73,6 +137,9 @@ struct Celei : Module {
 	float pRng=0.0f;
 	float pTrg=0.0f;
 	bool iTrans=false;	// any transpose cable available?
+	
+	// hidden trick: if true it sends a clock pulse instead of a constant CV
+	bool modeClock=false;
 
 	void process(const ProcessArgs& args) override {
 
@@ -109,24 +176,34 @@ struct Celei : Module {
 		// let's see the clock signal
 		newClock=inputs[CLOCK_INPUT].getVoltage();
 		if (newClock>0.2f && oldClock<=0.2f) {			
+
 			// take the next step
 			if (stepA>0) {lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);}
 			stepA++; 
 			if (stepA>pSteps || stepA<1) {stepA=1;}
 			if (stepA==pTrg) {outputs[TRIGGER_STEP_OUTPUT].setVoltage(10);}
 			lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(10);
+			
 		}
 		// else if (newClock>0.2 && oldClock>0.2) {}
 		// else if (newClock<=0.2 && oldClock<=0.2) {}
-		else if (newClock<=0.2 && oldClock>0.2) {outputs[TRIGGER_STEP_OUTPUT].setVoltage(0);}
+		else if (newClock<=0.2 && oldClock>0.2) {
+			outputs[TRIGGER_STEP_OUTPUT].setVoltage(0);
+			if (modeClock==true) {voltA=0;}
+			if (freezCv>=0) {freezCv--;}
+			}
 		oldClock=newClock;
 
-		// voltA=params[SEQ_1_VOLTAGE_PARAM-1+stepA].getValue();
-		voltA=pSx[stepA-1];
-		voltA=voltA*pRng+pOct;
-		if (iTrans) {
-			voltA=voltA+remainder(inputs[TRANSPOSE_INPUT].getVoltage(), 10.0f);
-		};	
+		// let's calculate the output voltage
+		if (modeClock==true && oldClock<=0.2) {voltA=0;}
+		else if (freezCv>=0) {/* do nothing; keep the last note */}
+		else {
+			voltA=pSx[stepA-1];
+			voltA=voltA*pRng+pOct;
+			if (iTrans==true) {
+				voltA=voltA+remainder(inputs[TRANSPOSE_INPUT].getVoltage(), 10.0f);
+			}
+		}
 		outputs[MONO_OUTPUT].setVoltage(voltA);
 
 	}
@@ -183,6 +260,25 @@ struct CeleiWidget : ModuleWidget {
 		childOutput(Celei::TRIGGER_STEP_OUTPUT, HP*1.5, HP*18);
 		childInput(Celei::CLOCK_INPUT, HP*1.5, HP*20.5);
 		childInput(Celei::RESET_INPUT, HP*1.5, HP*23);
+	}
+
+	// shortkey
+	void onHoverKey(const event::HoverKey &e) override {
+		if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_8) {
+			if (e.action == GLFW_PRESS) {
+				float key_number = e.key - 49; // 49 is the ascii number for key #1
+				module->keyKnob(key_number);
+				e.consume(this);
+			}
+		}
+		else if(e.key == GLFW_KEY_C && e.action == GLFW_PRESS) {module->modeClock=true; e.consume(this);}
+		else if(e.key == GLFW_KEY_V && e.action == GLFW_PRESS) {module->modeClock=false; e.consume(this);}
+		else if(e.key == GLFW_KEY_R && e.action == GLFW_PRESS) {module->rndKnob(); e.consume(this);}
+		else if(e.key == GLFW_KEY_I && e.action == GLFW_PRESS) {module->invKnob(); e.consume(this);}
+		else if(e.key == GLFW_KEY_U && e.action == GLFW_PRESS) {module->supKnob(); e.consume(this);}
+		else if(e.key == GLFW_KEY_D && e.action == GLFW_PRESS) {module->sdnKnob(); e.consume(this);}
+		else if(e.key == GLFW_KEY_F && e.action == GLFW_PRESS) {module->freezCv=2; e.consume(this);}
+		ModuleWidget::onHoverKey(e);
 	}
 
 };
