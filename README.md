@@ -14,6 +14,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
 |[Celesta](#Celesta)|three 8 step CV sequencers|
 |[Celei](#Celesta)|single 8 step CV sequencer|
+|[PushMeSeq](#PushMeSeq)|variable trigger sequencer|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -89,6 +90,21 @@ Since 2.1.8 Keyboard shortcuts are available:
 - `c`/`v`: change between 'clock mode' and 'voltage mode'
 
 <img width="664" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
+
+### PushMeSeq
+It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
+
+- `0`: 1x48 (monophonic output)
+- `1`: 3x16 (3-channel polyphonic output)
+- `2`: 6x8 (6-channel polyphonic output)
+- `3`: 2x16 + 2x8 (4-channel polyphonic output)
+- `4`: pick randomly from 48 steps (monophonic output)
+
+Keyboard shortcuts are available:
+- `1-6`: randomizes a certain zone
+- `i`: alternate values for all note knobs
+
+<img width="165" alt="image" src="https://user-images.githubusercontent.com/34127628/177526005-065206b6-0f1b-4fd3-b838-70b94be00217.png">
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
