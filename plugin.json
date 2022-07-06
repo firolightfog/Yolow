@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.7c",
+  "version": "2.1.7d",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -300,6 +300,14 @@
       "slug": "Celei",
       "name": "Celei Sequencer",
       "description": "Celei is a simple 8 step CV sequencer",
+      "tags": [
+        "Sequencer"
+      ]
+    },
+    {
+      "slug": "PushmeSeq",
+      "name": "PushMeSeq Trigger Sequencer",
+      "description": "Variable trigger sequencer in  4HP",
       "tags": [
         "Sequencer"
       ]
