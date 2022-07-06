@@ -32,6 +32,7 @@ void init(Plugin* p) {
 	p->addModel(modelEnveloop);
 	p->addModel(modelCelesta);
 	p->addModel(modelCelei);
+	p->addModel(modelPushmeSeq);
 
 	// Any other plugin initialization may go here.
 	// As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
