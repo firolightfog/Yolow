@@ -100,7 +100,7 @@ It is a variable trigger sequencer. It expects monophonic clock and reset input.
 - `3`: 3x16 steps (with 3-channel polyphonic output)
 - `4`: 2x16 + 2x8 steps (with 4-channel polyphonic output)
 - `5`: 1x16 + 4x8 steps (with 5-channel polyphonic output)
-- `6`: 1x8+1x8 steps (with 6-channel polyphonic output)
+- `6`: 5x8+1x8 steps (with 6-channel polyphonic output)
 
 Keyboard shortcuts are available:
 - `1-6`: randomizes a certain zone
