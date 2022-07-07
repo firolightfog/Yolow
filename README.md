@@ -104,7 +104,7 @@ It is a variable trigger sequencer. It expects monophonic clock and reset input.
 
 Keyboard shortcuts are available:
 - `1-6`: randomizes a certain zone
-- `i`: alternate values for all note knobs
+- `i`: invert all buttons values
 
 ![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
