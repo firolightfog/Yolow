@@ -94,17 +94,19 @@ Since 2.1.8 Keyboard shortcuts are available:
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
 
-- `0`: 1x48 (monophonic output)
-- `1`: 3x16 (3-channel polyphonic output)
-- `2`: 6x8 (6-channel polyphonic output)
-- `3`: 2x16 + 2x8 (4-channel polyphonic output)
-- `4`: pick randomly from 48 steps (monophonic output)
+- `0`: pick randomly from 48 steps (monophonic output)
+- `1`: 1x48 steps (with monophonic output)
+- `2`: 1x32 + 1x16 steps (with 2-channel polyphonic output)
+- `3`: 3x16 steps (with 3-channel polyphonic output)
+- `4`: 2x16 + 2x8 steps (with 4-channel polyphonic output)
+- `5`: 1x16 + 4x8 steps (with 5-channel polyphonic output)
+- `6`: 6x8 steps (with 6-channel polyphonic output)
 
 Keyboard shortcuts are available:
 - `1-6`: randomizes a certain zone
 - `i`: alternate values for all note knobs
 
-<img width="165" alt="image" src="https://user-images.githubusercontent.com/34127628/177526005-065206b6-0f1b-4fd3-b838-70b94be00217.png">
+![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
