@@ -89,7 +89,7 @@ Since 2.1.8 Keyboard shortcuts are available:
 - `d`: move knob values downwards
 - `c`/`v`: change between 'clock mode' and 'voltage mode'
 
-<img width="664" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
 
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
