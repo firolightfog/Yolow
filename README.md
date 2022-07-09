@@ -14,6 +14,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
 |[Celesta](#Celesta)|three 8 step CV sequencers|
 |[Celei](#Celesta)|single 8 step CV sequencer|
+|[Sequin](#Sequin)|Queen of Sequencers|
 |[PushMeSeq](#PushMeSeq)|variable trigger sequencer|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
@@ -21,6 +22,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
+|[NearMess](#NearMess)|An almost passive VCA and mixer|
 |[TrigPrec1](#TrigPrec1)|Trigger sequence randomizer|
 |[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
@@ -91,6 +93,9 @@ Since 2.1.8 Keyboard shortcuts are available:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
 
+### Sequin
+Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. It delivers a CV sequence according to a clock but the pulse width (PW), notes can be modified by external LFOs. You can also enable or disable any clock pulse by an external CV (ENBL) or set the probability (PRB) for instant excitement.  
+
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
 
@@ -145,6 +150,9 @@ Some keyboard shortcuts are enabled and the context menu offers
 - Poly channels: limiting polyphonic output from 1 to 16 channels if needed
 
 The 'poly channels' setting doesn't influence the sequence created by the JUMP input. But it does influence the number of steps available with the STEP input.
+
+### NearMess
+It is a very simple mixer that will combine two monophonic inputs (A and B) according to fixed ratios. This module is a tribute to my Takab [Nearness](https://www.modulargrid.net/e/takaab-nearness) Eurorack module that I dearly loved for it's simplicity and practicality.  
 
 -----
 
