@@ -154,6 +154,8 @@ The 'poly channels' setting doesn't influence the sequence created by the JUMP i
 ### NearMess
 It is a very simple mixer that will combine two monophonic inputs (A and B) according to fixed ratios. This module is a tribute to my Takab [Nearness](https://www.modulargrid.net/e/takaab-nearness) Eurorack module that I dearly loved for it's simplicity and practicality.  
 
+<img width="363" alt="image" src="https://user-images.githubusercontent.com/34127628/178104155-491bdf4e-58f1-40fb-af54-ab3bfbafdba2.png">
+
 -----
 
 ### TrigPrec1
