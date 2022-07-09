@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.7d",
+  "version": "2.1.8",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -310,6 +310,14 @@
       "description": "Variable trigger sequencer in  4HP",
       "tags": [
         "Sequencer"
+      ]
+    },
+{
+      "slug": "NearMess",
+      "name": "NearMess Mixer",
+      "description": "An almost passive mixer",
+      "tags": [
+        "Mixer", "VCA"
       ]
     },
     {
