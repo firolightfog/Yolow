@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -24,13 +24,6 @@
         "pc",
         "ten"
       ],
-      "keywords": [
-        "merge",
-		"poly",
-		"copy",
-		"pc",
-		"ten"
-		],
 	  "tags": [
         "Polyphonic",
         "Utility"
@@ -58,10 +51,6 @@
       "name": "tXOr Pattern Generator",
       "description": "A simple exclusive disjunction you need. Three knobs acting as clock division and the internal calculation send only excludive pulses to the output.",
       "keywords": [
-        "xor",
-		"tXOr"
-      ],
-      "keywords": [
         "tXOr",
 		"XOR",
 		"trigger",
@@ -78,7 +67,7 @@
       "description": "Quad manual module to provide fix voltages",
       "keywords": [
         "fix",
-		"MKnob",
+		"mKnob",
         "voltage"
       ],
       "tags": [
@@ -109,6 +98,7 @@
       "description": "Four knobs define which of the five inputs is forwarded as a monophonic signal.",
       "keywords": [
         "SeqP5",
+		"seqp5",
 		"selector"
 		],
       "tags": [
@@ -282,6 +272,13 @@
       "slug": "Enveloop",
       "name": "Enveloop",
       "description": "Envelope generator with VCA",
+      "keywords": [
+        "ADR",
+		"envelope",
+		"attack",
+		"decay",
+        "release"
+      ],
       "tags": [
         "Envelope generator",
         "VCA",
@@ -292,6 +289,13 @@
       "slug": "Celesta",
       "name": "Celesta Sequencer",
       "description": "Celestial spheres sequencer as proposed by Andre_M on the VCV Community forum",
+      "keywords": [
+        "EOC",
+		"random",
+		"CV",
+		"nested",
+        "layered"
+      ],
       "tags": [
         "Sequencer"
       ]
@@ -300,6 +304,13 @@
       "slug": "Celei",
       "name": "Celei Sequencer",
       "description": "Celei is a simple 8 step CV sequencer",
+      "keywords": [
+        "EOC",
+		"random",
+		"CV",
+		"nested",
+        "layered"
+      ],
       "tags": [
         "Sequencer"
       ]
@@ -308,11 +319,15 @@
       "slug": "PushmeSeq",
       "name": "PushMeSeq Trigger Sequencer",
       "description": "Variable trigger sequencer in  4HP",
+      "keywords": [
+        "trigger",
+		"drum sequencer"
+      ],
       "tags": [
         "Sequencer"
       ]
     },
-{
+    {
       "slug": "NearMess",
       "name": "NearMess Mixer",
       "description": "An almost passive mixer",
@@ -320,6 +335,14 @@
         "Mixer", "VCA"
       ]
     },
+    {
+      "slug": "Sequin",
+      "name": "Sequin",
+      "description": "Queen of Sequencers",
+      "tags": [
+        "Sample and hold", "Sequencer"
+      ]
+    }, 
     {
       "slug": "ChSel2",
       "name": "Channel Selector 2",
