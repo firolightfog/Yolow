@@ -96,6 +96,16 @@ Since 2.1.8 Keyboard shortcuts are available:
 ### Sequin
 Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. It delivers a CV sequence according to a clock but the pulse width (PW), notes can be modified by external LFOs. You can also enable or disable any clock pulse by an external CV (ENBL) or set the probability (PRB) for instant excitement.  
 
+<img width="736" alt="image" src="https://user-images.githubusercontent.com/34127628/178427481-bc32b7a7-b5de-41bc-845c-4e7e6c22b7fb.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178427526-c4b0a55a-09ae-4452-90e1-8baa10a67ff5.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178427580-93929a80-1dbd-4be7-b3ec-12e1b89990e7.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178428799-2d8b313c-cc95-4329-a937-dd83713b903d.png">
+
+<img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
+
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
 
