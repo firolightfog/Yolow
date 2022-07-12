@@ -94,7 +94,7 @@ Since 2.1.8 Keyboard shortcuts are available:
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
 
 ### Sequin
-Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. It delivers a CV sequence according to a clock but the pulse width (PW), notes can be modified by external LFOs. You can also enable or disable any clock pulse by an external CV (ENBL) or set the probability (PRB) for instant excitement.  
+Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. It delivers a CV sequence according to a clock but the pulse width (PW), notes can be modified by external LFOs. You can also enable or disable any clock pulse by an external CV (ENBL) or set the probability (PRB) for instant excitement. A basic quantization function is available in the context menu.
 
 <img width="736" alt="image" src="https://user-images.githubusercontent.com/34127628/178427481-bc32b7a7-b5de-41bc-845c-4e7e6c22b7fb.png">
 
@@ -114,10 +114,10 @@ It is a variable trigger sequencer. It expects monophonic clock and reset input.
 - `2`: 1x32 + 1x16 steps (with 2-channel polyphonic output)
 - `3`: 3x16 steps (with 3-channel polyphonic output)
 - `4`: 2x16 + 2x8 steps (with 4-channel polyphonic output)
-- `5`: 1x16 + 4x8 steps (with 5-channel polyphonic output)
-- `6`: 5x8+1x8 steps (with 6-channel polyphonic output)
+- `5`: 1x16 + 3x8 + 1x8 steps (with 5-channel polyphonic output)
+- `6`: 5x8 + 1x8 steps (with 6-channel polyphonic output)
 
-Keyboard shortcuts are available:
+Modes `5` and `6` provides random gates in the last track. Keyboard shortcuts are also available:
 - `1-6`: randomizes a certain zone
 - `i`: inverts all buttons values
 
@@ -169,13 +169,13 @@ It is a very simple mixer that will combine two monophonic inputs (A and B) acco
 -----
 
 ### TrigPrec1
-It's a simple trigger precision ruiner. Probability can be set by a knob or CV input. Probability allows to skip triggers from the input sequence (see IN socket) and/or add a few trigger from the clock (see CLK socket on the top). 
+It's a simple trigger precision ruiner. Probability can be set by a knob or CV input. Probability allows to skip triggers from the input sequence (see IN socket) and/or to add a few triggers from the clock (see CLK socket on the top). 
 
 ### TrigPrec2
-It's a dual trigger precision ruiner. Each knob define the probability to skip triggers from the input sequence (see socket under the knob) and/or add a few trigger from the clock (see CLK on the top). The module follows the concept discussed [here](https://github.com/clone45/voxglitch/issues/74). 
+It's a dual trigger precision ruiner. Each knob define the probability to skip triggers from the input sequence (see socket under the knob) and/or to add a few triggers from the clock (see CLK on the top). The module follows the concept discussed [here](https://github.com/clone45/voxglitch/issues/74). 
 
 ### TrigPrec6
-It's the bigger brother of TrigPrec6 with six inputs and outputs. Each knob define the probability to skip triggers from the input sequence (see socket left from the knob) and/or add a few trigger from the clock (see CLK on the top). 
+It's the bigger brother of TrigPrec2 with six inputs and outputs. Each knob defines the probability to skip triggers from the input sequence (see socket left from the knob) and/or to add a few triggers from the clock (see CLK on the top). 
 
 -----
 
