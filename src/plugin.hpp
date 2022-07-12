@@ -35,3 +35,4 @@ extern Model* modelCelesta;
 extern Model* modelCelei;
 extern Model* modelPushmeSeq;
 extern Model* modelNearMess;
+extern Model* modelSequin;

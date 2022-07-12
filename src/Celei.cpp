@@ -61,32 +61,33 @@ void keyKnob(int knobRef) {
 
 // pressing i provides a variation of the same tune
 void invKnob() {
-	for (int k=0;k<8;k++) {
-		params[SEQ_1_VOLTAGE_PARAM+k].setValue(abs(1-params[SEQ_1_VOLTAGE_PARAM+k].getValue()));
-	}
+	float nSx[8]={0.0f};
+	for (int k=0;k<8;k++) {nSx[k]=abs(1-params[SEQ_1_VOLTAGE_PARAM+k].getValue());}
+	for (int k=0;k<8;k++) {params[SEQ_1_VOLTAGE_PARAM+k].setValue(nSx[k]);}
 }
+
 
 // pressing r randomizes the note knobs only
 void rndKnob() {
-		
+	float nSx[8]={0.0f};
+	for (int k=0;k<8;k++) {nSx[k]=rack::random::uniform();}
+	for (int k=0;k<8;k++) {params[SEQ_1_VOLTAGE_PARAM+k].setValue(nSx[k]);}
 	params[STEPS_PARAM].setValue(rand() % 7 + 2);	// random steps between 2-8
-	for (int k=0;k<8;k++) {
-		params[SEQ_1_VOLTAGE_PARAM+k].setValue(rack::random::uniform());
-	}
-	
+/*
 	// https://github.com/Ahornberg/Ahornberg-VCV-Modules/blob/master/src/modules/FlyingFader/FlyingFaderWidget.cpp
 	// Push ParamChange history action
-	// history::ComplexAction* complexAction = new history::ComplexAction;
-	// complexAction->name = "randomize knobs";
-	// history::ParamChange* oldKnobValue = new history::ParamChange;
-	// oldKnobValue->name = "randomize knobs";
-	// oldKnobValue->moduleId = paramQuantity->module->id;
-	// oldKnobValue->paramId = Celei::STEPS_PARAM;
-	// oldKnobValue->oldValue = pSteps;
-	// oldKnobValue->newValue = params[STEPS_PARAM].getValue();
-	// complexAction->push(oldKnobValue);
-	// APP->history->push(complexAction);
-
+	ParamQuantity* paramQuantity = getParamQuantity();
+	history::ComplexAction* complexAction = new history::ComplexAction;
+	complexAction->name = "randomize knobs";
+	history::ParamChange* oldKnobValue = new history::ParamChange;
+	oldKnobValue->name = "randomize knobs";
+	oldKnobValue->moduleId = paramQuantity->module->id;
+	oldKnobValue->paramId = Celei::STEPS_PARAM;
+	oldKnobValue->oldValue = pSteps;
+	oldKnobValue->newValue = params[STEPS_PARAM].getValue();
+	complexAction->push(oldKnobValue);
+	APP->history->push(complexAction);
+*/
 }
 
 // pressing u moves knobvalues upwards

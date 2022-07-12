@@ -40,10 +40,10 @@ struct ChSel2 : Module {
 	ChSel2() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configInput(POLYIN_INPUT, "Polyphonic");
-		configParam(SLIDER1_PARAM, 1.f, 16.f, 0.f, "Pick channel A");
-		configParam(SLIDER2_PARAM, 1.f, 16.f, 0.f, "Pick channel B");
-		paramQuantities[SLIDER1_PARAM]->snapEnabled = true;
-		paramQuantities[SLIDER2_PARAM]->snapEnabled = true;
+		configParam(SLIDER1_PARAM, 1.f, 16.f, 1.f, "Pick channel A");
+		configParam(SLIDER2_PARAM, 1.f, 16.f, 1.f, "Pick channel B");
+		paramQuantities[SLIDER1_PARAM]->snapEnabled = false;
+		paramQuantities[SLIDER2_PARAM]->snapEnabled = false;
 		
 		configInput(CV2_INPUT, "Modify B slider");
 		configOutput(OUT1_OUTPUT, "A channel");
@@ -51,26 +51,51 @@ struct ChSel2 : Module {
 		configOutput(DEBUG_OUTPUT, "DEBUG");
 	}
 
-	float voltA=0;
-	float voltB=0;
-	int loopKnobs=0;	// CPU saviour for knob changes
+	float voltA=0.0f;
+	float voltB=0.0f;
+	int loopKnobs=1;	// CPU saviour for knob changes
 	// int polyChannels=1;
-
+	int chanA=0;
+	int chanB=0;
+	
     // the main routine
 	void process(const ProcessArgs& args) override {
 	
+		// let's save some CPU
 		if (loopKnobs--==0) {
-			loopKnobs=500;
+			loopKnobs=900;
+			
+			// if the slider modifier CV is in then move the second slider
 			if (inputs[CV2_INPUT].isConnected()) {
-					// polyChannels=inputs[POLYIN_INPUT].channels;
-					// params[SLIDER2_PARAM].setValue(1+abs(floor((inputs[CV2_INPUT].getVoltage())/10*polyChannels)));
 					params[SLIDER2_PARAM].setValue(1+abs(floor((inputs[CV2_INPUT].getVoltage())/10*16)));
 					}
-				voltA=inputs[POLYIN_INPUT].getVoltage((int)params[SLIDER1_PARAM].getValue()-1);
-				voltB=inputs[POLYIN_INPUT].getVoltage((int)params[SLIDER2_PARAM].getValue()-1);
+			
+			// if the poly input is in then get the channel numbers from the sliders
+			if (inputs[POLYIN_INPUT].isConnected()) {
+				paramQuantities[SLIDER1_PARAM]->snapEnabled = true;
+				paramQuantities[SLIDER2_PARAM]->snapEnabled = true;
+				chanA=(int)params[SLIDER1_PARAM].getValue()-1;
+				chanB=(int)params[SLIDER2_PARAM].getValue()-1;
+			} 
+
+			// if the poly input is missing then calculate a fix voltage instead			
+			else {
+				paramQuantities[SLIDER1_PARAM]->snapEnabled = false;
+				paramQuantities[SLIDER2_PARAM]->snapEnabled = false;				
+				voltA=(params[SLIDER1_PARAM].getValue()-1)/15*20-10;
+				voltB=(params[SLIDER2_PARAM].getValue()-1)/15*20-10;				
+			}
 		}
-			outputs[OUT1_OUTPUT].setVoltage(voltA);
-			outputs[OUT2_OUTPUT].setVoltage(voltB);
+		
+		// if the poly input is connected then pick the voltage of the right channel
+		if (inputs[POLYIN_INPUT].isConnected()) {
+			voltA=inputs[POLYIN_INPUT].getVoltage(chanA);
+			voltB=inputs[POLYIN_INPUT].getVoltage(chanB);
+		}
+		
+		// forward the pre-calculated voltage
+		outputs[OUT1_OUTPUT].setVoltage(voltA);
+		outputs[OUT2_OUTPUT].setVoltage(voltB);
 	}
 };
 

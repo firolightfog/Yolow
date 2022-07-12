@@ -1,0 +1,217 @@
+/* README.md
+
+### _9lives
+
+This module is ...
+
+##### BUTTON:
+##### INPUTS:
+##### KNOBS:
+##### OUTPUTS:
+- `POLYOUT` outputs ±5 volts.
+##### RIGHT-CLICK MENU:
+##### SHORTCUTS:
+*/
+
+#include "plugin.hpp"
+
+
+struct _9lives : Module {
+	enum ParamId {
+		SLIDE1A_PARAM,
+		SLIDE1B_PARAM,
+		SLIDE1C_PARAM,
+		SLIDE2A_PARAM,
+		SLIDE2B_PARAM,
+		SLIDE2C_PARAM,
+		SLIDE3A_PARAM,
+		SLIDE3B_PARAM,
+		SLIDE3C_PARAM,
+		STEP1_PARAM,
+		SLIDE4A_PARAM,
+		SLIDE4B_PARAM,
+		SLIDE4C_PARAM,
+		SLIDE5A_PARAM,
+		SLIDE5B_PARAM,
+		SLIDE5C_PARAM,
+		SLIDE6A_PARAM,
+		SLIDE6B_PARAM,
+		SLIDE6C_PARAM,
+		SLIDE7A_PARAM,
+		SLIDE7B_PARAM,
+		SLIDE7C_PARAM,
+		SLIDE8A_PARAM,
+		SLIDE8B_PARAM,
+		SLIDE8C_PARAM,
+		SLIDE9A_PARAM,
+		SLIDE9B_PARAM,
+		SLIDE9C_PARAM,
+		STEP2_PARAM,
+		PARAMS_LEN
+	};
+	enum InputId {
+		CLK_INPUT,
+		JUMP_INPUT,
+		INPUTS_LEN
+	};
+	enum OutputId {
+		OUT3_OUTPUT,
+		OUT4_OUTPUT,
+		OUT5_OUTPUT,
+		OUTTHROUGH_OUTPUT,
+		OUT2_OUTPUT,
+		OUT1_OUTPUT,
+        DEBUG_OUTPUT,
+		OUTPUTS_LEN
+	};
+	enum LightId {
+		BL1_LIGHT,
+		BL2_LIGHT,
+		BL3_LIGHT,
+		BL4_LIGHT,
+		BL5_LIGHT,
+		BL6_LIGHT,
+		BL7_LIGHT,
+		BL8_LIGHT,
+		BL9_LIGHT,
+		LIGHTS_LEN
+	};
+
+	_9lives() {
+		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
+		configParam(SLIDE1A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE1B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE1C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE2A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE2B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE2C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE3A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE3B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE3C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(STEP1_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE4A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE4B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE4C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE5A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE5B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE5C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE6A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE6B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE6C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE7A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE7B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE7C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE8A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE8B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE8C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE9A_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE9B_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(SLIDE9C_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(STEP2_PARAM, 0.f, 1.f, 0.f, "");
+		configInput(CLK_INPUT, "");
+		configInput(JUMP_INPUT, "");
+		configOutput(OUT3_OUTPUT, "");
+		configOutput(OUT4_OUTPUT, "");
+		configOutput(OUT5_OUTPUT, "");
+		configOutput(OUTTHROUGH_OUTPUT, "");
+		configOutput(OUT2_OUTPUT, "");
+		configOutput(OUT1_OUTPUT, "");
+        configOutput(DEBUG_OUTPUT, "DEBUG");
+	}
+
+    // the main routine
+	void process(const ProcessArgs& args) override {
+	}
+};
+
+
+struct _9livesWidget : ModuleWidget {
+
+    _9lives* module;
+
+	_9livesWidget(_9lives* module) {
+        this->module = module;
+		setModule(module);
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/9lives.svg")));
+
+		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
+		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(7.62, 49.289)), 	 module, _9lives::SLIDE1A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12.7, 49.289)), 	 module, _9lives::SLIDE1B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(17.78, 49.289)), 	 module, _9lives::SLIDE1C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(25.4, 49.289)), 	 module, _9lives::SLIDE2A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(30.48, 49.289)), 	 module, _9lives::SLIDE2B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(35.56, 49.289)), 	 module, _9lives::SLIDE2C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(43.18, 49.289)), 	 module, _9lives::SLIDE3A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(48.26, 49.289)), 	 module, _9lives::SLIDE3B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(53.34, 49.289)), 	 module, _9lives::SLIDE3C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(66.04, 69.609)), 	 module, _9lives::STEP1_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(7.62, 77.229)), 	 module, _9lives::SLIDE4A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12.7, 77.229)), 	 module, _9lives::SLIDE4B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(17.78, 77.229)), 	 module, _9lives::SLIDE4C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(25.4, 77.229)), 	 module, _9lives::SLIDE5A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(30.48, 77.229)), 	 module, _9lives::SLIDE5B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(35.56, 77.229)), 	 module, _9lives::SLIDE5C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(43.18, 77.229)), 	 module, _9lives::SLIDE6A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(48.26, 77.229)), 	 module, _9lives::SLIDE6B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(53.34, 77.229)), 	 module, _9lives::SLIDE6C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(7.62, 105.169)), 	 module, _9lives::SLIDE7A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12.7, 105.169)), 	 module, _9lives::SLIDE7B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(17.78, 105.169)), 	 module, _9lives::SLIDE7C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(25.4, 105.169)), 	 module, _9lives::SLIDE8A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(30.48, 105.169)), 	 module, _9lives::SLIDE8B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(35.56, 105.169)), 	 module, _9lives::SLIDE8C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(43.18, 105.169)), 	 module, _9lives::SLIDE9A_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(48.26, 105.169)), 	 module, _9lives::SLIDE9B_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(53.34, 105.169)), 	 module, _9lives::SLIDE9C_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(66.04, 114.3)), 	 module, _9lives::STEP2_PARAM));
+
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(66.04, 29.264)), 	 module, _9lives::CLK_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(66.04, 83.434)), 	 module, _9lives::JUMP_INPUT));
+
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(27.94, 12.7)), 	 module, _9lives::OUT3_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(38.312, 12.7)), 	 module, _9lives::OUT4_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(48.472, 12.7)), 	 module, _9lives::OUT5_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(66.04, 12.7)), 	 module, _9lives::OUTTHROUGH_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(66.04, 54.032)), 	 module, _9lives::OUT2_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(66.04, 97.549)), 	 module, _9lives::OUT1_OUTPUT));
+
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(10.16, 30.48)), 	 module, _9lives::BL1_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(15.24, 30.48)), 	 module, _9lives::BL2_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(20.32, 30.48)), 	 module, _9lives::BL3_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(25.4, 30.48)), 	 module, _9lives::BL4_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(30.48, 30.48)), 	 module, _9lives::BL5_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(35.56, 30.48)), 	 module, _9lives::BL6_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(40.64, 30.48)), 	 module, _9lives::BL7_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(45.72, 30.48)), 	 module, _9lives::BL8_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(50.8, 30.48)), 	 module, _9lives::BL9_LIGHT));
+
+        // addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 128.5-5.08)), 	 module, _9lives::DEBUG_OUTPUT));
+	}
+
+    // void appendContextMenu(Menu* menu) override {
+    // _9lives* module = dynamic_cast<_9lives*>(this->module);
+    // assert(module);
+    // menu->addChild(new MenuSeparator);
+    // menu->addChild(createMenuLabel("l: Toggle link button"));
+    // menu->addChild(createMenuLabel("1-9: Set top precision between 10%-90%"));
+    // }
+
+	// void onHoverKey(const event::HoverKey &e) override {
+		// if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_4) {
+			// if (e.action == GLFW_PRESS) {
+				// float key_number = e.key - 49; // 49 is the ascii number for key #1
+				// module->contextRnd(key_number);
+				// e.consume(this);
+			// }
+		// }
+	// ModuleWidget::onHoverKey(e);
+	// }
+
+};
+
+
+Model* model_9lives = createModel<_9lives, _9livesWidget>("9lives");

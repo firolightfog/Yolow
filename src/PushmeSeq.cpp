@@ -233,16 +233,17 @@ void invKnob() {
 				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA41_PARAM+stepC].getValue()*10.0f,3);
 			}
 			else if (indexSeqMode==5) {
+				stepRand=(rand() % 8);
 				lights[LED_SEQA1_PARAM+stepB].setBrightness(0.999);
 				lights[LED_SEQA17_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA25_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA33_PARAM+stepC].setBrightness(0.999);
-				lights[LED_SEQA41_PARAM+stepC].setBrightness(0.999);
+				lights[LED_SEQA41_PARAM+stepRand].setBrightness(0.999);
 				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepB].getValue()*10.0f,0);
 				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA17_PARAM+stepC].getValue()*10.0f,1);
 				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA25_PARAM+stepC].getValue()*9.4f,2);
 				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA33_PARAM+stepC].getValue()*9.5f,3);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA41_PARAM+stepC].getValue()*9.6f,4);
+				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA41_PARAM+stepRand].getValue()*9.6f,4);
 			}
 			else if (indexSeqMode==6) {	
 				stepRand=(rand() % 8);
