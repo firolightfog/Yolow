@@ -92,8 +92,10 @@ float xVal=0.0f;
 			// first the buttons to addsw and skpsw
 			skpsw = params[RNDBUTTON1_PARAM].getValue() > 0.f;
 			lights[RNDLED1_LIGHT].setBrightness(skpsw);
+			if (!inputs[IN1_INPUT].isConnected()) {skpsw=false;}
 			addsw = params[RNDBUTTON2_PARAM].getValue() > 0.f;
 			lights[RNDLED2_LIGHT].setBrightness(addsw);
+			if (!inputs[CLK_INPUT].isConnected()) {addsw=false;}
 		};				
 
 		// well, it's anything but efficient :(
@@ -215,7 +217,13 @@ float xVal=0.0f;
 					outputs[OUT3_OUTPUT].setVoltage(shwGhost[2]?8:0.2);		
 					outputs[OUT4_OUTPUT].setVoltage(shwGhost[3]?8:0.2);		
 					}
-				else {newVolt=0;}					
+				else {
+					newVolt=0;
+					outputs[OUT1_OUTPUT].setVoltage(0);		
+					outputs[OUT2_OUTPUT].setVoltage(0);		
+					outputs[OUT3_OUTPUT].setVoltage(0);		
+					outputs[OUT4_OUTPUT].setVoltage(0);						
+				}					
 			}
 			oldTrig=newTrig;
 			// outputs[OUT1_OUTPUT+c].setVoltage(newVolt);		

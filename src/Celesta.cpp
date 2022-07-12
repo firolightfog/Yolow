@@ -23,7 +23,7 @@ struct Celesta : Module {
 		CLOCK_INPUT, RESET_INPUT, PRECISION_CV_INPUT, INPUTS_LEN};
 
 	enum OutputId    {
-		MERGED_MONO_OUTPUT, SEQ_A_OUTPUT, SEQ_B_OUTPUT, SEQ_C_OUTPUT, OUTPUTS_LEN};
+		MERGED_MONO_OUTPUT, SEQ_A_OUTPUT, SEQ_B_OUTPUT, SEQ_C_OUTPUT, SEQ_A_EOC_OUTPUT, SEQ_B_EOC_OUTPUT, SEQ_C_EOC_OUTPUT, OUTPUTS_LEN};
 
 	enum LightId    {
 		SEQ_A_1_LED_LIGHT, SEQ_A_2_LED_LIGHT, SEQ_A_3_LED_LIGHT, SEQ_A_4_LED_LIGHT, SEQ_A_5_LED_LIGHT, 
@@ -49,9 +49,9 @@ struct Celesta : Module {
 		paramQuantities[OCTAVE_PARAM]->snapEnabled = true;
 		paramQuantities[RANGE_PARAM]->snapEnabled = true;
 		
-		configParam(SEQ_A_RUN_PARAM, 	0.0f, 1.0f, 0.0f, "Seq A run");
-		configParam(SEQ_B_RUN_PARAM, 	0.0f, 1.0f, 0.0f, "Seq B run");
-		configParam(SEQ_C_RUN_PARAM, 	0.0f, 1.0f, 0.0f, "Seq C run");
+		configParam(SEQ_A_RUN_PARAM, 	0.0f, 1.0f, 0.0f, "Seq A dice");
+		configParam(SEQ_B_RUN_PARAM, 	0.0f, 1.0f, 0.0f, "Seq B dice");
+		configParam(SEQ_C_RUN_PARAM, 	0.0f, 1.0f, 0.0f, "Seq C dice");
 		paramQuantities[SEQ_A_RUN_PARAM]->snapEnabled = true;
 		paramQuantities[SEQ_B_RUN_PARAM]->snapEnabled = true;
 		paramQuantities[SEQ_C_RUN_PARAM]->snapEnabled = true;
@@ -144,7 +144,28 @@ struct Celesta : Module {
 		configOutput(SEQ_A_OUTPUT, "Seq A"); 
 		configOutput(SEQ_B_OUTPUT, "Seq B"); 
 		configOutput(SEQ_C_OUTPUT, "Seq C"); 
+		configOutput(SEQ_A_EOC_OUTPUT, "Seq A EOC"); 
+		configOutput(SEQ_B_EOC_OUTPUT, "Seq B EOC"); 
+		configOutput(SEQ_C_EOC_OUTPUT, "Seq C EOC"); 
 	}
+
+
+// pressing i provides a variation of the same tune
+void invKnob() {
+	for (int k=0;k<8*3;k++) {
+		params[SEQ_A_1_VOLTAGE_PARAM+k].setValue(abs(1-params[SEQ_A_1_VOLTAGE_PARAM+k].getValue()));
+	}
+}
+
+// pressing r randomizes the note knobs only
+void rndKnob() {
+	params[SEQ_A_STEPS_PARAM].setValue(rand() % 7 + 2);	// random steps between 2-8
+	params[SEQ_B_STEPS_PARAM].setValue(rand() % 7 + 2);	// random steps between 2-8
+	params[SEQ_C_STEPS_PARAM].setValue(rand() % 7 + 2);	// random steps between 2-8
+	for (int k=0;k<8*3;k++) {
+		params[SEQ_A_1_VOLTAGE_PARAM+k].setValue(rack::random::uniform());
+	}
+}
 
 // --------------------------------------------------
 
@@ -204,7 +225,12 @@ struct Celesta : Module {
 
 		// let's see the reset signal
 		newReset=inputs[RESET_INPUT].getVoltage();
-		if (newReset>0.2 && oldReset<=0.2) {stepA=1; stepB=1; stepC=1;}
+		if (newReset>0.2 && oldReset<=0.2) {
+			stepA=-1; stepB=1; stepC=1;
+			outputs[SEQ_A_EOC_OUTPUT].setVoltage(10);
+			outputs[SEQ_B_EOC_OUTPUT].setVoltage(10);
+			outputs[SEQ_C_EOC_OUTPUT].setVoltage(10);			
+			}
 		// else if (newReset>0.2 && oldReset>0.2) {}
 		// else if (newReset<=0.2 && oldReset>0.2) {}
 		// else if (newReset<=0.2 && oldReset<=0.2) {}
@@ -215,10 +241,11 @@ struct Celesta : Module {
 		if (newClock>0.2 && oldClock<=0.2) {
 			
 			// take the next step
-			stepA++;
-			if (stepA>params[SEQ_A_STEPS_PARAM].getValue()) {stepA=1; stepB++;}
-			if (stepB>params[SEQ_B_STEPS_PARAM].getValue()) {stepB=1; stepC++;}
-			if (stepC>params[SEQ_C_STEPS_PARAM].getValue()) {stepC=1;}
+			stepA++; 
+			if (stepA==0) {stepA++;}	// bug fix; added to allow reset to properly jump to the first step
+			if (stepA>params[SEQ_A_STEPS_PARAM].getValue()) {stepA=1; stepB++; outputs[SEQ_A_EOC_OUTPUT].setVoltage(10);}
+			if (stepB>params[SEQ_B_STEPS_PARAM].getValue()) {stepB=1; stepC++; outputs[SEQ_B_EOC_OUTPUT].setVoltage(10);}
+			if (stepC>params[SEQ_C_STEPS_PARAM].getValue()) {stepC=1; outputs[SEQ_C_EOC_OUTPUT].setVoltage(10);}
 
 			// let's memorize the precision settings
 			precA=params[SEQ_A_1_PRECISION_PARAM+stepA-1].getValue();
@@ -264,15 +291,15 @@ struct Celesta : Module {
 			voltC=voltC*params[RANGE_PARAM].getValue();
 
 			// remember to use the pre-defined octave settings
-			voltA+=params[OCTAVE_PARAM].getValue();
-			voltB+=params[OCTAVE_PARAM].getValue();
-			voltC+=params[OCTAVE_PARAM].getValue();
+			// voltA+=params[OCTAVE_PARAM].getValue();
+			// voltB+=params[OCTAVE_PARAM].getValue();
+			// voltC+=params[OCTAVE_PARAM].getValue();
 			
 			// dump it :)
-			outputs[SEQ_A_OUTPUT].setVoltage(voltA);			
-			outputs[SEQ_B_OUTPUT].setVoltage(voltB);			
-			outputs[SEQ_C_OUTPUT].setVoltage(voltC);			
-			outputs[MERGED_MONO_OUTPUT].setVoltage(voltA+voltB+voltC);			
+			outputs[SEQ_A_OUTPUT].setVoltage(voltA + params[OCTAVE_PARAM].getValue());
+			outputs[SEQ_B_OUTPUT].setVoltage(voltB + params[OCTAVE_PARAM].getValue());
+			outputs[SEQ_C_OUTPUT].setVoltage(voltC + params[OCTAVE_PARAM].getValue());
+			outputs[MERGED_MONO_OUTPUT].setVoltage(voltA + voltB + voltC + params[OCTAVE_PARAM].getValue());
 			
 			// and now highlight the LEDs that steps can be followed
 			for (int l=0;l<24;l++) {
@@ -287,6 +314,12 @@ struct Celesta : Module {
 		// else if (newClock<=0.2 && oldClock>0.2) {}
 		// else if (newClock<=0.2 && oldClock<=0.2) {}
 		oldClock=newClock;
+		
+		if (newClock<=0.2) {
+			outputs[SEQ_A_EOC_OUTPUT].setVoltage(0);
+			outputs[SEQ_B_EOC_OUTPUT].setVoltage(0);
+			outputs[SEQ_C_EOC_OUTPUT].setVoltage(0);		
+		}
 
 	}
 
@@ -381,6 +414,9 @@ struct CelestaWidget : ModuleWidget {
 		childOutput(Celesta::SEQ_A_OUTPUT, HP*18, HP*6.75);
 		childOutput(Celesta::SEQ_B_OUTPUT, HP*18, HP*9.25);
 		childOutput(Celesta::SEQ_C_OUTPUT, HP*18, HP*11.75);
+		childOutput(Celesta::SEQ_A_EOC_OUTPUT, HP*18, HP*14.25);
+		childOutput(Celesta::SEQ_B_EOC_OUTPUT, HP*18, HP*16.75);
+		childOutput(Celesta::SEQ_C_EOC_OUTPUT, HP*18, HP*19.25);
 		childLight(Celesta::SEQ_A_1_LED_LIGHT, 0, HP*5, HP*5.5);
 		childLight(Celesta::SEQ_A_2_LED_LIGHT, 0, HP*5, HP*8);
 		childLight(Celesta::SEQ_A_3_LED_LIGHT, 0, HP*5, HP*10.5);
@@ -405,6 +441,25 @@ struct CelestaWidget : ModuleWidget {
 		childLight(Celesta::SEQ_C_6_LED_LIGHT, 0, HP*14, HP*18);
 		childLight(Celesta::SEQ_C_7_LED_LIGHT, 0, HP*14, HP*20.5);
 		childLight(Celesta::SEQ_C_8_LED_LIGHT, 0, HP*14, HP*23);
+	}
+
+	// shortkey
+	void onHoverKey(const event::HoverKey &e) override {
+		if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_8) {
+			/* if (e.action == GLFW_PRESS) {
+				float key_number = e.key - 49; // 49 is the ascii number for key #1
+				module->keyKnob(key_number);
+				e.consume(this);
+			}*/
+		}
+		// else if(e.key == GLFW_KEY_G && e.action == GLFW_PRESS) {module->modeGate=true; e.consume(this);}
+		// else if(e.key == GLFW_KEY_V && e.action == GLFW_PRESS) {module->modeGate=false; e.consume(this);}
+		else if(e.key == GLFW_KEY_R && e.action == GLFW_PRESS) {module->rndKnob(); e.consume(this);}
+		else if(e.key == GLFW_KEY_I && e.action == GLFW_PRESS) {module->invKnob(); e.consume(this);}
+		// else if(e.key == GLFW_KEY_U && e.action == GLFW_PRESS) {module->supKnob(); e.consume(this);}
+		// else if(e.key == GLFW_KEY_D && e.action == GLFW_PRESS) {module->sdnKnob(); e.consume(this);}
+		// else if(e.key == GLFW_KEY_F && e.action == GLFW_PRESS) {module->freezCv=2; e.consume(this);}
+		ModuleWidget::onHoverKey(e);
 	}
 
 };

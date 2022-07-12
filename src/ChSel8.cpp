@@ -70,6 +70,7 @@ int indexChan=7; 	// this means 8 channels
 int loopKnobs=1;
 bool isInput=false;
 float paramsVal[PARAMS_LEN]={1,1,1,1,1,1,1,1};
+bool isPlugged=false;
 
 	void process(const ProcessArgs& args) override {
 		
@@ -79,6 +80,17 @@ float paramsVal[PARAMS_LEN]={1,1,1,1,1,1,1,1};
 			for (int c=0;c<PARAMS_LEN;c++) {paramsVal[c]=params[c].getValue()-1;}
 			isInput=inputs[POLYIN_INPUT].isConnected();
 			if (isInput==false) {indexChan=7;}
+			isPlugged=inputs[POLYIN_INPUT].isConnected();
+			if (!(paramQuantities[SELECT_CH1_PARAM]->snapEnabled == isPlugged)) {
+				paramQuantities[SELECT_CH1_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH2_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH3_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH4_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH5_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH6_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH7_PARAM]->snapEnabled = isPlugged;
+				paramQuantities[SELECT_CH8_PARAM]->snapEnabled = isPlugged;
+			}
 		}
 		
 		// always collect and forward the input values

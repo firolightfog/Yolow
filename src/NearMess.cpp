@@ -82,16 +82,29 @@ struct NearMessWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
 		childInput(NearMess::A_INPUT, HP*1, HP*2);
-		childOutput(NearMess::MIX_1TO9_OUTPUT, HP*1, HP*4.5);
-		childOutput(NearMess::MIX_2TO8_OUTPUT, HP*1, HP*6.5);
-		childOutput(NearMess::MIX_3TO7_OUTPUT, HP*1, HP*8.5);
-		childOutput(NearMess::MIX_4TO6_OUTPUT, HP*1, HP*10.5);
+		childOutput(NearMess::MIX_9TO1_OUTPUT, HP*1, HP*4.5);
+		childOutput(NearMess::MIX_8TO2_OUTPUT, HP*1, HP*6.5);
+		childOutput(NearMess::MIX_7TO3_OUTPUT, HP*1, HP*8.5);
+		childOutput(NearMess::MIX_6TO4_OUTPUT, HP*1, HP*10.5);
 		childOutput(NearMess::MIX_5TO5_OUTPUT, HP*1, HP*12.5);
-		childOutput(NearMess::MIX_6TO4_OUTPUT, HP*1, HP*14.5);
-		childOutput(NearMess::MIX_7TO3_OUTPUT, HP*1, HP*16.5);
-		childOutput(NearMess::MIX_8TO2_OUTPUT, HP*1, HP*18.5);
-		childOutput(NearMess::MIX_9TO1_OUTPUT, HP*1, HP*20.5);
+		childOutput(NearMess::MIX_4TO6_OUTPUT, HP*1, HP*14.5);
+		childOutput(NearMess::MIX_3TO7_OUTPUT, HP*1, HP*16.5);
+		childOutput(NearMess::MIX_2TO8_OUTPUT, HP*1, HP*18.5);
+		childOutput(NearMess::MIX_1TO9_OUTPUT, HP*1, HP*20.5);
 		childInput(NearMess::B_INPUT, HP*1, HP*23);
+
+		// childInput(NearMess::A_INPUT, HP*1, HP*2);
+		// childOutput(NearMess::MIX_1TO9_OUTPUT, HP*1, HP*4.5);
+		// childOutput(NearMess::MIX_2TO8_OUTPUT, HP*1, HP*6.5);
+		// childOutput(NearMess::MIX_3TO7_OUTPUT, HP*1, HP*8.5);
+		// childOutput(NearMess::MIX_4TO6_OUTPUT, HP*1, HP*10.5);
+		// childOutput(NearMess::MIX_5TO5_OUTPUT, HP*1, HP*12.5);
+		// childOutput(NearMess::MIX_6TO4_OUTPUT, HP*1, HP*14.5);
+		// childOutput(NearMess::MIX_7TO3_OUTPUT, HP*1, HP*16.5);
+		// childOutput(NearMess::MIX_8TO2_OUTPUT, HP*1, HP*18.5);
+		// childOutput(NearMess::MIX_9TO1_OUTPUT, HP*1, HP*20.5);
+		// childInput(NearMess::B_INPUT, HP*1, HP*23);
+
 	}
 
 };
