@@ -117,9 +117,18 @@ It is a variable trigger sequencer. It expects monophonic clock and reset input.
 - `5`: 1x16 + 3x8 + 1x8 steps (with 5-channel polyphonic output)
 - `6`: 5x8 + 1x8 steps (with 6-channel polyphonic output)
 
-Modes `5` and `6` provides random gates in the last track. Keyboard shortcuts are also available:
-- `1-6`: randomizes a certain zone
+In modes `5` and `6` the last sequence provides random gates. 
+
+Keyboard shortcuts are also available:
 - `i`: inverts all buttons values
+- `1-6`: randomizes a certain zone
+- `Shift-1` to `Shift-6`: clears a certain zone
+- `x`: records a hit to the first sequence
+- `c`: records a hit to the second sequence (if available)
+- `v`: records a hit to the three sequence (if available)
+- `b`: records a hit to the four sequence (if available)
+- `n`: records a hit to the five sequence (if available)
+- `m`: records a hit to the six sequence (if available)
 
 ![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
@@ -183,6 +192,10 @@ It's the bigger brother of TrigPrec2 with six inputs and outputs. Each knob defi
 This is an ADR (attack, decay, release) envelope generator with built in VCA. Separate knobs are available for A, D and R settings. The range can be set by a switch on the top, and the starting voltage for A is also definable. At the bottom there is a gate, a noise and an audio input allowing modification of the controll voltages. 
 
 ![image](https://user-images.githubusercontent.com/34127628/180173786-a125ed24-0193-4825-aabd-8e79c0603454.png)
+
+The context menu of the module provides two gate modes:
+- single cycle: one gate, one wave
+- or syncing: one gate restarts the waves
 
 The module was inspired by the mighty [Arido](https://solcitomusica.blogspot.com/p/virtuales.html) VST of Solcitomusic. It was also motivating that I found only a few envelope generators with a built in VCA in the VCV Library. 
 
