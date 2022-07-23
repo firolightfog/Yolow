@@ -38,8 +38,8 @@ struct PushmeSeq : Module {
 
 	// small assistance to save older values for reference;
 	float paramVal[PARAMS_LEN]={0};
-	float inputVolt[INPUTS_LEN]={0};
-	float lightVal[LIGHTS_LEN]={0};
+	// float inputVolt[INPUTS_LEN]={0};
+	// float lightVal[LIGHTS_LEN]={0};
 
 // --------------------------------------------------
 
@@ -110,9 +110,65 @@ struct PushmeSeq : Module {
 void keyKnob(int rndSection) {
 	for (int b=8*rndSection;b<8*(rndSection+1);b++) {
 		params[SEQA1_PARAM+b].setValue(rand() % 2);
-		lights[LED_SEQA1_PARAM+b].setBrightness(params[SEQA1_PARAM+b].getValue());
+		// lights[LED_SEQA1_PARAM+b].setBrightness(params[SEQA1_PARAM+b].getValue());
 	}	
 }
+
+void clearKnob(int rndSection) {
+	for (int b=8*rndSection;b<8*(rndSection+1);b++) {
+		params[SEQA1_PARAM+b].setValue(0);
+		lights[LED_SEQA1_PARAM+b].setBrightness(0);
+	}	
+}
+
+void beatKnob(int hitKey) {
+
+	// outputs[TRIGGER_OUTPUT].setVoltage(hitKey);
+	if (indexSeqMode==0) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepRand].setValue(abs(paramVal[SEQA1_PARAM+stepRand]-1));}
+	}
+	else if (indexSeqMode==1) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepA].setValue(abs(paramVal[SEQA1_PARAM+stepA]-1));}
+	}
+	else if (indexSeqMode==2) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepA].setValue(abs(paramVal[SEQA1_PARAM+stepA]-1));}
+		else if (hitKey==67 /*c*/) {params[SEQA33_PARAM+stepB].setValue(abs(paramVal[SEQA33_PARAM+stepB]-1));}
+	}
+	else if (indexSeqMode==3) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepB].setValue(abs(paramVal[SEQA1_PARAM+stepB]-1));}
+		else if (hitKey==67 /*c*/) {params[SEQA17_PARAM+stepB].setValue(abs(paramVal[SEQA17_PARAM+stepB]-1));}
+		else if (hitKey==86 /*v*/) {params[SEQA33_PARAM+stepB].setValue(abs(paramVal[SEQA33_PARAM+stepB]-1));}
+	}
+	else if (indexSeqMode==4) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepB].setValue(abs(paramVal[SEQA1_PARAM+stepB]-1));}
+		else if (hitKey==67 /*c*/) {params[SEQA17_PARAM+stepB].setValue(abs(paramVal[SEQA17_PARAM+stepB]-1));}
+		else if (hitKey==86 /*v*/) {params[SEQA33_PARAM+stepC].setValue(abs(paramVal[SEQA33_PARAM+stepC]-1));}
+		else if (hitKey==66 /*b*/) {params[SEQA41_PARAM+stepC].setValue(abs(paramVal[SEQA41_PARAM+stepC]-1));}
+	}
+	else if (indexSeqMode==5) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepB].setValue(abs(paramVal[SEQA1_PARAM+stepB]-1));}
+		else if (hitKey==67 /*c*/) {params[SEQA17_PARAM+stepC].setValue(abs(paramVal[SEQA17_PARAM+stepC]-1));}
+		else if (hitKey==86 /*v*/) {params[SEQA25_PARAM+stepC].setValue(abs(paramVal[SEQA25_PARAM+stepC]-1));}
+		else if (hitKey==66 /*b*/) {params[SEQA33_PARAM+stepC].setValue(abs(paramVal[SEQA33_PARAM+stepC]-1));}
+		else if (hitKey==78 /*v*/) {params[SEQA41_PARAM+stepRand].setValue(abs(paramVal[SEQA41_PARAM+stepRand]-1));}
+	}
+	else if (indexSeqMode==6) {
+		if (hitKey==88 /*x*/) {params[SEQA1_PARAM+stepC].setValue(abs(paramVal[SEQA1_PARAM+stepC]-1));}
+		else if (hitKey==67 /*c*/) {params[SEQA17_PARAM+stepC].setValue(abs(paramVal[SEQA17_PARAM+stepC]-1));}
+		else if (hitKey==86 /*v*/) {params[SEQA33_PARAM+stepC].setValue(abs(paramVal[SEQA33_PARAM+stepC]-1));}
+		else if (hitKey==66 /*b*/) {params[SEQA33_PARAM+stepC].setValue(abs(paramVal[SEQA33_PARAM+stepC]-1));}
+		else if (hitKey==78 /*n*/) {params[SEQA33_PARAM+stepC].setValue(abs(paramVal[SEQA33_PARAM+stepC]-1));}
+		else if (hitKey==77 /*m*/) {params[SEQA33_PARAM+stepRand].setValue(abs(paramVal[SEQA33_PARAM+stepRand]-1));}
+		}
+
+	if (hitKey==88 /*x*/) {outputs[TRIGGER_OUTPUT].setVoltage(8.25,0);}
+	else if (hitKey==67 /*c*/) {outputs[TRIGGER_OUTPUT].setVoltage(8.25,1);}
+	else if (hitKey==86 /*v*/) {outputs[TRIGGER_OUTPUT].setVoltage(8.25,2);}
+	else if (hitKey==66 /*b*/) {outputs[TRIGGER_OUTPUT].setVoltage(8.25,3);}
+	else if (hitKey==78 /*n*/) {outputs[TRIGGER_OUTPUT].setVoltage(8.25,4);}
+	else if (hitKey==77 /*m*/) {outputs[TRIGGER_OUTPUT].setVoltage(8.25,5);}
+}
+
 void invKnob() {
 	for (int b=0;b<48;b++) {
 		params[SEQA1_PARAM+b].setValue(abs(params[SEQA1_PARAM+b].getValue()-1));
@@ -132,6 +188,11 @@ void invKnob() {
 	float newClock=0.0f;
 	float oldClock=0.0f;
 	bool hitClock=false;
+
+	// calculate the PW - not in use 
+	int theGap=0;
+	int calcGap=0;
+	int microGap=0;
 	
 	// ideintifying the step we're at
 	int stepA=0;	// 1x48
@@ -160,6 +221,7 @@ void invKnob() {
 			else if (indexSeqMode==4) {outputs[TRIGGER_OUTPUT].channels=4;}
 			else if (indexSeqMode==5) {outputs[TRIGGER_OUTPUT].channels=5;}
 			else if (indexSeqMode==6) {outputs[TRIGGER_OUTPUT].channels=6;}
+			for (int i=0;i<PARAMS_LEN;i++) {paramVal[i]=params[i].getValue();}
 		}
 		
 		// let's see the reset signal
@@ -171,10 +233,14 @@ void invKnob() {
 		oldReset=newReset;
 
 		// let's see the clock signal
+		calcGap++;
 		hitClock=false;
 		newClock=inputs[CLOCK_INPUT].getVoltage();
 		if (newClock>0.2f && oldClock<=0.2f) {
 			// ne clock signal is in!!
+			theGap=(theGap+calcGap)/2;
+			microGap=theGap/(8*2);
+			calcGap=0;
 			stepA++; stepB++; stepC++;
 			if (stepA>=48 || stepA<0) {stepA=0;}
 			if (stepB>=16 || stepB<0) {stepB=0;}
@@ -187,6 +253,13 @@ void invKnob() {
 			// if the clock pulse is off then the output is also off
 			for (int c=0;c<outputs[TRIGGER_OUTPUT].channels;c++) {outputs[TRIGGER_OUTPUT].setVoltage(0,c);}
 		}
+		// else {
+			// a failed attempt to impelement microsteps
+			// if (indexSeqMode==5 && (calcGap % microGap)==0) {
+				// outputs[TRIGGER_OUTPUT].setVoltage(7.25,0);
+				// // outputs[TRIGGER_OUTPUT].setVoltage((((int)floor(calcGap/microGap) % 2) ==0)?9:1);
+			// }
+		// }
 		oldClock=newClock;
 		
 		// if there's a "new clock pulse" we have a lot to do
@@ -194,43 +267,43 @@ void invKnob() {
 
 			// fix all lights
 			for (int k=0;k<48;k++) {
-				lights[LED_SEQA1_PARAM+k].setBrightness(params[SEQA1_PARAM+k].getValue()*0.452);
+				lights[LED_SEQA1_PARAM+k].setBrightness(paramVal[SEQA1_PARAM+k]*0.452);
 			}
 			
 			// indexSeqMode: 0 (random) 1 (1x48) 2 (1x32+1x16) 3 (3x16) 4 (2x16+2x8) 5 (1x16+4x8) 6 (6x8)		
 			if (indexSeqMode==0) {
 				stepRand=(rand() % 48);
 				lights[LED_SEQA1_PARAM+stepRand].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepRand].getValue()*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepRand]*10.0f,0);
 			}
 			else if (indexSeqMode==1) {	
 				lights[LED_SEQA1_PARAM+stepA].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepA].getValue()*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepA]*10.0f,0);
 			}
 			else if (indexSeqMode==2) {
 				lights[LED_SEQA1_PARAM+stepA].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepA].getValue()*10.0f,0);
 				lights[LED_SEQA33_PARAM+stepB].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA33_PARAM+stepB].getValue()*10.0f,1);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepA]*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA33_PARAM+stepB]*10.0f,1);
 				if (stepA>=32) {stepA=0;stepB=0;}
 			}
 			else if (indexSeqMode==3) {	
 				lights[LED_SEQA1_PARAM+stepB].setBrightness(0.999);
 				lights[LED_SEQA17_PARAM+stepB].setBrightness(0.999);
 				lights[LED_SEQA33_PARAM+stepB].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepB].getValue()*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA17_PARAM+stepB].getValue()*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA33_PARAM+stepB].getValue()*10.0f,2);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepB]*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA17_PARAM+stepB]*10.0f,1);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA33_PARAM+stepB]*10.0f,2);
 			}
 			else if (indexSeqMode==4) {	
 				lights[LED_SEQA1_PARAM+stepB].setBrightness(0.999);
 				lights[LED_SEQA17_PARAM+stepB].setBrightness(0.999);
 				lights[LED_SEQA33_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA41_PARAM+stepC].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepB].getValue()*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA17_PARAM+stepB].getValue()*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA33_PARAM+stepC].getValue()*10.0f,2);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA41_PARAM+stepC].getValue()*10.0f,3);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepB]*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA17_PARAM+stepB]*10.0f,1);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA33_PARAM+stepC]*10.0f,2);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA41_PARAM+stepC]*10.0f,3);
 			}
 			else if (indexSeqMode==5) {
 				stepRand=(rand() % 8);
@@ -239,11 +312,11 @@ void invKnob() {
 				lights[LED_SEQA25_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA33_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA41_PARAM+stepRand].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepB].getValue()*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA17_PARAM+stepC].getValue()*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA25_PARAM+stepC].getValue()*9.4f,2);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA33_PARAM+stepC].getValue()*9.5f,3);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA41_PARAM+stepRand].getValue()*9.6f,4);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepB]*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA17_PARAM+stepC]*10.0f,1);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA25_PARAM+stepC]*9.4f,2);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA33_PARAM+stepC]*9.5f,3);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA41_PARAM+stepRand]*9.6f,4);
 			}
 			else if (indexSeqMode==6) {	
 				stepRand=(rand() % 8);
@@ -253,12 +326,12 @@ void invKnob() {
 				lights[LED_SEQA25_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA33_PARAM+stepC].setBrightness(0.999);
 				lights[LED_SEQA41_PARAM+stepRand].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA1_PARAM+stepC].getValue()*9.1f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA9_PARAM+stepC].getValue()*9.2f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA17_PARAM+stepC].getValue()*9.3f,2);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA25_PARAM+stepC].getValue()*9.4f,3);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA33_PARAM+stepC].getValue()*9.5f,4);
-				outputs[TRIGGER_OUTPUT].setVoltage(params[SEQA41_PARAM+stepRand].getValue()*9.6f,5);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA1_PARAM+stepC]*9.1f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA9_PARAM+stepC]*9.2f,1);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA17_PARAM+stepC]*9.3f,2);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA25_PARAM+stepC]*9.4f,3);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA33_PARAM+stepC]*9.5f,4);
+				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQA41_PARAM+stepRand]*9.6f,5);
 			}
 		}
 		
@@ -349,15 +422,29 @@ struct PushmeSeqWidget : ModuleWidget {
 	// shortkey
 	void onHoverKey(const event::HoverKey &e) override {
 		if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_6) {
-			if (e.action == GLFW_PRESS) {
+			if (e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) == GLFW_MOD_SHIFT)) {
+				float key_number = e.key - 49; // 49 is the ascii number for key #1
+				module->clearKnob(key_number);	// this doesn't work
+				e.consume(this);
+			}
+			else if (e.action == GLFW_PRESS) {
 				float key_number = e.key - 49; // 49 is the ascii number for key #1
 				module->keyKnob(key_number);
 				e.consume(this);
 			}
 		}
 		// else if(e.key == GLFW_KEY_I && e.action == GLFW_PRESS) {module->invKnob(); e.consume(this);}
-		else if((e.key == GLFW_KEY_I) && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL) && e.action == GLFW_PRESS) {module->invKnob(); e.consume(this);}
+		else if ((e.key == GLFW_KEY_I) && e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
 		// else if((e.key == GLFW_KEY_I) && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {module->invKnob(); e.consume(this);}
+			module->invKnob(); 
+			e.consume(this);
+		}
+		else if ((e.key == GLFW_KEY_X) || (e.key == GLFW_KEY_C) || (e.key == GLFW_KEY_V) || (e.key == GLFW_KEY_B) || (e.key == GLFW_KEY_N) || (e.key == GLFW_KEY_M)) {
+			if (e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
+				module->beatKnob(e.key); 
+				e.consume(this);
+			}
+		}
 		ModuleWidget::onHoverKey(e);
 	}
 

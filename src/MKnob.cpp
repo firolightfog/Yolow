@@ -64,8 +64,8 @@ struct MKnob : Module {
 float newVal=0;	// reading the knob value
 int loopKnobs=1;
 int indexChan=3;	// this means 4 channels :)
-int indexQuant=0;	// this means no quantization
 int indexRange=0;
+int indexQuant=0;	// this means no quantization
 
 	float quantMe(float oldVal) {
 		oldVal=oldVal+5*indexRange;

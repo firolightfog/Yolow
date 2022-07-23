@@ -193,6 +193,15 @@ void rndKnob() {
 	float voltB=0.0f;
 	float voltC=0.0f;
 
+	int indexQuant=0;	// this means no quantization
+
+	float quantMe(float oldVal) {
+		// oldVal=oldVal+5*indexRange;
+		if (indexQuant==0) {return oldVal;}
+		else if (indexQuant==1) {return round(oldVal);}
+		else {return round(oldVal*12)/12;}
+	}
+
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
@@ -296,10 +305,10 @@ void rndKnob() {
 			// voltC+=params[OCTAVE_PARAM].getValue();
 			
 			// dump it :)
-			outputs[SEQ_A_OUTPUT].setVoltage(voltA + params[OCTAVE_PARAM].getValue());
-			outputs[SEQ_B_OUTPUT].setVoltage(voltB + params[OCTAVE_PARAM].getValue());
-			outputs[SEQ_C_OUTPUT].setVoltage(voltC + params[OCTAVE_PARAM].getValue());
-			outputs[MERGED_MONO_OUTPUT].setVoltage(voltA + voltB + voltC + params[OCTAVE_PARAM].getValue());
+			outputs[SEQ_A_OUTPUT].setVoltage(quantMe(voltA + params[OCTAVE_PARAM].getValue()));
+			outputs[SEQ_B_OUTPUT].setVoltage(quantMe(voltB + params[OCTAVE_PARAM].getValue()));
+			outputs[SEQ_C_OUTPUT].setVoltage(quantMe(voltC + params[OCTAVE_PARAM].getValue()));
+			outputs[MERGED_MONO_OUTPUT].setVoltage(quantMe(voltA + voltB + voltC + params[OCTAVE_PARAM].getValue()));
 			
 			// and now highlight the LEDs that steps can be followed
 			for (int l=0;l<24;l++) {
@@ -323,11 +332,15 @@ void rndKnob() {
 
 	}
 
-// --------------------------------------------------
+	// this JSON block is to save and reload a variable
+	json_t* dataToJson() override {
+	json_t* rootJ = json_object();
+	json_object_set_new(rootJ, "quant", json_integer(indexQuant));
+	return rootJ;}
 
-	// spaceholder for JSON
-
-// --------------------------------------------------
+	void dataFromJson(json_t* rootJ) override {
+	json_t *quantJ = json_object_get(rootJ, "quant");
+	if (quantJ) indexQuant = json_integer_value(quantJ);}
 
 };
 
@@ -441,6 +454,14 @@ struct CelestaWidget : ModuleWidget {
 		childLight(Celesta::SEQ_C_6_LED_LIGHT, 0, HP*14, HP*18);
 		childLight(Celesta::SEQ_C_7_LED_LIGHT, 0, HP*14, HP*20.5);
 		childLight(Celesta::SEQ_C_8_LED_LIGHT, 0, HP*14, HP*23);
+	}
+
+	// menu for basic quantization
+	void appendContextMenu(Menu* menu) override {
+		Celesta* module = dynamic_cast<Celesta*>(this->module);
+		assert(module);
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
 	}
 
 	// shortkey

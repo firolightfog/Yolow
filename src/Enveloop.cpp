@@ -64,6 +64,7 @@ struct Enveloop : Module {
 	float newGate=0.0f;
 	float curveType=0.5f;	
 	int waveSize=500;
+	int indexGateMode=0;
 	
 	void process(const ProcessArgs& args) override {
 
@@ -76,7 +77,7 @@ struct Enveloop : Module {
 			for (int p=0;p<PARAMS_LEN;p++) {
 				paramVal[p]=params[p].getValue();
 			}
-			if (paramVal[WAVE_SIZE_PARAM]==0) {waveSize=125;}
+			if (paramVal[WAVE_SIZE_PARAM]==0) {waveSize=250;}
 			else if (paramVal[WAVE_SIZE_PARAM]==1) {waveSize=500;}
 			else if (paramVal[WAVE_SIZE_PARAM]==2) {waveSize=4000;}
 		}
@@ -91,7 +92,6 @@ struct Enveloop : Module {
 					currGate=ON; 
 					currState=1; 
 					enlightenMe(currState);
-					lights[TEST_LIGHT].setBrightness(1);
 					envVolt=paramVal[ATTACK_START_PARAM];
 					}
 			}
@@ -100,22 +100,23 @@ struct Enveloop : Module {
 					currGate=OFF; 
 					currState=3;
 					enlightenMe(currState);
-					lights[TEST_LIGHT].setBrightness(0);
 					}
 				else {currGate=SAME;}
 			}
 			oldGate=newGate;
 		}
-					
+
+		// lights[TEST_LIGHT].setBrightness((currState<2)?1:0);	// no need for this one
+							
 // itt az ATTACK_START_PARAM akár A és D gömbölyítonek is használható lenne 
 
 		// acting based on the phase we're in 
-		if (currState==1) {
+		if (currState==1) {	// attack state
 			envVolt+=(1-paramVal[ATTACK_SLEW_PARAM])/waveSize;
 			if (envVolt>=10) {envVolt=10; currState=2; enlightenMe(currState);}
 			else if (envVolt<0) {envVolt=0;}
 		}
-		else if (currState==2) {
+		else if (currState==2) {	// decay state
 			envVolt-=(1-paramVal[DECAY_SLEW_PARAM])/waveSize;
 			if (envVolt<=paramVal[ATTACK_START_PARAM]) {
 				envVolt=paramVal[ATTACK_START_PARAM];
@@ -123,9 +124,9 @@ struct Enveloop : Module {
 				enlightenMe(currState);
 			}
 		}
-		else if (currState==3) {
+		else if (currState==3) {	// suspension state
 			envVolt-=(1-paramVal[RELEASE_SLEW_PARAM])/waveSize;
-			if (envVolt<=0) {envVolt=0; currState=isGateIn?3:1; enlightenMe(currState);}
+			if (envVolt<=0) {envVolt=0; currState=(isGateIn && indexGateMode==0)?3:1; enlightenMe(currState);}
 		}
 		else if (currState==0) { // happens only once: at the beginning
 			envVolt=paramVal[ATTACK_START_PARAM]; currState=1; enlightenMe(currState);
@@ -153,9 +154,15 @@ struct Enveloop : Module {
 		lights[RELEASE_LED_LIGHT].setBrightness((theState==3)?1:0);		
 	}
 
-// --------------------------------------------------
+	// this JSON block is to save and reload a variable
+	json_t* dataToJson() override {
+	json_t* rootJ = json_object();
+	json_object_set_new(rootJ, "gatemode", json_integer(indexGateMode));
+	return rootJ;}
 
-	// spaceholder for JSON
+	void dataFromJson(json_t* rootJ) override {
+	json_t *gatemodeJ = json_object_get(rootJ, "gatemode");
+	if (gatemodeJ) indexGateMode = json_integer_value(gatemodeJ);}
 
 // --------------------------------------------------
 
@@ -191,11 +198,20 @@ struct EnveloopWidget : ModuleWidget {
 		childOutput(Enveloop::AUDIO_OUTPUT_OUTPUT, HP*1, HP*22.5);
 		childInput(Enveloop::NOISE_INPUT_INPUT, HP*3, HP*20.5);
 		childOutput(Enveloop::ENVELOPE_OUTPUT, HP*3, HP*22.5);
-		childLight(Enveloop::TEST_LIGHT, 0, HP*2, HP*19.5);
+		// childLight(Enveloop::TEST_LIGHT, 0, HP*2, HP*19.5);	// no need for this one
 		
 		childLight(Enveloop::ATTACK_LED_LIGHT, 0, HP*2, HP*8);
 		childLight(Enveloop::DECAY_LED_LIGHT, 0, HP*2, HP*11.5);
 		childLight(Enveloop::RELEASE_LED_LIGHT, 0, HP*2, HP*15);
+	}
+
+
+	// menu for basic quantization
+	void appendContextMenu(Menu* menu) override {
+		Enveloop* module = dynamic_cast<Enveloop*>(this->module);
+		assert(module);
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createIndexPtrSubmenuItem("Gate mode", {"Single cycle","Sync only"}, &module->indexGateMode));
 	}
 
 };

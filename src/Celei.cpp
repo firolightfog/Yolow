@@ -139,8 +139,20 @@ int freezCv=0;
 	float pTrg=0.0f;
 	bool iTrans=false;	// any transpose cable available?
 	
+	// JSON variables for portable sequence experiment 
+//	float lengthInBeats[8]={0};
+//	float vOct[8]={1};
+	
 	// hidden trick: if true it sends a clock pulse instead of a constant CV
 	bool modeClock=false;
+	int indexQuant=0;	// this means no quantization
+
+	float quantMe(float oldVal) {
+		// oldVal=oldVal+5*indexRange;
+		if (indexQuant==0) {return oldVal;}
+		else if (indexQuant==1) {return round(oldVal);}
+		else {return round(oldVal*12)/12;}
+	}
 
 	void process(const ProcessArgs& args) override {
 
@@ -159,7 +171,11 @@ int freezCv=0;
 			pSx[4]=params[4+SEQ_1_VOLTAGE_PARAM].getValue();
 			pSx[5]=params[5+SEQ_1_VOLTAGE_PARAM].getValue();
 			pSx[6]=params[6+SEQ_1_VOLTAGE_PARAM].getValue();
-			pSx[7]=params[7+SEQ_1_VOLTAGE_PARAM].getValue();		
+			pSx[7]=params[7+SEQ_1_VOLTAGE_PARAM].getValue();
+//			for (int j=0;j<8;j++) {
+//				vOct[j]=pOct+pRng*pSx[j];
+//				lengthInBeats[j]=0.9;
+//			}
 		}
 
 		// let's see the reset signal
@@ -205,15 +221,22 @@ int freezCv=0;
 				voltA=voltA+remainder(inputs[TRANSPOSE_INPUT].getVoltage(), 10.0f);
 			}
 		}
-		outputs[MONO_OUTPUT].setVoltage(voltA);
+		outputs[MONO_OUTPUT].setVoltage(quantMe(voltA));
 
 	}
 
-// --------------------------------------------------
+	// this JSON block is to save and reload a variable
+	json_t* dataToJson() override {
+	json_t* rootJ = json_object();
+	json_object_set_new(rootJ, "quant", json_integer(indexQuant));
+//    json_object_set_new(rootJ, "type", json_string("note"));	// portable seq
+//    json_object_set_new(rootJ, "pitch", json_real(vOct);		// portable seq
+//    json_object_set_new(rootJ, "length", json_real(lengthInBeats);	// portable seq
+	return rootJ;}
 
-	// spaceholder for JSON
-
-// --------------------------------------------------
+	void dataFromJson(json_t* rootJ) override {
+	json_t *quantJ = json_object_get(rootJ, "quant");
+	if (quantJ) indexQuant = json_integer_value(quantJ);}
 
 };
 
@@ -261,6 +284,14 @@ struct CeleiWidget : ModuleWidget {
 		childOutput(Celei::TRIGGER_STEP_OUTPUT, HP*1.5, HP*18);
 		childInput(Celei::CLOCK_INPUT, HP*1.5, HP*20.5);
 		childInput(Celei::RESET_INPUT, HP*1.5, HP*23);
+	}
+
+	// menu for basic quantization
+	void appendContextMenu(Menu* menu) override {
+		Celei* module = dynamic_cast<Celei*>(this->module);
+		assert(module);
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
 	}
 
 	// shortkey
