@@ -70,6 +70,14 @@ void childLight(int objId, int colorId, float posA, float posB) {
 	}
 } // common Led
 
+void childButtonmom(int objId, int sizeId, float posA, float posB) {
+	switch (sizeId) {
+		case 0:	addParam(createParamCentered<VCVButton>(mm2px(Vec(posA, posB)), module, objId)); break;
+		case 1:	addParam(createParamCentered<CKD6>(mm2px(Vec(posA, posB)), module, objId)); break;
+		default:	addParam(createParamCentered<VCVButton>(mm2px(Vec(posA, posB)), module, objId)); break;
+	};
+} // common medium knob
+
 void childKnob(int objId, int sizeId, float posA, float posB) {
 	switch (sizeId) {
 		case 0:	addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(posA, posB)), module, objId)); break;
