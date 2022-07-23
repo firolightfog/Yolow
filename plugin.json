@@ -274,6 +274,7 @@
       "description": "Envelope generator with VCA",
       "keywords": [
         "ADR",
+        "LFO",
 		"envelope",
 		"attack",
 		"decay",
@@ -282,6 +283,7 @@
       "tags": [
         "Envelope generator",
         "VCA",
+        "Low-frequency oscillator",
         "ADR"
       ]
     },
