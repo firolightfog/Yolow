@@ -1,4 +1,6 @@
-v2.1.10 unreleased
+# Changelog
+
+v2.1.10 2022-08-01
 - new module added as RandVolt8 providing stepped/fixed voltages 
 - new shortkey for Pushme to randomize all buttons ('R') including exclusive dice for the 3x16 mode and the 1x48 random mode
 - bug fix in ChanSel2 to display channel number or CV value depending poly input availabilty
