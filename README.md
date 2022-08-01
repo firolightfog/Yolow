@@ -12,14 +12,15 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
-|[Celesta](#Celesta)|three 8 step CV sequencers|
-|[Celei](#Celesta)|single 8 step CV sequencer|
+|[Celesta](#Celesta)|Three 8 step CV sequencers|
+|[Celei](#Celesta)|Single 8 step CV sequencer|
 |[Sequin](#Sequin)|Queen of Sequencers|
-|[PushMeSeq](#PushMeSeq)|variable trigger sequencer|
+|[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
-|[RandVolt10](#RandVolt10)|Fix voltage provider (1V, 2V, 3V, etc) or random stepped voltage|
+|[RandVolt10](#RandVolt10)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
+|[RandVolt8](#RandVolt8)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[NearMess](#NearMess)|An almost passive VCA and mixer|
@@ -38,7 +39,7 @@ Select your favourite channel from a polyphonic input (see PIN). The upper secti
 
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
 
-2.1.6 update: if there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour.
+If there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour.
 
 ### ChSel6
 Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu. Similarly to the suggestion [here](https://github.com/dbgrande/GrandeModular/issues/4).
@@ -46,7 +47,7 @@ Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). Th
 ### ChSel8
 Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 8 in the context menu. It's only 2HP!
 
-2.1.6 update: if there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour. 
+If there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour. 
 
 -----
 
@@ -59,7 +60,7 @@ A simple merge module with sixteen normalized inputs.
 <img width="250" alt="image" src="https://user-images.githubusercontent.com/34127628/156899500-237c10e8-6976-4130-9836-cf5a6047b056.png">
 
 ### PolyExp10
-A simple split module it returns the first ten channels of a polyphonic input. 
+A simple 2HP split module it returns the first ten channels of a polyphonic input. 
 Optionally the returned channels can be set to `first 10` or `last 10` in the context menu.
 
 -----
@@ -72,18 +73,14 @@ As an additional feature is that every step has a "precision" switch. Setting it
 - `1` “missed notes”: occasionally plays another note from the same sequence
 - `2` “sticky fingers”: occasionally keeps playing the previous note
 
-On the left you find a “precision” knob to influence how often these anomalies happen.
-
-2.1.7 update: reset behaviour was reshaped.
-
-Since 2.1.8 Keyboard shortcuts are available:
+On the left you find a “precision” knob to influence how often these anomalies happen. Available keyboard shortcuts:
 - `i`: alternate values for all note knobs
 - `r`: random values for all note knobs and step lengths
 
 ### Celei
-Celei is the smaller sister of Celesta. Basically it's a simple unquantized note sequencer upto 8 steps with OCT (octave) and RNG (range) settings. A unique feature that you can get a clock signal once a selected step is active. (Setting it to step #1 would return a common EOC signal.) An external TRANSP (transpose) input is also accepted. Special thanks to Andre_M for all the contribution!
+Celei is the smaller sister of Celesta. Basically it's a simple unquantized note sequencer upto 8 steps with OCT (octave) and RNG (range) settings. A unique feature that you can get a clock signal once a selected step is active. (Setting it to step #1 would return a common EOC signal.) An external transpose (TRANSP) input is also accepted. Special thanks to Andre_M for all the contribution!
 
-Since 2.1.8 Keyboard shortcuts are available:
+Keyboard shortcuts are available:
 - `1-8`: alternate value for the selected note knob
 - `i`: alternate values for all note knobs
 - `r`: random values for all note knobs and step lengths
@@ -123,6 +120,7 @@ Keyboard shortcuts are also available:
 - `i`: inverts all buttons values
 - `1-6`: randomizes a certain zone
 - `Shift-1` to `Shift-6`: clears a certain zone
+- `r`: common dice function with unique algorhythm for sequence mode `0` and `3`
 - `x`: records a hit to the first sequence
 - `c`: records a hit to the second sequence (if available)
 - `v`: records a hit to the three sequence (if available)
@@ -136,7 +134,7 @@ Keyboard shortcuts are also available:
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
 
 ### SeqP16
-A tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step you need a clock (see CLK). Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels.
+A tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step a clock (see CLK) is needed. Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels.
 
 -----
 
@@ -153,6 +151,9 @@ A simple fix voltage provider module. The context menu offers
 Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context menu.
 
 <img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
+
+### RandVolt8
+Similar to RandVolt10 but with 8 outputs only. It has no context menu but range options (uni/bi and 0-10V) are moved to the panel. 
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
