@@ -21,6 +21,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
 |[RandVolt10](#RandVolt10)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 |[RandVolt8](#RandVolt8)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
+|[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
+|[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[NearMess](#NearMess)|An almost passive VCA and mixer|
@@ -154,6 +156,15 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 
 ### RandVolt8
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but range options (uni/bi and 0-10V) are moved to the panel. 
+
+### SaveMeMono
+Tricky little module to save and return upto 256 voltages. Source input can be external (see LFO) or internal noise. If internal noise is selected then voltages can be set to be gates (0V or 10V), bi (-5V to 5V), or uni (0v to 10V). The recorded values can be shifted to left (i.e. previous) or right (i.e. next) slot. The output is provided 3 ways:
+- `normal` order
+- `reverse` order
+- `random` order. 
+
+### SaveMeMonoWide
+Similar to SaveMeMono but all options are available from the panel. I love it. 
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
