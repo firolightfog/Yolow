@@ -40,8 +40,8 @@ struct ChSel2 : Module {
 	ChSel2() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configInput(POLYIN_INPUT, "Polyphonic");
-		configParam(SLIDER1_PARAM, 1.f, 16.f, 1.f, "Pick channel A");
-		configParam(SLIDER2_PARAM, 1.f, 16.f, 1.f, "Pick channel B");
+		configParam(SLIDER1_PARAM, 1.f, 16.f, 1.f, "Set A value");
+		configParam(SLIDER2_PARAM, 1.f, 16.f, 1.f, "Set B value");
 		paramQuantities[SLIDER1_PARAM]->snapEnabled = false;
 		paramQuantities[SLIDER2_PARAM]->snapEnabled = false;
 		
@@ -72,8 +72,15 @@ struct ChSel2 : Module {
 			
 			// if the poly input is in then get the channel numbers from the sliders
 			if (inputs[POLYIN_INPUT].isConnected()) {
+				// string chanX="Select one from " + inputs[POLYIN_INPUT].channels + " channels";
 				paramQuantities[SLIDER1_PARAM]->snapEnabled = true;
 				paramQuantities[SLIDER2_PARAM]->snapEnabled = true;
+				paramQuantities[SLIDER1_PARAM]->displayMultiplier = 1.0f;
+				paramQuantities[SLIDER2_PARAM]->displayMultiplier = 1.0f;
+				paramQuantities[SLIDER1_PARAM]->displayOffset = 0.0f;
+				paramQuantities[SLIDER2_PARAM]->displayOffset = 0.0f;
+				paramQuantities[SLIDER1_PARAM]->description = "Select a channel";
+				paramQuantities[SLIDER2_PARAM]->description = "Select a channel";
 				chanA=(int)params[SLIDER1_PARAM].getValue()-1;
 				chanB=(int)params[SLIDER2_PARAM].getValue()-1;
 			} 
@@ -81,7 +88,13 @@ struct ChSel2 : Module {
 			// if the poly input is missing then calculate a fix voltage instead			
 			else {
 				paramQuantities[SLIDER1_PARAM]->snapEnabled = false;
-				paramQuantities[SLIDER2_PARAM]->snapEnabled = false;				
+				paramQuantities[SLIDER2_PARAM]->snapEnabled = false;
+				paramQuantities[SLIDER1_PARAM]->displayMultiplier = 0.66666667f;
+				paramQuantities[SLIDER2_PARAM]->displayMultiplier = 0.66666667f;
+				paramQuantities[SLIDER1_PARAM]->displayOffset = -0.66666667f;
+				paramQuantities[SLIDER2_PARAM]->displayOffset = -0.66666667f;
+				paramQuantities[SLIDER1_PARAM]->description = "Set a fixed voltage";
+				paramQuantities[SLIDER2_PARAM]->description = "Set a fixed voltage";
 				voltA=(params[SLIDER1_PARAM].getValue()-1)/15*20-10;
 				voltB=(params[SLIDER2_PARAM].getValue()-1)/15*20-10;				
 			}

@@ -114,6 +114,42 @@ void keyKnob(int rndSection) {
 	}	
 }
 
+void xrndKnob() {
+	if (indexSeqMode==3) {
+		int theRandomValueForThisStep=rand() % 3;
+		for (int b=0;b<16; b++) {
+			theRandomValueForThisStep=rand() % 3;
+			params[SEQA1_PARAM+b].setValue((theRandomValueForThisStep==0)?1:0);
+			params[SEQA17_PARAM+b].setValue((theRandomValueForThisStep==1)?1:0);
+			params[SEQA33_PARAM+b].setValue((theRandomValueForThisStep==2)?1:0);
+		}			
+	}
+	else if (indexSeqMode==0) {
+		int lastValueHere=-1;
+		for (int b=15;b>=0; b--) {
+			if (paramVal[SEQA1_PARAM+b]==1) {lastValueHere=b; break;}
+		}
+		if (lastValueHere==-1) {
+			params[SEQA1_PARAM].setValue(1);
+			params[SEQA17_PARAM].setValue(1);
+			params[SEQA33_PARAM].setValue(1);			
+			;}
+		else if (lastValueHere==15) {
+			for (int b=48-1;b>=0; b--) {params[SEQA1_PARAM+b].setValue(0);}
+		}	
+		else {
+			params[SEQA1_PARAM+lastValueHere+1].setValue(1);
+			params[SEQA17_PARAM+lastValueHere+1].setValue(1);
+			params[SEQA33_PARAM+lastValueHere+1].setValue(1);
+		}
+	}
+	else {
+		for (int b=SEQA1_PARAM;b<SEQA1_PARAM+48; b++) {
+			params[b].setValue(rand() % 2);
+		}	
+	}	
+}
+
 void clearKnob(int rndSection) {
 	for (int b=8*rndSection;b<8*(rndSection+1);b++) {
 		params[SEQA1_PARAM+b].setValue(0);
@@ -433,17 +469,20 @@ struct PushmeSeqWidget : ModuleWidget {
 				e.consume(this);
 			}
 		}
-		// else if(e.key == GLFW_KEY_I && e.action == GLFW_PRESS) {module->invKnob(); e.consume(this);}
-		else if ((e.key == GLFW_KEY_I) && e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
-		// else if((e.key == GLFW_KEY_I) && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {module->invKnob(); e.consume(this);}
-			module->invKnob(); 
-			e.consume(this);
-		}
 		else if ((e.key == GLFW_KEY_X) || (e.key == GLFW_KEY_C) || (e.key == GLFW_KEY_V) || (e.key == GLFW_KEY_B) || (e.key == GLFW_KEY_N) || (e.key == GLFW_KEY_M)) {
 			if (e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
 				module->beatKnob(e.key); 
 				e.consume(this);
 			}
+		}
+		else if ((e.key == GLFW_KEY_R) && e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
+			module->xrndKnob(); 
+			e.consume(this);
+		}
+		else if ((e.key == GLFW_KEY_I) && e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
+		// else if((e.key == GLFW_KEY_I) && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {module->invKnob(); e.consume(this);}
+			module->invKnob(); 
+			e.consume(this);
 		}
 		ModuleWidget::onHoverKey(e);
 	}

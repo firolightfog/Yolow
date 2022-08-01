@@ -28,6 +28,7 @@ void init(Plugin* p) {
 	p->addModel(modeltXOr);
 	p->addModel(modeltHex);
 	p->addModel(modelnineLives);
+	p->addModel(modelRandVolt8);
 	p->addModel(modelRandVolt10);
 	p->addModel(modelEnveloop);
 	p->addModel(modelCelesta);
@@ -35,6 +36,8 @@ void init(Plugin* p) {
 	p->addModel(modelPushmeSeq);
 	p->addModel(modelNearMess);
 	p->addModel(modelSequin);
+	p->addModel(modelSaveMeMono);
+	p->addModel(modelSaveMeMonoWide);
 
 	// Any other plugin initialization may go here.
 	// As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.

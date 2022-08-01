@@ -60,19 +60,30 @@ struct RandVolt10 : Module {
 		configOutput(OUT10_OUTPUT, "");
 	}
 
+	// int indexRange=3;
+	// int modRange=0;
+	// int dnRange[8]={0,0,0,0,-1,-3,-5,-10};
+	// int upRange[8]={1,3,5,10,1,3,5,10};
+
 	int indexRange=1;
-	int modRange=0;
+	int dnRange[2]={-5,0};
+	int upRange[2]={5,10};
 	bool newTrig=false;
 	bool oldTrig=false;
+	
     // the main routine
 	void process(const ProcessArgs& args) override {
-		
-		if (inputs[POLYIN_INPUT].isConnected()) {
-		
+		if (inputs[POLYIN_INPUT].isConnected()) {		
 			newTrig=inputs[POLYIN_INPUT].getVoltage()>2;
 			if (newTrig==true && oldTrig==false) { 
-				modRange=(indexRange==0)?-5:0;
-				for (int c=0; c<10; c++) {outputs[OUT1_OUTPUT+c].setVoltage(rack::random::uniform()*10+modRange);}
+				// modRange=(indexRange==0)?-5:0;				
+				for (int c=0; c<10; c++) {
+					outputs[OUT1_OUTPUT+c].setVoltage(rack::random::uniform()
+					* 10
+					// * (upRange[indexRange]-dnRange[indexRange])
+					+ dnRange[indexRange]);
+					}
+				// for (int c=0; c<10; c++) {outputs[OUT1_OUTPUT+c].setVoltage(rack::random::uniform()*10+modRange);}
 				oldTrig=newTrig;
 			}
 			else if (newTrig==false && oldTrig==true) {oldTrig=newTrig;}
@@ -133,6 +144,15 @@ struct RandVolt10Widget : ModuleWidget {
 		assert(module);
 		menu->addChild(new MenuSeparator);
 		// menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
+		// menu->addChild(createIndexPtrSubmenuItem("Range", {
+			// "0V to 1V",
+			// "0V to 3V",
+			// "0V to 5V",
+			// "0V to 10V",
+			// "-1V to 1V",
+			// "-3V to 3V",
+			// "-5V to 5V",
+			// "-10V to 10V"}, &module->indexRange));
 		menu->addChild(createIndexPtrSubmenuItem("Range", {"-5V to 5V","0 to 10V"}, &module->indexRange));
 	}
 
