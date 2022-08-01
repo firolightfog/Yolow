@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -10,7 +10,7 @@
   "manualUrl": "https://github.com/firolightfog/Yolow",
   "sourceUrl": "https://github.com/firolightfog/Yolow/tree/main/src",
   "donateUrl": "https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU",
-  "changelogUrl": "",
+  "changelogUrl": "https://github.com/firolightfog/Yolow/blob/main/CHANGES.md",
   "modules": [
     {
       "slug": "PolyCopy10",
@@ -239,6 +239,22 @@
       ]
     },
     {
+      "slug": "RandVolt8",
+      "name": "Random Voltage 8",
+      "description": "Provides 8 lovely random voltages in with adjustable range for a trigger",
+      "keywords": [
+		"rnd",
+		"fix",
+		"RV8",
+        "RandVolt",
+		"ten"
+		],
+      "tags": [
+        "Random",
+        "Utility"
+      ]
+    },
+    {
       "slug": "ChSel6",
       "name": "Channel Selector 6",
       "description": "A module to select six of your favorite channels from a polyphonic input",
@@ -336,6 +352,18 @@
       "tags": [
         "Mixer", "VCA"
       ]
+    },
+    {
+      "slug": "SaveMeMono",
+      "name": "SaveMeMono",
+      "description": "Saving and replaying a sequence of voltages",
+      "tags": ["Sequencer"]
+    },
+    {
+      "slug": "SaveMeMonoWide",
+      "name": "SaveMeMonoWide",
+      "description": "Saving and replaying a sequence of voltages",
+      "tags": ["Sequencer"]
     },
     {
       "slug": "Sequin",
