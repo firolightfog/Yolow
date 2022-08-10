@@ -30,6 +30,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
 |[Enveloop](#Enveloop)|Looping envelope generator|
+|[QuantET](#QuantET)|Quantizer with variable equal distribution scales|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
@@ -212,6 +213,12 @@ The context menu of the module provides two gate modes:
 The module was inspired by the mighty [Arido](https://solcitomusica.blogspot.com/p/virtuales.html) VST of Solcitomusic. It was also motivating that I found only a few envelope generators with a built in VCA in the VCV Library. 
 
 <img width="298" alt="image" src="https://user-images.githubusercontent.com/34127628/173998298-82dfa826-579d-4bc5-b02e-202e10c019b4.png">
+
+### QuantET
+
+Quantizer with variable equal distribution scales. Following the comments of [this](https://community.vcvrack.com/t/whats-your-favorite-musical-scale/17970/40) VCV Community Forum and reading a bit about the history of the [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament) I decided to create a barebone quantizer that allows variable [ET](https://en.wikipedia.org/wiki/Equal_temperament). (Including the famous [19ET](https://en.wikipedia.org/wiki/19_equal_temperament), [53ET](https://en.wikipedia.org/wiki/53_equal_temperament), and others.)
+
+The module is less of a faithful recreation of historical scales than a quick experiment of various divisions. It includes a VCA also for the noise input and some other common features I usually use. There are another [great ET/EDO implementations](https://library.vcvrack.com/?query=equal+division&brand=&tag=&license=) in the Library.
 
 ### tXOr
 This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. 
