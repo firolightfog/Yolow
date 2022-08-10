@@ -1,5 +1,10 @@
 # Changelog
 
+v2.1.11 2022-08-10
+- new module added as QuantET with variable equally distributed scales
+- bug fix in Randvolt8 to show uni/bi switch values properly
+- modifying description labels in SaveMeMono and SaveMeMonoWide
+
 v2.1.10 2022-08-01
 - new module added as RandVolt8 providing stepped/fixed voltages 
 - new shortkey for Pushme to randomize all buttons ('R') including exclusive dice for the 3x16 mode and the 1x48 random mode
