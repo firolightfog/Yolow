@@ -10,7 +10,7 @@ struct Enveloop : Module {
 		WAVE_SIZE_PARAM, PARAMS_LEN};
 
 	enum InputId    {
-		GATE_INPUT, AUDIO_INPUT_INPUT, NOISE_INPUT_INPUT, INPUTS_LEN};
+		GATE_INPUT, AUDIO_INPUT_INPUT, NOISE_INPUT_INPUT, ATTACK_START_INPUT, INPUTS_LEN};
 
 	enum OutputId    {
 		AUDIO_OUTPUT_OUTPUT, ENVELOPE_OUTPUT, OUTPUTS_LEN};
@@ -40,7 +40,7 @@ struct Enveloop : Module {
 		configInput(GATE_INPUT, "Gate"); 
 		configInput(AUDIO_INPUT_INPUT, "Audio"); 
 		configInput(NOISE_INPUT_INPUT, "Noise"); 
-
+		// configInput(ATTACK_START_INPUT, "Hidden attack start");
 		configOutput(AUDIO_OUTPUT_OUTPUT, "Clean env || Audio"); 
 		configOutput(ENVELOPE_OUTPUT, "Envelope"); 
 	}
@@ -186,6 +186,7 @@ struct EnveloopWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
+		// childInput(Enveloop::ATTACK_START_INPUT, HP*1.5, HP*5); // hiddden behind the knob
 		childKnob(Enveloop::ATTACK_START_PARAM, 1, HP*1.5, HP*5);
 		childSwitch(Enveloop::WAVE_SIZE_PARAM, 1, HP*3, HP*5);		
 		childKnob(Enveloop::ATTACK_SLEW_PARAM, 2, HP*2, HP*8);

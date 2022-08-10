@@ -104,12 +104,14 @@ struct SaveMeMonoWide : Module {
 		}
 		indexShift=-1;
 	}
-	
+		
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
-			loop=8125;
 			// save some more CPU
+			loop=8125;
+
+			// collect some important variables
 			allSteps=params[STEPS_PARAM].getValue();
 			hitRecord=params[RECORD_PARAM].getValue();
 			lights[LED_RECORD_PARAM].setBrightness(hitRecord);
@@ -119,19 +121,31 @@ struct SaveMeMonoWide : Module {
 			if (params[LEFT_PARAM].getValue()==1) {indexShift=0;}
 			if (params[RIGHT_PARAM].getValue()==1) {indexShift=1;}
 			
-			if (indexPW==0) {paramQuantities[PW_PARAM]->description = ("Pulse width is set to full");}
-			else if (indexPW==1) {paramQuantities[PW_PARAM]->description = ("Pulse width is set according to the clock input");}
-			if (indexLFO==0) {paramQuantities[LFOMODE_PARAM]->description = ("Gates are provided if no LFO is connected");}
-			else if (indexLFO==1) {paramQuantities[LFOMODE_PARAM]->description = ("-5V to 5V range if no LFO is nonnected");}
-			else if (indexLFO==2) {paramQuantities[LFOMODE_PARAM]->description = ("0V to 10V range if no LFO is connected");}
-			if (indexRec==0) {paramQuantities[RECMODE_PARAM]->description = ("Single cycle is recorded");}
-			else if (indexRec==1) {paramQuantities[RECMODE_PARAM]->description = ("Single step is recorded");}
-			else if (indexRec==2) {paramQuantities[RECMODE_PARAM]->description = ("Non-stop recording");}
-			
+			// collect some more variables
 			clockIn=inputs[CLOCK_INPUT].isConnected();
 			lfoIn=inputs[MONO_LFO_INPUT].isConnected();
-			// paramQuantities[RECORD_PARAM]->description = ("Recording mode: " + indexRec);
 			if (indexShift!=-1) {shiftSeq();}	// ugly stuff
+			
+			// this section is only about updating the descriptions
+			std::string sx="";
+			if (indexPW==0) {
+				paramQuantities[PW_PARAM]->description = ("Pulse width is set to full");}
+			else if (indexPW==1) {
+				paramQuantities[PW_PARAM]->description = ("Pulse width is set according to the clock input");}
+			if (indexRec==0) {sx+="Single cycle";
+				paramQuantities[RECMODE_PARAM]->description = ("Single cycle is recorded");}
+			else if (indexRec==1) {sx+="Single step";
+				paramQuantities[RECMODE_PARAM]->description = ("Single step is recorded");}
+			else if (indexRec==2) {sx+="Non-stop";
+				paramQuantities[RECMODE_PARAM]->description = ("Non-stop recording");}
+			if (indexLFO==0) {sx+=(lfoIn)?" from LFO":" & Gates";
+				paramQuantities[LFOMODE_PARAM]->description = ("Gates are provided if no LFO is connected");}
+			else if (indexLFO==1) {sx+=(lfoIn)?" from LFO":" & -5V to +5V";
+				paramQuantities[LFOMODE_PARAM]->description = ("-5V to 5V range if no LFO is nonnected");}
+			else if (indexLFO==2) {sx+=(lfoIn)?" from LFO":" & 0V to 10V";
+				paramQuantities[LFOMODE_PARAM]->description = ("0V to 10V range if no LFO is connected");}
+			paramQuantities[RECORD_PARAM]->description = sx;
+						
 		}
 
 		// set recording start if needed

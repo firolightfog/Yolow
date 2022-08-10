@@ -26,7 +26,7 @@ struct RandVolt8 : Module {
 
 	RandVolt8() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(UNI_PARAM, 	0.0f, 1.0f, 1.0f, "0: Bi, 1:Uni");
+		configParam(UNI_PARAM, 	0.0f, 1.0f, 1.0f, "Bipolar or unipolar");
 		configParam(RANGE_PARAM, 	1.0f, 10.0f, 10.f, "Range V (upper)");
 		paramQuantities[UNI_PARAM]->snapEnabled = true;
 		paramQuantities[RANGE_PARAM]->snapEnabled = true;
@@ -53,12 +53,13 @@ struct RandVolt8 : Module {
 	bool doItRarely=false;
 	float newVolt=0.0f;
 	bool clockIn=false;
-
+	
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
 			loop=9000;
 			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
+			paramQuantities[UNI_PARAM]->description = (paramVal[UNI_PARAM]==0)?"The values are bipolar":"The values are unipolar";
 			clockIn=inputs[CLOCK_INPUT].isConnected();
 			doItRarely=true;
 			// save some more CPU

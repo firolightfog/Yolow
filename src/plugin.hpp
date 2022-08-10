@@ -39,3 +39,4 @@ extern Model* modelNearMess;
 extern Model* modelSequin;
 extern Model* modelSaveMeMono;
 extern Model* modelSaveMeMonoWide;
+extern Model* modelQuantET;

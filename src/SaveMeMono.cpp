@@ -1,6 +1,4 @@
 // Copyright (c) 2022 András Szabó
-// looks OK, can go to Yolow
-// to be tested: record another sequencer (CV or gate)
 // too many menu items -> panel to be redesigned
 
 #include "plugin.hpp"
@@ -29,7 +27,7 @@ struct SaveMeMono : Module {
 
 	SaveMeMono() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(STEPS_PARAM, 	1.0f, 256.0f, 16.0f, "Steps");
+		configParam(STEPS_PARAM, 	1.0f, 256.0f, 16.0f, "Number of steps");
 		configParam(RECORD_PARAM, 	0.0f, 1.0f, 0.0f, "Start/stop recording");
 		paramQuantities[STEPS_PARAM]->snapEnabled = true;
 		paramQuantities[RECORD_PARAM]->snapEnabled = true;
@@ -37,8 +35,8 @@ struct SaveMeMono : Module {
 
 		configInput(MONO_LFO_INPUT, "Mono LFO"); 
 		configInput(RECORD_INPUT, "Start/stop recording"); 
-		configInput(CLOCK_INPUT, "Mono load trigger"); 
-		configInput(RESET_INPUT, "Mono load reset"); 
+		configInput(CLOCK_INPUT, "Clock"); 
+		configInput(RESET_INPUT, "Reset"); 
 
 		configOutput(MONO_REPLAY_OUTPUT, "Mono replay"); 
 		configOutput(REVERSE_REPLAY_OUTPUT, "Reverse replay"); 
@@ -60,6 +58,7 @@ struct SaveMeMono : Module {
 	
 	// more variables
 	float theSeq[256]={0};	// this contains the sequence, 256 slots available
+	// int theShuffle[256]={0};
 	int allSteps=16;		// set the number of active steps
 	int hitRecord=0;		// on the air?
 
@@ -86,6 +85,7 @@ struct SaveMeMono : Module {
 			for (int s=allSteps-1;s>0;s--) {theSeq[s]=theSeq[s-1];}
 			theSeq[0]=tempStep;
 		}
+		// theShuffle[allSteps]=std::random_shuffle(&theShuffle[0], &theShuffle[allSteps]);
 		indexShift=-1;
 	}
 	
@@ -101,6 +101,17 @@ struct SaveMeMono : Module {
 			lfoIn=inputs[MONO_LFO_INPUT].isConnected();
 			// paramQuantities[RECORD_PARAM]->description = ("Recording mode: " + indexRec);
 			if (indexShift!=-1) {shiftSeq();}	// ugly stuff
+
+			// this section is only about updating the descriptions
+			std::string sx="";
+			if (indexRec==0) {sx+="Single cycle";}
+			else if (indexRec==1) {sx+="Single step";}
+			else if (indexRec==2) {sx+="Non-stop";}
+			if (indexLFO==0) {sx+=(lfoIn)?" from LFO":" & Gates";}
+			else if (indexLFO==1) {sx+=(lfoIn)?" from LFO":" & -5V to +5V";}
+			else if (indexLFO==2) {sx+=(lfoIn)?" from LFO":" & 0V to 10V";}
+			paramQuantities[RECORD_PARAM]->description = sx;
+
 		}
 
 		// set recording start if needed
@@ -128,6 +139,7 @@ struct SaveMeMono : Module {
 				else if (indexLFO==2) {pickVolt=(rack::random::uniform()*10);}		// internal LFO for '0V to 10V'
 				else if (indexLFO==0) {pickVolt=(rand() % 2) *10;}					// internal LFO for gate sequences
 				theSeq[currPos]=pickVolt;	// write it to the sequence step/slot
+				// theShuffle[currPos]=currPos;
 		
 				// this sction allows switching off recording (see toggle/momentary)
 				if (indexRec==1) {params[RECORD_PARAM].setValue(0);}	// momentary
@@ -156,7 +168,7 @@ struct SaveMeMono : Module {
 			outputs[RANDOM_REPLAY_OUTPUT].setVoltage(0);			
 		}
 		oldClock=newClock;
-	
+
 	}
 
 	// --------------------------------------------------

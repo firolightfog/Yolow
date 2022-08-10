@@ -201,7 +201,12 @@ void rndKnob() {
 		else if (indexQuant==1) {return round(oldVal);}
 		else {return round(oldVal*12)/12;}
 	}
-
+	
+/* 	// itt új
+	std::string labelPrec[3]={"mr. perfect","missed notes","sticky fingers"};
+	std::string sx=""; 
+*/
+	
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
@@ -230,6 +235,17 @@ void rndKnob() {
 				lights[LED_SEQ_C_RUN_PARAM].setBrightness(0);
 				params[SEQ_C_RUN_PARAM].setValue(0);
 			}
+			
+/* 			// itt új
+			for (int p=SEQ_A_1_PRECISION_PARAM; p<=SEQ_C_8_PRECISION_PARAM; p++) {
+				// sx="Set to "+labelPrec[params[p].getValue()];
+				// sx="Set to "+labelPrec[0];
+				sx="Set to ...";
+				paramQuantities[p]->description = "sx";
+			}		
+ */			
+			paramQuantities[SEQ_A_1_PRECISION_PARAM]->description = "OK?";
+			
 		}
 
 		// let's see the reset signal
