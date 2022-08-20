@@ -65,6 +65,11 @@ void childLight(int objId, int colorId, float posA, float posB) {
 		case 2:	addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
 		case 3:	addChild(createLightCentered<MediumLight<WhiteLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
 		case 4:	addChild(createLightCentered<MediumLight<YellowLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
+		case 10:	addChild(createLightCentered<TinySimpleLight<RedLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
+		case 11:	addChild(createLightCentered<TinySimpleLight<GreenLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
+		case 12:	addChild(createLightCentered<TinySimpleLight<BlueLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
+		case 13:	addChild(createLightCentered<TinySimpleLight<WhiteLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
+		case 14:	addChild(createLightCentered<TinySimpleLight<YellowLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
 		case 1975125:	addChild(createLightCentered<TinySimpleLight<YellowLight>>(mm2px(Vec(posA, posB)), module, objId)); break;
 		default: addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(posA, posB)), module, objId)); 
 	}
