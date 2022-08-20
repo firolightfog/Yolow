@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -346,6 +346,15 @@
       ]
     },
     {
+      "slug": "RotaTrig",
+      "name": "RotaTrig",
+      "description": "Router to send the input somewhere",
+      "tags": [
+        "Utility",
+		"Switch"
+      ]
+    },
+    {
       "slug": "NearMess",
       "name": "NearMess Mixer",
       "description": "An almost passive mixer",
@@ -377,20 +386,37 @@
       "slug": "QuantET",
       "name": "QuantET",
       "description": "Quantizer with variable equal distribution scales",
-      "tags": [
-        "Quantizer"
-      ]
-    }, 
-    {
-      "slug": "ChSel2",
-      "name": "Channel Selector 2",
-      "description": "A double module to select by CV/manually your favorite channel from a polyphonic input",
       "keywords": [
         "EDO",
         "ET",
         "equal temperament",
 		"equal distribution scale"
       ],
+      "tags": [
+        "Quantizer"
+      ]
+    }, 
+    {
+      "slug": "Quant12",
+      "name": "Quant12",
+      "description": "Traditional monophonic quantizer transpose and trigger inputs",
+      "tags": [
+        "Quantizer"
+      ]
+    }, 
+    {
+      "slug": "FromTo",
+      "name": "FromTo",
+      "description": "Provides equally distributed control voltages",
+      "tags": [
+        "Polyphonic",
+        "Sequencer"
+      ]
+    }, 
+    {
+      "slug": "ChSel2",
+      "name": "Channel Selector 2",
+      "description": "A double module to select by CV/manually your favorite channel from a polyphonic input",
       "tags": [
         "Utility",
         "Switch",
