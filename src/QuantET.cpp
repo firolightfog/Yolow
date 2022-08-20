@@ -28,11 +28,11 @@ struct QuantET : Module {
 	QuantET() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(EQUAL_TEMPERIEMNT_PARAM, 	1.0f, 53.0f, 12.0f, "Equal temperiemnt");
-		configParam(NUMBER_OF_NOTES_PARAM, 		0.0f, 1.0f, 1.0f, "Number of notes","%", 0, 100);
-		configParam(MODE_PARAM, 				0.0f, 2.0f, 1.0f, "Mode");
-		configParam(TRIGGER_PROBABILITY_PARAM, 	0.0f, 1.0f, 1.0f, "A trigger probability","%", 0, 100);
-		configParam(NOISE_ATTENUATOR_PARAM, 	0.0f, 1.0f, 1.0f, "A noise attenuator","%", 0, 100);
-		configParam(TRANSPOSE_ATTENUATOR_PARAM,	0.0f, 1.0f, 1.0f, "A transpose attenuator","%", 0, 100);
+		configParam(NUMBER_OF_NOTES_PARAM, 		0.0f, 1.0f, 0.42f, "Number of notes allowed","%", 0, 100);
+		configParam(MODE_PARAM, 				0.0f, 2.0f, 0.0f, "Mode");
+		configParam(TRIGGER_PROBABILITY_PARAM, 	0.0f, 1.0f, 1.0f, "Trigger probability","%", 0, 100);
+		configParam(NOISE_ATTENUATOR_PARAM, 	0.0f, 1.0f, 1.0f, "Noise attenuator","%", 0, 100);
+		configParam(TRANSPOSE_ATTENUATOR_PARAM,	0.0f, 1.0f, 0.0f, "Transpose attenuator","%", 0, 100);
 		paramQuantities[EQUAL_TEMPERIEMNT_PARAM]->randomizeEnabled = false;
 		paramQuantities[EQUAL_TEMPERIEMNT_PARAM]->snapEnabled = true;
 		paramQuantities[MODE_PARAM]->snapEnabled = true;
@@ -42,8 +42,8 @@ struct QuantET : Module {
 		configInput(TRANSPOSE_INPUT, "Transpose"); 
 
 		configOutput(NOTE_OUTPUT, "Quantized note"); 
-		configOutput(POLY_ALLOWED_OUTPUT, "Short listed notes"); 
-		configOutput(POLY_FULL_OUTPUT, "All available notes"); 
+		configOutput(POLY_ALLOWED_OUTPUT, "Upto 16 of the allowed notes"); 
+		configOutput(POLY_FULL_OUTPUT, "Upto 16 of all notes"); 
 	}
 
 // --------------------------------------------------
@@ -53,15 +53,15 @@ struct QuantET : Module {
 	float oldClock=0.0f;
 	bool hitClock=false;
 	const int CLOCK_INPUT=TRIGGER_INPUT;
-	bool clockIn=false;
-	bool noiseIn=false;
-	int indexRndScale=0;
+	bool clockIn=false;	// any clock plugged in?
+	bool noiseIn=false;	// any noise plugged in?
+	/* int indexRndScale=0; */
 	
 	// some labels for the parameters
 	std::string modeList[3]={
-		"Quantize and add the transpose CV",
 		"Add the transpose CV and quantize",
-		"Ignore transpose CV"};
+		"Ignore transpose CV",
+		"Quantize and add the transpose CV"};
 
 	// --------------------------------------------------
 	
@@ -80,17 +80,17 @@ struct QuantET : Module {
 	void euclid(int steps, int pulses, int rotation){
 		memset(euclidArray, 0, sizeof(euclidArray));
 		int currpos=0;
-		if (indexRndScale==1) {
-			while (pulses > 0) {
-				currpos=rand()%steps;
-				if (euclidArray[currpos]==0) {euclidArray[currpos]=1;pulses--;}
-			}
-		}
-		else {
+		// if (indexRndScale==1) {
+			// while (pulses > 0) {
+				// currpos=rand()%steps;
+				// if (euclidArray[currpos]==0) {euclidArray[currpos]=1;pulses--;}
+			// }
+		// }
+		// else {
 			for (currpos=0;currpos<steps;currpos++) {
 				euclidArray[currpos]=(((currpos*pulses) % steps) < pulses)?1:0;			
 			}	
-		}
+		// }
 	}
 
 	// --------------------------------------------------
@@ -122,9 +122,10 @@ struct QuantET : Module {
 		// OK, setOfAllowedNotes is ready: let's calculate
 		float theOct=0.0f;
 		float theNote=0.0f;	
-		float transpVolt=0.0f;
-		if (paramVal[MODE_PARAM]!=2) {transpVolt=inputs[TRANSPOSE_INPUT].getVoltage();}	// transpose voltage
-		if (paramVal[MODE_PARAM]==1) {startVolt=startVolt+transpVolt*paramVal[TRANSPOSE_ATTENUATOR_PARAM];}
+		float transpVolt=1.0f;
+		if (paramVal[MODE_PARAM]!=1 && inputs[TRANSPOSE_INPUT].isConnected() ) {
+			transpVolt=inputs[TRANSPOSE_INPUT].getVoltage();}	// transpose voltage
+		if (paramVal[MODE_PARAM]==0) {startVolt=startVolt+transpVolt*paramVal[TRANSPOSE_ATTENUATOR_PARAM];}
 		theOct=floor(startVolt);
 		theNote=startVolt-theOct;
 
@@ -136,7 +137,7 @@ struct QuantET : Module {
 			}
 		}
 
-		if (paramVal[MODE_PARAM]==0) {startVolt=startVolt+transpVolt*paramVal[TRANSPOSE_ATTENUATOR_PARAM];}
+		if (paramVal[MODE_PARAM]==2) {startVolt=startVolt+transpVolt*paramVal[TRANSPOSE_ATTENUATOR_PARAM];}
 		outputs[NOTE_OUTPUT].setVoltage(startVolt);
 		
 		/*		
@@ -188,8 +189,10 @@ struct QuantET : Module {
 			outputs[POLY_ALLOWED_OUTPUT].channels=((int)oldET*oldNR>16)?16:oldET*oldNR;
 			int i=0;
 			for (int p=0;p<oldET;p++) {
-				if (euclidArray[p]==1) {outputs[POLY_ALLOWED_OUTPUT].setVoltage(setOfNotes[p],i);
-				i++; if (i>outputs[POLY_ALLOWED_OUTPUT].channels) {break;}
+				if (euclidArray[p]==1) {
+					outputs[POLY_ALLOWED_OUTPUT].setVoltage(setOfNotes[p],i);	// I hadd to add the transpose somehow
+					i++; 
+					if (i>outputs[POLY_ALLOWED_OUTPUT].channels) {break;}
 				}
 			}
 
@@ -259,18 +262,24 @@ struct QuantETWidget : ModuleWidget {
 		childKnob(QuantET::TRANSPOSE_ATTENUATOR_PARAM, 0, HP*1, HP*18.25);
 		childInput(QuantET::TRANSPOSE_INPUT, HP*3, HP*18.25);
 
-		childOutput(QuantET::POLY_FULL_OUTPUT, HP*1, HP*21.5);
-		childOutput(QuantET::POLY_ALLOWED_OUTPUT, HP*3, HP*21.5);
-		childOutput(QuantET::NOTE_OUTPUT, HP*2, HP*23.0);
+		childOutput(QuantET::POLY_ALLOWED_OUTPUT, HP*1, HP*21.5);
+		childOutput(QuantET::NOTE_OUTPUT, HP*3, HP*21.5);
+		childOutput(QuantET::POLY_FULL_OUTPUT, HP*2, HP*23.0);
+
+		// childOutput(QuantET::POLY_FULL_OUTPUT, HP*1, HP*21.5);
+		// childOutput(QuantET::POLY_ALLOWED_OUTPUT, HP*3, HP*21.5);
+		// childOutput(QuantET::NOTE_OUTPUT, HP*2, HP*23.0);
 		
 	}
 
+/*
 	void appendContextMenu(Menu* menu) override {
 		QuantET* module = dynamic_cast<QuantET*>(this->module);
 		assert(module);
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Scale generator mode", {"Euclidean","Random"}, &module->indexRndScale));
 	}
+*/
 
 };
 

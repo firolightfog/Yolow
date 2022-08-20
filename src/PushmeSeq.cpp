@@ -45,54 +45,54 @@ struct PushmeSeq : Module {
 
 	PushmeSeq() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(SEQA1_PARAM, 	0.0f, 1.0f, 1.0f, "SeqA1");
-		configParam(SEQA2_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA2");
-		configParam(SEQA3_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA3");
-		configParam(SEQA4_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA4");
-		configParam(SEQA5_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA5");
-		configParam(SEQA6_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA6");
-		configParam(SEQA7_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA7");
-		configParam(SEQA8_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA8");
-		configParam(SEQA9_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA9");
-		configParam(SEQA10_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA10");
-		configParam(SEQA11_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA11");
-		configParam(SEQA12_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA12");
-		configParam(SEQA13_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA13");
-		configParam(SEQA14_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA14");
-		configParam(SEQA15_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA15");
-		configParam(SEQA16_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA16");
-		configParam(SEQA17_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA17");
-		configParam(SEQA18_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA18");
-		configParam(SEQA19_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA19");
-		configParam(SEQA20_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA20");
-		configParam(SEQA21_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA21");
-		configParam(SEQA22_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA22");
-		configParam(SEQA23_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA23");
-		configParam(SEQA24_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA24");
-		configParam(SEQA25_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA25");
-		configParam(SEQA26_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA26");
-		configParam(SEQA27_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA27");
-		configParam(SEQA28_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA28");
-		configParam(SEQA29_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA29");
-		configParam(SEQA30_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA30");
-		configParam(SEQA31_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA31");
-		configParam(SEQA32_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA32");
-		configParam(SEQA33_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA33");
-		configParam(SEQA34_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA34");
-		configParam(SEQA35_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA35");
-		configParam(SEQA36_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA36");
-		configParam(SEQA37_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA37");
-		configParam(SEQA38_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA38");
-		configParam(SEQA39_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA39");
-		configParam(SEQA40_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA40");
-		configParam(SEQA41_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA41");
-		configParam(SEQA42_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA42");
-		configParam(SEQA43_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA43");
-		configParam(SEQA44_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA44");
-		configParam(SEQA45_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA45");
-		configParam(SEQA46_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA46");
-		configParam(SEQA47_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA47");
-		configParam(SEQA48_PARAM, 	0.0f, 1.0f, 0.0f, "SeqA48");
+		configParam(SEQA1_PARAM, 	0.0f, 1.0f, 1.0f, "Zone 1 - SeqA1");
+		configParam(SEQA2_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA2");
+		configParam(SEQA3_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA3");
+		configParam(SEQA4_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA4");
+		configParam(SEQA5_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA5");
+		configParam(SEQA6_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA6");
+		configParam(SEQA7_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA7");
+		configParam(SEQA8_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 1 - SeqA8");
+		configParam(SEQA9_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA9");
+		configParam(SEQA10_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA10");
+		configParam(SEQA11_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA11");
+		configParam(SEQA12_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA12");
+		configParam(SEQA13_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA13");
+		configParam(SEQA14_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA14");
+		configParam(SEQA15_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA15");
+		configParam(SEQA16_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 2 - SeqA16");
+		configParam(SEQA17_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA17");
+		configParam(SEQA18_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA18");
+		configParam(SEQA19_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA19");
+		configParam(SEQA20_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA20");
+		configParam(SEQA21_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA21");
+		configParam(SEQA22_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA22");
+		configParam(SEQA23_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA23");
+		configParam(SEQA24_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 3 - SeqA24");
+		configParam(SEQA25_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA25");
+		configParam(SEQA26_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA26");
+		configParam(SEQA27_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA27");
+		configParam(SEQA28_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA28");
+		configParam(SEQA29_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA29");
+		configParam(SEQA30_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA30");
+		configParam(SEQA31_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA31");
+		configParam(SEQA32_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 4 - SeqA32");
+		configParam(SEQA33_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA33");
+		configParam(SEQA34_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA34");
+		configParam(SEQA35_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA35");
+		configParam(SEQA36_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA36");
+		configParam(SEQA37_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA37");
+		configParam(SEQA38_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA38");
+		configParam(SEQA39_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA39");
+		configParam(SEQA40_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA40");
+		configParam(SEQA41_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA41");
+		configParam(SEQA42_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 5 - SeqA42");
+		configParam(SEQA43_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 6 - SeqA43");
+		configParam(SEQA44_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 6 - SeqA44");
+		configParam(SEQA45_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 6 - SeqA45");
+		configParam(SEQA46_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 6 - SeqA46");
+		configParam(SEQA47_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 6 - SeqA47");
+		configParam(SEQA48_PARAM, 	0.0f, 1.0f, 0.0f, "Zone 6 - SeqA48");
 			
 		configParam(INDEXSEQMODE, 	0.0f, 6.0f, 3.0f, "Sequence mode");
 		paramQuantities[INDEXSEQMODE]->randomizeEnabled = false;
@@ -243,6 +243,8 @@ void invKnob() {
 	Maybe in v2.99.0 :)
 	*/
 	
+	const std::string labelSeqMode[7]={"1x48 random","1x48","1x32 + 1x16","3x16","2x16 + 2x8","1x16 + 4x8 (last random)","6x8 (last random)"};
+	
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
@@ -250,6 +252,7 @@ void invKnob() {
 			// save some more CPU
 			indexSeqMode=params[INDEXSEQMODE].getValue();
 			// indexSeqMode: 0 (random) 1 (1x48) 2 (1x32+1x16) 3 (3x16) 4 (2x16+2x8) 5 (1x16+4x8) 6 (6x8)
+			paramQuantities[INDEXSEQMODE]->description = labelSeqMode[indexSeqMode];
 			if (indexSeqMode==0) {outputs[TRIGGER_OUTPUT].channels=1;}
 			else if (indexSeqMode==1) {outputs[TRIGGER_OUTPUT].channels=1;}
 			else if (indexSeqMode==2) {outputs[TRIGGER_OUTPUT].channels=2;}
