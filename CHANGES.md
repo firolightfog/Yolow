@@ -1,5 +1,13 @@
 # Changelog
 
+v2.1.12 2022-08-20
+- modifying descriptions and labels in QuantET, PushMe
+- patch breaking change in QuantET MODE the order of options
+- layout change of swapped sockets in QuantET
+- new module added as RotaTrig (routing)
+- new module added as FromTo (theMatrix stepper)
+- new module added as Quant12 (quantizer)
+
 v2.1.11 2022-08-10
 - new module added as QuantET with variable equally distributed scales
 - bug fix in Randvolt8 to show uni/bi switch values properly
