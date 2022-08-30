@@ -162,9 +162,9 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (uni/bi and 0-10V) are on the panel. 
 
 ### FromTo
-This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with the docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix).
+This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix).
 
-The OUT is monophonic by default but switch allows you to receive the same CV on multiple channels. I don't remember why I needed this... 
+The OUT is monophonic by default but a switch allows you to have multiple copies of the same CV on multiple channels of a polyphonic OUT. I don't remember why I needed this... 
 
 ### RotaTrig
 This module sends the incoming clock randomly, or sequentially to the outputs. The number of outputs can be set between 1 and 6 (see SLOTS). Note that priority is given to the output that has received an enabling (ENBL) trigger.
