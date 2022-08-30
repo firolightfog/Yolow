@@ -167,7 +167,10 @@ This module provides stepped voltage in a specific range (FROM and TO) according
 The OUT is monophonic by default but switch allows you to receive the same CV on multiple channels. I don't remember why I needed this... 
 
 ### RotaTrig
-This module sends the incoming randomly, or sequentially to the outputs. Feeding an looping LFO (0-10V) to the CLK socket you can also send the voltages semi-randomly to the outputs. The number of outputs can be set between 1 and 6 (see SLOTS). Note that priority is given to the output that has received an enabling (ENBL) trigger.
+This module sends the incoming clock randomly, or sequentially to the outputs. The number of outputs can be set between 1 and 6 (see SLOTS). Note that priority is given to the output that has received an enabling (ENBL) trigger.
+
+Feeding an looping LFO (0-10V) to the CLK socket you can also send the voltages semi-randomly to the outputs. Like this:
+<img width="714" alt="image" src="https://user-images.githubusercontent.com/34127628/187549668-e54ad8a6-10b0-48e2-a6de-fd032893bbd9.png">
 
 ### SaveMeMono
 Tricky little module to save and return upto 256 voltages. Source input can be external (see LFO) or internal noise. If internal noise is selected then voltages can be set to be gates (0V or 10V), bi (-5V to 5V), or uni (0v to 10V). The recorded values can be shifted to left (i.e. previous) or right (i.e. next) slot. There's a tiny yellow LED indicating the voltage of the first step. The output is provided 3 ways:
