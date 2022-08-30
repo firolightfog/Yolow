@@ -21,6 +21,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
 |[RandVolt10](#RandVolt10)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 |[RandVolt8](#RandVolt8)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
+|[FromTo](#FromTo)|Provides stepped voltage in a range|
+|[RotaTrig](#RotaTrig)|Distributes incoming clock in carious ways|
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
@@ -110,7 +112,7 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
 
-- `0`: pick randomly from 48 steps (monophonic output)
+- `0`: picks randomly from 48 steps (monophonic output)
 - `1`: 1x48 steps (with monophonic output)
 - `2`: 1x32 + 1x16 steps (with 2-channel polyphonic output)
 - `3`: 3x16 steps (with 3-channel polyphonic output)
@@ -157,10 +159,18 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 <img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
 
 ### RandVolt8
-Similar to RandVolt10 but with 8 outputs only. It has no context menu but range options (uni/bi and 0-10V) are moved to the panel. 
+Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (uni/bi and 0-10V) are on the panel. 
+
+### FromTo
+This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with the docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix).
+
+The OUT is monophonic by default but switch allows you to receive the same CV on multiple channels. I don't remember why I needed this... 
+
+### RotaTrig
+This module sends the incoming randomly, or sequentially to the outputs. Feeding an looping LFO (0-10V) to the CLK socket you can also send the voltages semi-randomly to the outputs. The number of outputs can be set between 1 and 6 (see SLOTS). Note that priority is given to the output that has received an enabling (ENBL) trigger.
 
 ### SaveMeMono
-Tricky little module to save and return upto 256 voltages. Source input can be external (see LFO) or internal noise. If internal noise is selected then voltages can be set to be gates (0V or 10V), bi (-5V to 5V), or uni (0v to 10V). The recorded values can be shifted to left (i.e. previous) or right (i.e. next) slot. The output is provided 3 ways:
+Tricky little module to save and return upto 256 voltages. Source input can be external (see LFO) or internal noise. If internal noise is selected then voltages can be set to be gates (0V or 10V), bi (-5V to 5V), or uni (0v to 10V). The recorded values can be shifted to left (i.e. previous) or right (i.e. next) slot. There's a tiny yellow LED indicating the voltage of the first step. The output is provided 3 ways:
 - `normal` order
 - `reverse` order
 - `random` order. 
@@ -232,15 +242,15 @@ This is a clock modification module. Each knob sets the division of the clock si
 First of all you obviously need a clock (CLK). The module can be used as 
 
 - a buffer: CLK signal is sent unchanged to THR (through).
-- a simple clock divider: CLK input is multiplied by the MUL knob and sent to the relevant output (see MUL at the bottom).
-- a fix voltage provider: CVY return the CV of yellow slider of the currently selected block (CVW is the white slider, CVG is the green slider)
-- a complex clock modifier: LIFE returns the clock signal multipled by the yellow slider value. Please note that the white slider acts as a probabilty setting and may force the clock to be quiet. The green slider serves as a multiplcation probability by forcing a single pulse or a multiplied rhythm.
+- a simple clock modifier: CLK input is multiplied by the MUL knob and sent to the relevant output (see MUL at the bottom).
+- a fix voltage provider: CVY returns the CV of yellow slider of the currently selected block (similarly CVW is the white slider, CVG is the green slider)
+- a complex clock modifier: LIFE returns the clock signal multipled by the yellow slider value. Please note that the white slider acts as a probability setting and may force the clock to be quiet. The green slider serves as a multiplcation probability by forcing a single pulse or a multiplied rhythm.
 - a super complex clock modifier: a 0V-10V CV (see JUMP) allows you to dynamically select one of the blocks. Hence the yellow, white, green parameters are changing accordingly.
 - a 16-step sequencer: a 0V-10V CV (see JUMP) allows you to dynamically select one of the blocks. Hence the CVY, CVW, CVG outputs will provide a changing stepped CV.
 
 The active block is also indicated by the yellow LEDs on the top. Some keyboard shortcuts are enabled to select blocks and randomize parameters.
 
-The concept of the module is based on Sha#Bang! Modules Stochastic Sequencer Grid but the implementation is greatly simplified (clock, layout, operation).
+The concept of the module is based on Sha#Bang! Modules [Stochastic Sequencer Grid](https://library.vcvrack.com/Sha-Bang-Modules/StochSeqGrid) but the implementation is greatly simplified (clock, layout, operation).
 
 -----
 
