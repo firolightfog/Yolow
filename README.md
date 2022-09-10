@@ -21,7 +21,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
 |[RandVolt10](#RandVolt10):zzz:|*Deprecated.* Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
-|[RandVolt8](#RandVolt8)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
+|[RandVolt8](#RandVolt8)|Provider of fix (7V, 6V, 5V, etc) or random stepped voltage with range settings|
 |[FromTo](#FromTo)|Provides stepped voltage in a range|
 |[RotaTrig](#RotaTrig)|Distributes incoming clock in carious ways|
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
