@@ -11,7 +11,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[ChSel8](#ChSel8)|Select upto 8 of your favourite channels from a polyphonic input|
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
-|[PolyExp10](#PolyExp10)|Polyphonic split in 2HP|
+|[PolyExp8](#PolyExp8)|Polyphonic split in 2HP|
+|[PolyExp10](#PolyExp10):zzz:|*Deprecated.* Polyphonic split in 2HP|
 |[Celesta](#Celesta)|Three 8 step CV sequencers|
 |[Celei](#Celesta)|Single 8 step CV sequencer|
 |[Sequin](#Sequin)|Queen of Sequencers|
@@ -19,12 +20,13 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
-|[RandVolt10](#RandVolt10)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
+|[RandVolt10](#RandVolt10):zzz:|*Deprecated.* Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 |[RandVolt8](#RandVolt8)|Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 |[FromTo](#FromTo)|Provides stepped voltage in a range|
 |[RotaTrig](#RotaTrig)|Distributes incoming clock in carious ways|
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
+|[Sheep](#Sheep)|Provides random stepped voltages or gates with a lot of flexibility|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[NearMess](#NearMess)|An almost passive VCA and mixer|
@@ -65,8 +67,11 @@ A simple merge module with sixteen normalized inputs.
 
 <img width="250" alt="image" src="https://user-images.githubusercontent.com/34127628/156899500-237c10e8-6976-4130-9836-cf5a6047b056.png">
 
+### PolyExp8
+A simple 2HP split module it returns either channel 1-8 or 9-16 a polyphonic input. 
+
 ### PolyExp10
-A simple 2HP split module it returns the first ten channels of a polyphonic input. 
+This module is *deprecated*:zzz:. It is replaced by PolyExp8. A simple 2HP split module it returns the first ten channels of a polyphonic input. 
 Optionally the returned channels can be set to `first 10` or `last 10` in the context menu.
 
 -----
@@ -151,6 +156,7 @@ A simple fix voltage provider module. The context menu offers
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
  
 ### RandVolt10
+This module is *deprecated*:zzz:. It is replaced by RandVolt8.
 - Without a clock input: it provides ten fix voltages (1V-10V).
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 
@@ -160,6 +166,8 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 
 ### RandVolt8
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (uni/bi and 0-10V) are on the panel. 
+- Without a clock input: it provides eight fix voltages (0V-7V) and the knob may be used as a unique attenuator.
+- With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 
 ### FromTo
 This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix).
@@ -180,6 +188,9 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 
 ### SaveMeMonoWide
 Similar to SaveMeMono but all options are available from the panel. I love it. 
+
+### Sheep
+... coming in v2.1.13
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
