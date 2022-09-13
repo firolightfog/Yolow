@@ -177,7 +177,8 @@ The OUT is monophonic by default but a switch allows you to have multiple copies
 ### RotaTrig
 This module sends the incoming clock randomly, or sequentially to the outputs. The number of outputs can be set between 1 and 6 (see SLOTS). Note that priority is given to the output that has received an enabling (ENBL) trigger.
 
-Feeding an looping LFO (0-10V) to the CLK socket you can also send the voltages semi-randomly to the outputs. Like this:
+Feeding a looping LFO (0-10V) to the CLK socket you can also send the voltages semi-randomly to the outputs. Like this:
+
 <img width="714" alt="image" src="https://user-images.githubusercontent.com/34127628/187549668-e54ad8a6-10b0-48e2-a6de-fd032893bbd9.png">
 
 ### SaveMeMono
