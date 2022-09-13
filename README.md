@@ -134,10 +134,10 @@ Keyboard shortcuts are also available:
 - `r`: common dice function with unique algorhythm for sequence mode `0` and `3`
 - `x`: records a hit to the first sequence
 - `c`: records a hit to the second sequence (if available)
-- `v`: records a hit to the three sequence (if available)
-- `b`: records a hit to the four sequence (if available)
-- `n`: records a hit to the five sequence (if available)
-- `m`: records a hit to the six sequence (if available)
+- `v`: records a hit to the third sequence (if available)
+- `b`: records a hit to the fourth sequence (if available)
+- `n`: records a hit to the fifth sequence (if available)
+- `m`: records a hit to the sixth sequence (if available)
 
 ![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
