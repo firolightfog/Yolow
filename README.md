@@ -1,6 +1,6 @@
 # Yolow
 
-Missing a few simple module from my VCV Rack patches I decided to code a bit. But I would also like to share them with you. If you successfully use any of them in your project or you like it please let me know. Your [support](https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU) would be also appreciated.  
+Missing a few simple module from my VCV Rack patches I decided to code a bit. But I would also like to share them with you. If you successfully use any of them in your project or you like it please let me know. Your advices and [support](https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU) would be also appreciated.  
 
 <img width="600" alt="image" src="https://user-images.githubusercontent.com/34127628/182356626-c14c51d3-7d8a-40c0-891c-cfe173f832db.png">
 
