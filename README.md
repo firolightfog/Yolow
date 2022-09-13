@@ -165,8 +165,8 @@ Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context men
 <img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
 
 ### RandVolt8
-Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (uni/bi and 0-10V) are on the panel. 
-- Without a clock input: it provides eight fix voltages (0V-7V) and the knob may be used as a unique attenuator.
+Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (lower and upper limit voltage) are on the panel. 
+- Without a clock input: it provides eight fix voltages between in the valid range.
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 
 ### FromTo
