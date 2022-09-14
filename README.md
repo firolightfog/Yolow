@@ -253,7 +253,7 @@ The module is less of a faithful recreation of historical scales than a quick ex
 Quantizer with some commonly used features like trigger and transpose. This module replicates the functions of a bunch of module that I usually pair with my quantizers.
 
 ### tXOr
-This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's 1Pattern but the tXOr inputs allow dynamic modification of the knobs. 
+This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's [1Pattern](https://library.vcvrack.com/JW-Modules/1Pattern) but the tXOr inputs allow dynamic modification of the knobs. 
 
 ### 9lives
 First of all you obviously need a clock (CLK). The module can be used as 
