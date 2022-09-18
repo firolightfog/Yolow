@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -80,6 +80,23 @@
       "slug": "PolyExp10",
       "name": "Poly Exploder 10",
       "description": "It splits 10 channels of the polyphonic input. Yes, some channels will be lost.",
+	  "hidden": true,
+      "keywords": [
+        "split",
+        "poly",
+        "exploder",
+        "pe",
+        "ten"
+      ],
+      "tags": [
+        "Polyphonic",
+        "Utility"
+      ]
+    },
+    {
+      "slug": "PolyExp8",
+      "name": "Poly Exploder 8",
+      "description": "It splits 8 channels of the polyphonic input. Yes, some channels will be lost but youcan select between 1-8 or 8-16 channels to allow the 2HP width.",
       "keywords": [
         "split",
         "poly",
@@ -226,6 +243,7 @@
       "slug": "RandVolt10",
       "name": "Random Voltage 10",
       "description": "Provides 10 lovely random voltages in the 0V-10V range for a trigger",
+	  "hidden": true,
       "keywords": [
 		"rnd",
 		"fix",
@@ -346,6 +364,19 @@
       ]
     },
     {
+      "slug": "PushmeMore",
+      "name": "PushmeMore Trigger Expander",
+      "description": "Expander module for PushmeSeq",
+      "keywords": [
+        "trigger",
+		"drum sequencer"
+      ],
+      "tags": [
+        "Sequencer",
+		"Expander"
+      ]
+    },
+    {
       "slug": "RotaTrig",
       "name": "RotaTrig",
       "description": "Router to send the input somewhere",
@@ -410,6 +441,26 @@
       "description": "Provides equally distributed control voltages",
       "tags": [
         "Polyphonic",
+        "Sequencer"
+      ]
+    }, 
+    {
+      "slug": "Sheep",
+      "name": "Sheep",
+      "description": "Step voltage generator based on predefined map and a single reading head. (Read: a predefined field with a single eating sheep.)",
+      "tags": [
+        "Random",
+        "Low-frequency",
+        "Sequencer"
+      ]
+    }, 
+    {
+      "slug": "SheepWide",
+      "name": "SheepWide",
+      "description": "Step voltage generator based on predefined map and a single reading head. 8HP with no context menu.",
+      "tags": [
+        "Random",
+        "Low-frequency",
         "Sequencer"
       ]
     }, 
