@@ -16,7 +16,7 @@ struct Quant12 : Module {
 	enum OutputId    {
 		NOTE_OUTPUT, POLY_ALLOWED_OUTPUT, OUTPUTS_LEN};
 
-	enum LightId    {ENUMS(NOTE_LIGHT,12), LIGHTS_LEN};
+	enum LightId    {ENUMS(NOTE_LIGHT,12), TRIGGER_LIGHT, LIGHTS_LEN};
 
 	// small assistance to save older values for reference;
 	float paramVal[PARAMS_LEN]={0};
@@ -131,6 +131,7 @@ struct Quant12 : Module {
 		if (oldVoltOut!=newVoltOut) {
 			outputs[NOTE_OUTPUT].setVoltage(newVoltOut);
 			oldVoltOut=newVoltOut;
+			// lights[TRIGGER_LIGHT].setBrightness(0.8f);
 		}
 	}
 
@@ -138,7 +139,6 @@ struct Quant12 : Module {
 	
 	// this is the main routine
 	int loop=0;
-	float xxx;
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
@@ -161,7 +161,7 @@ struct Quant12 : Module {
 					outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f,cc);
 					cc++;
 				} 
-				else {lights[NOTE_LIGHT+p].setBrightness(0.00f);}
+				else {lights[NOTE_LIGHT+p].setBrightness(0.0f);}
 			}
 			outputs[POLY_ALLOWED_OUTPUT].channels=cc;
 
@@ -178,10 +178,14 @@ struct Quant12 : Module {
 		
 		if (clockIn) {
 			newClock=inputs[TRIGGER_INPUT].getVoltage();
-			if (newClock>0.2f && oldClock<=0.2f 
+			if (newClock>2.0f && oldClock<=2.0f 
 				&& paramVal[TRIGGER_PROBABILITY_PARAM]>=rack::random::uniform()) {
+					lights[TRIGGER_LIGHT].setBrightness(0.8f);
 					sendToOutput();
-					}
+			}
+			else if (newClock<2.0f && oldClock>=2.0f) {
+				lights[TRIGGER_LIGHT].setBrightness(0.0f);
+			}
 			oldClock=newClock;
 		}
 		else if (noiseIn) {sendToOutput();}
@@ -223,6 +227,8 @@ struct Quant12Widget : ModuleWidget {
 
 		childSwitch(Quant12::MODE_PARAM, 2, HP*2, HP*10.75);
 
+		addChild(createLightCentered<SmallLight<RedLight>>(mm2px(Vec(HP*2, HP*12.50)), module, Quant12::TRIGGER_LIGHT));
+		// childLight(Quant12::TRIGGER_LIGHT, 10, HP*2, HP*12.50);		
 		childKnob(Quant12::TRIGGER_PROBABILITY_PARAM, 0, HP*1, HP*13.25);		
 		childInput(Quant12::TRIGGER_INPUT, HP*3, HP*13.25);
 
@@ -232,10 +238,10 @@ struct Quant12Widget : ModuleWidget {
 		childKnob(Quant12::TRANSPOSE_ATTENUATOR_PARAM, 0, HP*1, HP*18.25);
 		childInput(Quant12::TRANSPOSE_INPUT, HP*3, HP*18.25);
 
-		childOutput(Quant12::POLY_ALLOWED_OUTPUT, HP*1, HP*21.5);
-		childOutput(Quant12::NOTE_OUTPUT, HP*3, HP*21.5);
+		childOutput(Quant12::POLY_ALLOWED_OUTPUT, HP*1, HP*22.25);
+		childOutput(Quant12::NOTE_OUTPUT, HP*3, HP*22.25);
 		
-		childLabel(HP*5,HP*1, "DEV", 12);
+		// childLabel(HP*5,HP*1, "DEV", 12);
 	}
 
 	// void appendContextMenu(Menu* menu) override {

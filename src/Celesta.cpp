@@ -250,20 +250,20 @@ void rndKnob() {
 
 		// let's see the reset signal
 		newReset=inputs[RESET_INPUT].getVoltage();
-		if (newReset>0.2 && oldReset<=0.2) {
+		if (newReset>2.0f && oldReset<=2.0f) {
 			stepA=-1; stepB=1; stepC=1;
 			outputs[SEQ_A_EOC_OUTPUT].setVoltage(10);
 			outputs[SEQ_B_EOC_OUTPUT].setVoltage(10);
 			outputs[SEQ_C_EOC_OUTPUT].setVoltage(10);			
 			}
-		// else if (newReset>0.2 && oldReset>0.2) {}
-		// else if (newReset<=0.2 && oldReset>0.2) {}
-		// else if (newReset<=0.2 && oldReset<=0.2) {}
+		// else if (newReset>2.0f && oldReset>2.0f) {}
+		// else if (newReset<=2.0f && oldReset>2.0f) {}
+		// else if (newReset<=2.0f && oldReset<=2.0f) {}
 		oldReset=newReset;
 
 		// let's see the clock signal
 		newClock=inputs[CLOCK_INPUT].getVoltage();
-		if (newClock>0.2 && oldClock<=0.2) {
+		if (newClock>2.0f && oldClock<=2.0f) {
 			
 			// take the next step
 			stepA++; 
@@ -335,12 +335,12 @@ void rndKnob() {
 			lights[SEQ_C_1_LED_LIGHT+stepC-1].setBrightness(1);
 		
 		}
-		// else if (newClock>0.2 && oldClock>0.2) {}
-		// else if (newClock<=0.2 && oldClock>0.2) {}
-		// else if (newClock<=0.2 && oldClock<=0.2) {}
+		// else if (newClock>2.0f && oldClock>2.0f) {}
+		// else if (newClock<=2.0f && oldClock>2.0f) {}
+		// else if (newClock<=2.0f && oldClock<=2.0f) {}
 		oldClock=newClock;
 		
-		if (newClock<=0.2) {
+		if (newClock<=2.0f) {
 			outputs[SEQ_A_EOC_OUTPUT].setVoltage(0);
 			outputs[SEQ_B_EOC_OUTPUT].setVoltage(0);
 			outputs[SEQ_C_EOC_OUTPUT].setVoltage(0);		

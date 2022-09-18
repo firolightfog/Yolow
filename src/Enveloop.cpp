@@ -85,8 +85,8 @@ struct Enveloop : Module {
 		// check if new GATE is on
 		if (isGateIn) {
 			newGate=inputs[GATE_INPUT].getVoltage();
-			if (newGate>2) {
-				if (oldGate>2) {currGate=SAME;}
+			if (newGate>2.0f) {
+				if (oldGate>2.0f) {currGate=SAME;}
 				else {
 					// audVolt=rack::random::uniform()*10*paramVal[NOISE_MOD_PARAM];
 					currGate=ON; 
@@ -96,7 +96,7 @@ struct Enveloop : Module {
 					}
 			}
 			else {
-				if (oldGate>2) {
+				if (oldGate>2.0f) {
 					currGate=OFF; 
 					currState=3;
 					enlightenMe(currState);

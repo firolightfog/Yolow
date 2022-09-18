@@ -11,6 +11,7 @@ extern Plugin* pluginInstance;
 // extern Model* modelXxx;			// delete it
 // extern Model* modelEuclk;
 
+extern Model* modelPolyExp8;
 extern Model* modelPolyExp10;
 extern Model* modelPolyCopy10;
 extern Model* modelPolyCopy16;
@@ -35,6 +36,7 @@ extern Model* modelEnveloop;
 extern Model* modelCelesta;
 extern Model* modelCelei;
 extern Model* modelPushmeSeq;
+extern Model* modelPushmeMore;
 extern Model* modelRotaTrig;
 extern Model* modelNearMess;
 extern Model* modelSequin;
@@ -43,3 +45,6 @@ extern Model* modelSaveMeMonoWide;
 extern Model* modelQuantET;
 extern Model* modelQuant12;
 extern Model* modelFromTo;
+extern Model* modelSheep;
+extern Model* modelSheepWide;
+

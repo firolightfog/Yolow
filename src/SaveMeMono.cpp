@@ -16,7 +16,7 @@ struct SaveMeMono : Module {
 	enum OutputId    {
 		MONO_REPLAY_OUTPUT, REVERSE_REPLAY_OUTPUT, RANDOM_REPLAY_OUTPUT, OUTPUTS_LEN};
 
-	enum LightId    {LED_RECORD_PARAM, LIGHTS_LEN};
+	enum LightId    {LED_RECORD_PARAM, FIRST_HIT_LIGHT, LIGHTS_LEN};
 
 	// small assistance to save older values for reference;
 	// float paramVal[PARAMS_LEN]={0};
@@ -101,6 +101,7 @@ struct SaveMeMono : Module {
 			lfoIn=inputs[MONO_LFO_INPUT].isConnected();
 			// paramQuantities[RECORD_PARAM]->description = ("Recording mode: " + indexRec);
 			if (indexShift!=-1) {shiftSeq();}	// ugly stuff
+			lights[FIRST_HIT_LIGHT].setBrightness(theSeq[0]);
 
 			// this section is only about updating the descriptions
 			std::string sx="";
@@ -231,8 +232,9 @@ struct SaveMeMonoWidget : ModuleWidget {
 		
 		childInput(SaveMeMono::MONO_LFO_INPUT, HP*1, HP*5.5);
 		childInput(SaveMeMono::RECORD_INPUT, HP*1, HP*9.5);
+		childLight(SaveMeMono::FIRST_HIT_LIGHT, 14, HP*1, HP*11);
 		childInput(SaveMeMono::CLOCK_INPUT, HP*1, HP*13);
-		childInput(SaveMeMono::RESET_INPUT, HP*1, HP*15.5);
+		childInput(SaveMeMono::RESET_INPUT, HP*1, HP*15.5);		
 		childOutput(SaveMeMono::MONO_REPLAY_OUTPUT, HP*1, HP*18.5);
 		childOutput(SaveMeMono::REVERSE_REPLAY_OUTPUT, HP*1, HP*20.5);
 		childOutput(SaveMeMono::RANDOM_REPLAY_OUTPUT, HP*1, HP*22.5);

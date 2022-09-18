@@ -180,7 +180,7 @@ int freezCv=0;
 
 		// let's see the reset signal
 		newReset=inputs[RESET_INPUT].getVoltage();
-		if (newReset>0.2f && oldReset<=0.2f) {
+		if (newReset>2.0f && oldReset<=2.0f) {
 			if (stepA>0) {lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);}
 			lights[SEQ_1_LED_LIGHT].setBrightness(10);
 			stepA=0; 
@@ -192,7 +192,7 @@ int freezCv=0;
 
 		// let's see the clock signal
 		newClock=inputs[CLOCK_INPUT].getVoltage();
-		if (newClock>0.2f && oldClock<=0.2f) {			
+		if (newClock>2.0f && oldClock<=2.0f) {			
 
 			// take the next step
 			if (stepA>0) {lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);}

@@ -18,7 +18,7 @@ struct SaveMeMonoWide : Module {
 	enum OutputId    {
 		MONO_REPLAY_OUTPUT, REVERSE_REPLAY_OUTPUT, RANDOM_REPLAY_OUTPUT, OUTPUTS_LEN};
 
-	enum LightId    {LED_RECORD_PARAM, LIGHTS_LEN};
+	enum LightId    {LED_RECORD_PARAM, FIRST_HIT_LIGHT, LIGHTS_LEN};
 
 	// small assistance to save older values for reference;
 	// float paramVal[PARAMS_LEN]={0};
@@ -125,6 +125,7 @@ struct SaveMeMonoWide : Module {
 			clockIn=inputs[CLOCK_INPUT].isConnected();
 			lfoIn=inputs[MONO_LFO_INPUT].isConnected();
 			if (indexShift!=-1) {shiftSeq();}	// ugly stuff
+			lights[FIRST_HIT_LIGHT].setBrightness(theSeq[0]);
 			
 			// this section is only about updating the descriptions
 			std::string sx="";
@@ -145,7 +146,16 @@ struct SaveMeMonoWide : Module {
 			else if (indexLFO==2) {sx+=(lfoIn)?" from LFO":" & 0V to 10V";
 				paramQuantities[LFOMODE_PARAM]->description = ("0V to 10V range if no LFO is connected");}
 			paramQuantities[RECORD_PARAM]->description = sx;
-						
+
+			// this is just a small treat, feel free to delete it
+			// sx="";
+			// if (indexLFO==0) {
+				// for (int i=0;i<std::min(16,allSteps);i++) {
+					// sx=sx + (theSeq[i]==1)?"X":".";
+					// }
+			// }
+			// paramQuantities[STEPS_PARAM]->description = sx;
+			
 		}
 
 		// set recording start if needed
@@ -246,7 +256,7 @@ struct SaveMeMonoWide : Module {
 
 struct VCVBezelBig : app::SvgSwitch {
 	VCVBezelBig() {momentary = false;
-	addFrame(Svg::load(asset::plugin(pluginInstance, "res/VCVBezelBig.svg")));
+	addFrame(Svg::load(asset::plugin(pluginInstance, "res/components/VCVBezelBig.svg")));
 	}
 };
 
@@ -295,6 +305,8 @@ struct SaveMeMonoWideWidget : ModuleWidget {
 		childKnob(SaveMeMonoWide::STEPS_PARAM, 1, 			HP*3, HP*8);
 		childButtonmom(SaveMeMonoWide::LEFT_PARAM, 2, 		HP*1.5, HP*10.5);
 		childButtonmom(SaveMeMonoWide::RIGHT_PARAM, 2,  	HP*4.5, HP*10.5);
+
+		childLight(SaveMeMonoWide::FIRST_HIT_LIGHT, 14, HP*3, HP*10.5);
 
 		childOutput(SaveMeMonoWide::MONO_REPLAY_OUTPUT, 	HP*1, HP*13);
 		childOutput(SaveMeMonoWide::REVERSE_REPLAY_OUTPUT, 	HP*3, HP*13);

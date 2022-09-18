@@ -25,7 +25,7 @@ struct FromTo : Module {
 
 	FromTo() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(CLOCK_SOLO_PARAM, 	0.0f, 1.0f, 0.0f, "Mono or poly clock");
+		configParam(CLOCK_SOLO_PARAM, 	0.0f, 1.0f, 0.0f, "Mono or poly OUT");
 		configParam(FROM_PARAM, 	-10.0f, 10.0f, 0.0f, "From");
 		configParam(TO_PARAM, 	-10.0f, 10.0f, 1.0f, "To");
 		configParam(DIVISION_PARAM, 	0.0f, 64.0f, 12.0f, "Division");
@@ -69,7 +69,7 @@ struct FromTo : Module {
 
 		// let's see the reset signal
 		newReset=inputs[RESET_INPUT].getVoltage();
-		if (newReset>0.2f && oldReset<=0.2f) {
+		if (newReset>2.0f && oldReset<=2.0f) {
 			// resets all channels; no exceptions
 			for (int i=0;i<16;i++) {currPos[i]=0;}
 		}
@@ -81,7 +81,7 @@ struct FromTo : Module {
 			// special situation if more output is needed than input
 			if (c>=0 && c>=inputs[CLOCK_INPUT].channels) {newClock[c]=newClock[c-1];}
 			// business as usual
-			if (newClock[c]>0.2f && oldClock[c]<=0.2f) {
+			if (newClock[c]>2.0f && oldClock[c]<=2.0f) {
 				currPos[c]++;
 				if (currPos[c]>=(int)paramVal[DIVISION_PARAM]) {currPos[c]=0;}
 				// this could be a single line like in row 64

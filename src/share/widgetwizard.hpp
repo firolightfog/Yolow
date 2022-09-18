@@ -21,6 +21,7 @@ Label* childLabel(float posA, float posB, const char* str, const int fSize=10, c
 
 void childScrew(float posA, float posB) {
 	addChild(createWidget<ScrewSilver>(Vec(posA, posB)));
+	// ScrewBlack
 } // common screw
 
 void childInput(int objId, float posA, float posB) {
@@ -30,11 +31,6 @@ void childInput(int objId, float posA, float posB) {
 void childOutput(int objId, float posA, float posB) {
 	addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(posA, posB)), module, objId));
 } // common output socket
-
-void childPushbutton(int objIdA, int objIdB, float posA, float posB) {
-	addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<YellowLight>>>(mm2px(Vec(posA, posB)), module, objIdA, objIdB));
-	// addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(5.08, 22.86)), module, TrigPrec2::RNDBUTTON2_PARAM, TrigPrec2::RNDLED2_LIGHT));
-} // pushbutton
 
 void childSwitch(int objId, int sizeId, float posA, float posB) {
 	switch (sizeId) {
@@ -114,7 +110,33 @@ void childLedSlide(int objIdA, int objIdB, int colorId, float posA, float posB) 
 	}
 } // common LED slider
 
+void childPushbutton(int objIdA, int objIdB, float posA, float posB) {
+	addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<YellowLight>>>(mm2px(Vec(posA, posB)), module, objIdA, objIdB));
+	// VCVBezelLatch
+	// VCVLightBezelLatch
+	// addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(5.08, 22.86)), module, TrigPrec2::RNDBUTTON2_PARAM, TrigPrec2::RNDLED2_LIGHT));
+} // pushbutton
 
 
+/*
+// addParam(createParamCentered<squareToggle>(themePos("RETRIGGER_SWITCH"), module, XY::RETRIGGER_SWITCH));
+struct squareToggle : VoxglitchSwitch {
 
+  ImageWidget* voxglitch_shadow;
+
+  squareToggle() {
+    momentary = false;
+    shadow->opacity = 0;
+
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/square_light_off.svg")));
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/square_light_on.svg")));
+
+    // Add the shadow below everything
+    // voxglitch_shadow = new ImageWidget("res/themes/default/square_shadow.png", 15.0, 15.0, 0.4);
+    // this->addChildBottom(voxglitch_shadow);
+    // voxglitch_shadow->setPosition(Vec(-11, -8));
+
+    box.size = Vec(22.0, 22.0); // was 15.5   (19.28)
+}
+*/
 

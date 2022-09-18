@@ -106,15 +106,15 @@ int indexQuant=0;	// this means no quantization
 			calcGap++;
 			hitClock=false;
 			newClock=inputs[CLOCK_INPUT].getVoltage();
-			if (newClock>0.2f && oldClock<=0.2f) {
+			if (newClock>2.0f && oldClock<=2.0f) {
 				theGap=(theGap+calcGap)/2;
 				calcGap=0;
 				hitClock=true;
 				valPWI=inputs[PULSE_WIDTH_INPUT].getVoltage()/10;
 			}
-			// else if (newClock>0.2 && oldClock>0.2) {}
-			// else if (newClock<=0.2 && oldClock<=0.2) {}
-			else if (newClock<=0.2 && oldClock>0.2) {
+			// else if (newClock>2.0f && oldClock>2.0f) {}
+			// else if (newClock<=2.0f && oldClock<=2.0f) {}
+			else if (newClock<=2.0f && oldClock>2.0f) {
 				outputs[CLOCK_OUTPUT].setVoltage(0);
 				if (!conPWI) {
 					// voltOut=0; 

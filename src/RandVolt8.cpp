@@ -6,7 +6,7 @@ struct RandVolt8 : Module {
 // --------------------------------------------------
 
 	enum ParamId    {
-		UNI_PARAM, RANGE_PARAM, PARAMS_LEN};
+		RANGE_PARAM, BOTTOM_PARAM, PARAMS_LEN};
 
 	enum InputId    {
 		CLOCK_INPUT, INPUTS_LEN};
@@ -26,10 +26,10 @@ struct RandVolt8 : Module {
 
 	RandVolt8() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(UNI_PARAM, 	0.0f, 1.0f, 1.0f, "Bipolar or unipolar");
-		configParam(RANGE_PARAM, 	1.0f, 10.0f, 10.f, "Range V (upper)");
-		paramQuantities[UNI_PARAM]->snapEnabled = true;
+		configParam(RANGE_PARAM, 	-10.0f, 10.0f, 10.f, "Range V (upper)");
+		configParam(BOTTOM_PARAM, 	-10.0f, 10.0f, 0.f, "Range V (lower)");
 		paramQuantities[RANGE_PARAM]->snapEnabled = true;
+		paramQuantities[BOTTOM_PARAM]->snapEnabled = true;
 
 		configInput(CLOCK_INPUT, "Clock"); 
 
@@ -59,7 +59,6 @@ struct RandVolt8 : Module {
 		if (loop--<=0) {
 			loop=9000;
 			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
-			paramQuantities[UNI_PARAM]->description = (paramVal[UNI_PARAM]==0)?"The values are bipolar":"The values are unipolar";
 			clockIn=inputs[CLOCK_INPUT].isConnected();
 			doItRarely=true;
 			// save some more CPU
@@ -69,14 +68,10 @@ struct RandVolt8 : Module {
 		if (clockIn) {		
 		
 			newClock=inputs[CLOCK_INPUT].getVoltage();
-			if (newClock>0.2f && oldClock<=0.2f) {
+			if (newClock>2.0f && oldClock<=2.0f) {
 				for (int o=OUT_1_OUTPUT; o<=OUT_8_OUTPUT; o++) {
 					newVolt=rack::random::uniform();
-					newVolt=newVolt*paramVal[RANGE_PARAM];
-					if (paramVal[UNI_PARAM]==0) {
-						newVolt=newVolt*2;
-						newVolt=newVolt-paramVal[RANGE_PARAM];
-					}
+					newVolt=newVolt*abs(paramVal[RANGE_PARAM]-paramVal[BOTTOM_PARAM])+paramVal[BOTTOM_PARAM];
 					outputs[o].setVoltage(newVolt);
 				}
 			}
@@ -86,10 +81,10 @@ struct RandVolt8 : Module {
 		else if (doItRarely==true) {
 			doItRarely=false;
 			for (int o=0; o<8; o++) {
-				outputs[OUT_1_OUTPUT+o].setVoltage(10-o);
+				newVolt=paramVal[BOTTOM_PARAM]+o*abs(paramVal[RANGE_PARAM]-paramVal[BOTTOM_PARAM])/8;
+				outputs[OUT_1_OUTPUT+o].setVoltage(newVolt);				
 			}
 		}
-
 	}
 
 // --------------------------------------------------
@@ -114,14 +109,16 @@ struct RandVolt8Widget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
-		childSwitch(RandVolt8::UNI_PARAM, 0, HP*1, HP*15);
-		childKnob(RandVolt8::RANGE_PARAM, 0, HP*1, HP*10);
-		
+	
 		childOutput(RandVolt8::OUT_1_OUTPUT, HP*1, HP*2);
 		childOutput(RandVolt8::OUT_2_OUTPUT, HP*1, HP*4);
 		childOutput(RandVolt8::OUT_3_OUTPUT, HP*1, HP*6);
 		childOutput(RandVolt8::OUT_4_OUTPUT, HP*1, HP*8);
-		childInput(RandVolt8::CLOCK_INPUT, HP*1, HP*13);
+
+		childKnob(RandVolt8::RANGE_PARAM, 0, HP*1, HP*10);
+		childInput(RandVolt8::CLOCK_INPUT, HP*1, HP*12.5);
+		childKnob(RandVolt8::BOTTOM_PARAM, 0, HP*1, HP*15);
+
 		childOutput(RandVolt8::OUT_5_OUTPUT, HP*1, HP*17);
 		childOutput(RandVolt8::OUT_6_OUTPUT, HP*1, HP*19);
 		childOutput(RandVolt8::OUT_7_OUTPUT, HP*1, HP*21);

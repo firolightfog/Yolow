@@ -87,14 +87,14 @@ struct RotaTrig : Module {
 		// let's send the pulses to the outputs
 		if (indexMode==0) {	// random
 			newClock=inputs[CLOCK_INPUT].getVoltage();
-			if (newClock>0.2f && oldClock<=0.2f) {
+			if (newClock>2.0f && oldClock<=2.0f) {
 				selOut=(rand() % maxStep);
 				for (int i=6;i>=0;i--) {
 					if (lights[LED_1_LIGHT+i].getBrightness()>0){selOut=i;break;}
 				}					
-				outputs[THE_1_OUTPUT+selOut].setVoltage(9.0);
+				outputs[THE_1_OUTPUT+selOut].setVoltage(9.90);
 			}
-			else if (newClock<=0.2 && oldClock>0.2) {
+			else if (newClock<=2.0f && oldClock>2.0f) {
 				lights[LED_1_LIGHT+selOut].setBrightness(0);
 				outputs[THE_1_OUTPUT+selOut].setVoltage(0);
 			}
@@ -102,16 +102,16 @@ struct RotaTrig : Module {
 		}
 		else if (indexMode==1) {	// step by step (oh baby!)
 			newClock=inputs[CLOCK_INPUT].getVoltage();
-			if (newClock>0.2f && oldClock<=0.2f) {
+			if (newClock>2.0f && oldClock<=2.0f) {
 				selOut=currStep;
 				for (int i=6;i>=0;i--) {
 					if (lights[LED_1_LIGHT+i].getBrightness()>0){selOut=i;break;}
 				}					
-				outputs[THE_1_OUTPUT+selOut].setVoltage(9.1);
+				outputs[THE_1_OUTPUT+selOut].setVoltage(9.91);
 				currStep++;
 				if (currStep>=maxStep) {currStep=0;}
 			}			
-			else if (newClock<=0.2 && oldClock>0.2) {
+			else if (newClock<=2.0f && oldClock>2.0f) {
 				lights[LED_1_LIGHT+selOut].setBrightness(0);
 				outputs[THE_1_OUTPUT+selOut].setVoltage(0);
 			}
@@ -123,7 +123,7 @@ struct RotaTrig : Module {
 				outputs[THE_1_OUTPUT+o].setVoltage(0);
 				lights[LED_1_LIGHT+selOut].setBrightness(0);
 			}					
-			outputs[THE_1_OUTPUT+floor((newClock/10)*5)].setVoltage(9.2);
+			outputs[THE_1_OUTPUT+floor((newClock/10)*6)].setVoltage(9.92);
 		}
 	}
 

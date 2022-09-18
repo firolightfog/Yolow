@@ -74,7 +74,7 @@ struct RandVolt10 : Module {
     // the main routine
 	void process(const ProcessArgs& args) override {
 		if (inputs[POLYIN_INPUT].isConnected()) {		
-			newTrig=inputs[POLYIN_INPUT].getVoltage()>2;
+			newTrig=inputs[POLYIN_INPUT].getVoltage()>2.0f;
 			if (newTrig==true && oldTrig==false) { 
 				// modRange=(indexRange==0)?-5:0;				
 				for (int c=0; c<10; c++) {

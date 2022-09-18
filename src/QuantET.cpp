@@ -201,13 +201,13 @@ struct QuantET : Module {
 		// let's see the clock signal
 		hitClock=false;
 		newClock=inputs[CLOCK_INPUT].getVoltage();
-		if (newClock>0.2f && oldClock<=0.2f) {
+		if (newClock>2.0f && oldClock<=2.0f) {
 			// hitClock=true;	// replaced by next line to consider TRIGGER_PROB also
 			hitClock=(paramVal[TRIGGER_PROBABILITY_PARAM]>rack::random::uniform());
 			}
-		// else if (newClock>0.2 && oldClock>0.2) {}
-		// else if (newClock<=0.2 && oldClock<=0.2) {}
-		// else if (newClock<=0.2 && oldClock>0.2) {}
+		// else if (newClock>2.0f && oldClock>2.0f) {}
+		// else if (newClock<=2.0f && oldClock<=2.0f) {}
+		// else if (newClock<=2.0f && oldClock>2.0f) {}
 		oldClock=newClock;
 		
 		// OK, I admit the next section is not the most efficient
