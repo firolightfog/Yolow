@@ -17,6 +17,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Celei](#Celesta)|Single 8 step CV sequencer|
 |[Sequin](#Sequin)|Queen of Sequencers|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
+|[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -141,6 +142,9 @@ Keyboard shortcuts are also available:
 
 ![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
+### PushMeMore
+An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. 
+
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
 
@@ -193,7 +197,7 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 Similar to SaveMeMono but all options are available from the panel. I love it. 
 
 ### Sheep
-... coming in v2.1.13
+A module to provide stepped voltage. A mutating 32-steps maps is read and sent to the output. 
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
