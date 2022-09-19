@@ -197,7 +197,7 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 Similar to SaveMeMono but all options are available from the panel. I love it. 
 
 ### Sheep
-A module to provide stepped voltage. A mutating 32-steps maps is read and sent to the output. 
+A module to provide stepped voltage. A mutating 32-steps map is read and sent to the output step by step. 
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
