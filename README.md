@@ -41,6 +41,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 
+Deprecated modules will be removed from the next major release.
+
 -----
 
 ### ChSel2
