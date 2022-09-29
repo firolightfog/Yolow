@@ -12,7 +12,6 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp8](#PolyExp8)|Polyphonic split in 2HP|
-|[PolyExp10](#PolyExp10):zzz:|*Deprecated.* Polyphonic split in 2HP|
 |[Celesta](#Celesta)|Three 8 step CV sequencers|
 |[Celei](#Celesta)|Single 8 step CV sequencer|
 |[Sequin](#Sequin)|Queen of Sequencers|
@@ -21,7 +20,6 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
-|[RandVolt10](#RandVolt10):zzz:|*Deprecated.* Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 |[RandVolt8](#RandVolt8)|Provider of fix (7V, 6V, 5V, etc) or random stepped voltage with range settings|
 |[FromTo](#FromTo)|Provides stepped voltage in a range|
 |[RotaTrig](#RotaTrig)|Distributes incoming clock in carious ways|
@@ -41,6 +39,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
+|[PolyExp10](#PolyExp10):zzz:|*Deprecated.* Polyphonic split in 2HP|
+|[RandVolt10](#RandVolt10):zzz:|*Deprecated.* Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
 
 Deprecated modules will be removed from the next major release.
 
@@ -73,10 +73,6 @@ A simple merge module with sixteen normalized inputs.
 
 ### PolyExp8
 A simple 2HP split module it returns either channel 1-8 or 9-16 a polyphonic input. 
-
-### PolyExp10
-This module is *deprecated*:zzz:. It is replaced by PolyExp8. A simple 2HP split module it returns the first ten channels of a polyphonic input. 
-Optionally the returned channels can be set to `first 10` or `last 10` in the context menu.
 
 -----
 
@@ -162,15 +158,6 @@ A simple fix voltage provider module. The context menu offers
 - Range: `0V to 10V` or `-5V to 5V`
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
  
-### RandVolt10
-This module is *deprecated*:zzz:. It is replaced by RandVolt8.
-- Without a clock input: it provides ten fix voltages (1V-10V).
-- With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
-
-Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context menu.
-
-<img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
-
 ### RandVolt8
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (lower and upper limit voltage) are on the panel. 
 - Without a clock input: it provides eight fix voltages between in the valid range.
@@ -315,3 +302,17 @@ The concept of the module is based on Sha#Bang! Modules [Stochastic Sequencer Gr
 This module is *deprecated*:zzz:. [Nibble Sequencer](https://library.vcvrack.com/CountModula/NibbleTriggerSequencer) of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
 
 <img width="85" alt="image" src="https://user-images.githubusercontent.com/34127628/156899830-e201945d-faca-43bf-bc53-e8606f2f13d3.png">
+
+### PolyExp10
+This module is *deprecated*:zzz:. It is replaced by PolyExp8. A simple 2HP split module it returns the first ten channels of a polyphonic input. 
+Optionally the returned channels can be set to `first 10` or `last 10` in the context menu.
+
+### RandVolt10
+This module is *deprecated*:zzz:. It is replaced by RandVolt8.
+- Without a clock input: it provides ten fix voltages (1V-10V).
+- With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
+
+Optionally the range can be set to `0V to 10V` or `-5V to 5V` in the context menu.
+
+<img width="225" alt="image" src="https://user-images.githubusercontent.com/34127628/156899586-15b8dd43-4d7e-4e67-98d1-7b67e0b63bbd.png">
+
