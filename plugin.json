@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.13",
+  "version": "2.1.14",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -403,7 +403,7 @@
       "slug": "SaveMeMonoWide",
       "name": "SaveMeMonoWide",
       "description": "Saving and replaying a sequence of voltages",
-      "tags": ["Sequencer"]
+     "tags": ["Sequencer"]
     },
     {
       "slug": "Sequin",
@@ -446,7 +446,7 @@
     }, 
     {
       "slug": "Sheep",
-      "name": "Sheep",
+      "name": "Sheep Random Sequencer",
       "description": "Step voltage generator based on predefined map and a single reading head. (Read: a predefined field with a single eating sheep.)",
       "tags": [
         "Random",
@@ -455,9 +455,9 @@
       ]
     }, 
     {
-      "slug": "SheepWide",
-      "name": "SheepWide",
-      "description": "Step voltage generator based on predefined map and a single reading head. 8HP with no context menu.",
+      "slug": "SheepMore",
+      "name": "SheepMore Expander",
+      "description": "Expander module for the Sheep Random Sequencer with various outputs.",
       "tags": [
         "Random",
         "Low-frequency",
