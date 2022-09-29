@@ -5,7 +5,7 @@
 // EXPANDER STARTS HERE --------------------------------------------------
 // -----------------------------------------------------------------------
 
-struct PushmeMore : Module {
+struct PushmeInv : Module {
 
 	enum ParamId 	{ENUMS(SEQ_PARAM,48), SEQMODE_PARAM, DIV_PARAM, FETCH_SWITCH, PARAMS_LEN};
 	enum InputId 	{CLOCK_INPUT, RESET_INPUT, INPUTS_LEN};
@@ -17,7 +17,7 @@ struct PushmeMore : Module {
 
 // --------------------------------------------------
 
-	PushmeMore() {
+	PushmeInv() {
 		
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		// configInput(CLOCK_INPUT, "Clock"); 
@@ -47,8 +47,8 @@ struct PushmeMore : Module {
 				if (module->leftExpander.module->model == modelPushmeSeq) {
 					return reinterpret_cast<PushmeSeq*>(module->leftExpander.module);
 				}
-				// if it's PushmeMore, keep recursing
-				else if (module->leftExpander.module->model == modelPushmeMore) {
+				// if it's PushmeInv, keep recursing
+				else if (module->leftExpander.module->model == modelPushmeInv) {
 					return findHostModulePtr(module->leftExpander.module);
 				}
 			}
@@ -72,7 +72,6 @@ struct PushmeMore : Module {
 	bool restartPlease=true;
 	
 	int indexSeqMode=1;
-	int indexPrec=0;
 
 	void process(const ProcessArgs& args) override {
 
@@ -113,6 +112,14 @@ struct PushmeMore : Module {
 			// if there's a "new clock pulse" we have a lot to do
 			if (hitClock==true) {
 				
+				// pulsemeInv special line
+				if (stepA==0) {
+					for (int p=0;p<PARAMS_LEN;p++) {
+						paramVal[p]=abs(mother->paramVal[p]-1);
+						params[SEQ_PARAM+p].setValue(paramVal[p]);
+					}
+				};
+				
 				if (stepA!=int(mother->stepA/paramVal[DIV_PARAM])) {
 				
 					stepA=int(mother->stepA/paramVal[DIV_PARAM]);
@@ -132,14 +139,14 @@ struct PushmeMore : Module {
 					}
 					else if (indexSeqMode==1) {	
 						lights[SEQ_LIGHT+stepA].setBrightness(0.999);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepA),0);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepA]*10.0f,0);
 					}
 					else if (indexSeqMode==2) {
 						stepB=(stepA % 16);
 						lights[SEQ_LIGHT+stepA].setBrightness(0.999);
 						lights[SEQ_LIGHT+32+stepB].setBrightness(0.999);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepA),0);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepB),1);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepA]*10.0f,0);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepB]*10.0f,1);
 						if (stepA>=32) {stepA=0;stepB=0;}
 					}
 					else if (indexSeqMode==3) {	
@@ -147,9 +154,9 @@ struct PushmeMore : Module {
 						lights[SEQ_LIGHT+stepB].setBrightness(0.999);
 						lights[SEQ_LIGHT+16+stepB].setBrightness(0.999);
 						lights[SEQ_LIGHT+32+stepB].setBrightness(0.999);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepB),0);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepB),1);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepB),2);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepB]*10.0f,1);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepB]*10.0f,2);
 					}
 					else if (indexSeqMode==4) {	
 						stepB=(stepA % 16);
@@ -158,10 +165,10 @@ struct PushmeMore : Module {
 						lights[SEQ_LIGHT+16+stepB].setBrightness(0.999);
 						lights[SEQ_LIGHT+32+stepC].setBrightness(0.999);
 						lights[SEQ_LIGHT+40+stepC].setBrightness(0.999);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepB),0);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepB),1);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepC),2);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+40+stepC),3);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepB]*10.0f,1);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepC]*10.0f,2);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+40+stepC]*10.0f,3);
 					}
 					else if (indexSeqMode==5) {
 						stepB=(stepA % 16);
@@ -172,10 +179,10 @@ struct PushmeMore : Module {
 						lights[SEQ_LIGHT+24+stepC].setBrightness(0.999);
 						lights[SEQ_LIGHT+32+stepC].setBrightness(0.999);
 						lights[SEQ_LIGHT+40+stepRand].setBrightness(0.999);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepB),0);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepC),1);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+24+stepC),2);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepC),3);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepC]*10.0f,1);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+24+stepC]*10.0f,2);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepC]*10.0f,3);
 						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+40+stepRand]*10.0f,4);
 					}
 					else if (indexSeqMode==6) {	
@@ -187,11 +194,11 @@ struct PushmeMore : Module {
 						lights[SEQ_LIGHT+24+stepC].setBrightness(0.999);
 						lights[SEQ_LIGHT+32+stepC].setBrightness(0.999);
 						lights[SEQ_LIGHT+40+stepRand].setBrightness(0.999);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepC),0);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+8+stepC),1);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepC),2);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+24+stepC),3);
-						outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepC),4);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepC]*10.0f,0);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+8+stepC]*10.0f,1);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepC]*10.0f,2);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+24+stepC]*10.0f,3);
+						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepC]*10.0f,4);
 						outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+40+stepRand]*10.0f,5);
 					}
 				}
@@ -209,18 +216,16 @@ struct PushmeMore : Module {
 		}
 	}
 
-	#include "PushmeSeq/PushmeSeq_json.hpp"
+// --------------------------------------------------
 
 };
 
-// --------------------------------------------------
-
-struct PushmeMoreWidget : ModuleWidget {
+struct PushmeInvWidget : ModuleWidget {
 
 	#include "share/widgetwizard.hpp"   // addChild abbreviations
 
-	PushmeMore* module;
-	PushmeMoreWidget(PushmeMore* module) {
+	PushmeInv* module;
+	PushmeInvWidget(PushmeInv* module) {
 		this->module = module;
 		setModule(module);
  
@@ -228,36 +233,24 @@ struct PushmeMoreWidget : ModuleWidget {
 
 		for (int b=0;b<48;b++) {
 			// RedGreenBlueLight?
-			addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<GreenLight>>>
+			addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<RedLight>>>
 				(mm2px(Vec(HP*(floor(b/16)*1.2+0.8), HP*(1.5+1.25*(b % 16)))), 
-				module, PushmeMore::SEQ_PARAM+b, PushmeMore::SEQ_LIGHT+b));
-			// addParam(createLightParamCentered<VCVButtonSquareGreen>
-				// (mm2px(Vec(HP*(floor(b/16)*1.2+0.8), HP*(1.5+1.2*(b % 16)))), 
-				// module, PushmeMore::SEQ_PARAM+b, PushmeMore::SEQ_LIGHT+b));
+				module, PushmeInv::SEQ_PARAM+b, PushmeInv::SEQ_LIGHT+b));
 		}
 			
-		childKnob(PushmeMore::SEQMODE_PARAM, 0, HP*3, HP*21.75);
-		childOutput(PushmeMore::TRIGGER_OUTPUT, HP*3, HP*23.5);
-		// childInput(PushmeMore::CLOCK_INPUT, HP*1, HP*21.75);
-		// childInput(PushmeMore::RESET_INPUT, HP*1, HP*23.5);
-		// childOutput(PushmeMore::EOC_OUTPUT, HP*2, HP*24);
+		childKnob(PushmeInv::SEQMODE_PARAM, 0, HP*3, HP*21.75);
+		childOutput(PushmeInv::TRIGGER_OUTPUT, HP*3, HP*23.5);
+		// childInput(PushmeInv::CLOCK_INPUT, HP*1, HP*21.75);
+		// childInput(PushmeInv::RESET_INPUT, HP*1, HP*23.5);
+		// childOutput(PushmeInv::EOC_OUTPUT, HP*2, HP*24);
 
-		childSwitch(PushmeMore::FETCH_SWITCH, 5, HP*1, HP*21.75);
-		childKnob(PushmeMore::DIV_PARAM, 0, HP*1, HP*23.5);
+		childSwitch(PushmeInv::FETCH_SWITCH, 5, HP*1, HP*21.75);
+		childKnob(PushmeInv::DIV_PARAM, 0, HP*1, HP*23.5);
 
-	}
-
-
-	// #include "PushmeSeq/PushmeSeq_menu.hpp"
-	void appendContextMenu(Menu* menu) override {
-		PushmeMore* module = dynamic_cast<PushmeMore*>(this->module);
-		assert(module);
-		menu->addChild(new MenuSeparator);
-		menu->addChild(createIndexPtrSubmenuItem("Precision", {"Perfect (100%)","Very good (95%)","Good (85%)","Not bad (75%)","Wasted (60%)","Crap (50%)","Completely insane (35%)"}, &module->indexPrec));
 	}
 
 	#include "PushmeSeq/PushmeSeq_keys.hpp"
 
 };
 
-Model* modelPushmeMore = createModel<PushmeMore, PushmeMoreWidget>("PushmeMore");
+Model* modelPushmeInv = createModel<PushmeInv, PushmeInvWidget>("PushmeInv");

@@ -46,5 +46,5 @@ extern Model* modelQuantET;
 extern Model* modelQuant12;
 extern Model* modelFromTo;
 extern Model* modelSheep;
-extern Model* modelSheepWide;
+extern Model* modelSheepMore;
 

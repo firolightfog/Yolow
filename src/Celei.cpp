@@ -151,7 +151,20 @@ int freezCv=0;
 		// oldVal=oldVal+5*indexRange;
 		if (indexQuant==0) {return oldVal;}
 		else if (indexQuant==1) {return round(oldVal);}
-		else {return round(oldVal*12)/12;}
+		else if (indexQuant==2) {return round(oldVal*12)/12;}
+		else if (indexQuant==3) {return (oldVal>2)?10:0;}
+		else {return oldVal;}
+	}
+
+	// Ctrl-E bypassing: no sound but the counting stays
+	void processBypass(const ProcessArgs& args) override {
+		newReset=inputs[RESET_INPUT].getVoltage();
+		if (newReset>2.0f && oldReset<=2.0f) {stepA=0;}
+		oldReset=newReset;
+		newClock=inputs[CLOCK_INPUT].getVoltage();
+		if (newClock>2.0f && oldClock<=2.0f) {stepA++; if (stepA>pSteps || stepA<1) {stepA=1;}}
+		else if (newClock<=2.0f && oldClock>2.0f) {if (freezCv>=0) {freezCv--;}}
+		oldClock=newClock;
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -204,7 +217,7 @@ int freezCv=0;
 		}
 		// else if (newClock>0.2 && oldClock>0.2) {}
 		// else if (newClock<=0.2 && oldClock<=0.2) {}
-		else if (newClock<=0.2 && oldClock>0.2) {
+		else if (newClock<=2.0f && oldClock>2.0f) {
 			outputs[TRIGGER_STEP_OUTPUT].setVoltage(0);
 			if (modeClock==true) {voltA=0;}
 			if (freezCv>=0) {freezCv--;}
@@ -212,7 +225,7 @@ int freezCv=0;
 		oldClock=newClock;
 
 		// let's calculate the output voltage
-		if (modeClock==true && oldClock<=0.2) {voltA=0;}
+		if (modeClock==true && oldClock<=2.0) {voltA=0;}
 		else if (freezCv>=0) {/* do nothing; keep the last note */}
 		else {
 			voltA=pSx[stepA-1];
@@ -291,7 +304,7 @@ struct CeleiWidget : ModuleWidget {
 		Celei* module = dynamic_cast<Celei*>(this->module);
 		assert(module);
 		menu->addChild(new MenuSeparator);
-		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
+		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes" /*,"Gates (>2V)"*/}, &module->indexQuant));
 	}
 
 	// shortkey

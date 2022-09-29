@@ -12,7 +12,7 @@ struct FromTo : Module {
 		CLOCK_INPUT, RESET_INPUT, INPUTS_LEN};
 
 	enum OutputId    {
-		DIVISIONS_OUTPUT, STEPPED_DIVISION_OUTPUT, OUTPUTS_LEN};
+		DIVISIONS_OUTPUT, STEPPED_DIVISION_OUTPUT, REVERSED_DIVISION_OUTPUT, OUTPUTS_LEN};
 
 	enum LightId    {LIGHTS_LEN};
 
@@ -36,6 +36,7 @@ struct FromTo : Module {
 
 		configOutput(DIVISIONS_OUTPUT, "Divisions"); 
 		configOutput(STEPPED_DIVISION_OUTPUT, "Stepped division"); 
+		configOutput(REVERSED_DIVISION_OUTPUT, "Reversed stepped division"); 
 	}
 
 // --------------------------------------------------
@@ -65,15 +66,8 @@ struct FromTo : Module {
 			}
 			// the mono output can be also multichannel if needed (theMatrix needs it)
 			outputs[STEPPED_DIVISION_OUTPUT].channels=(paramVal[CLOCK_SOLO_PARAM]==0)?1:outputs[DIVISIONS_OUTPUT].channels;
+			outputs[REVERSED_DIVISION_OUTPUT].channels=outputs[STEPPED_DIVISION_OUTPUT].channels;
 		}
-
-		// let's see the reset signal
-		newReset=inputs[RESET_INPUT].getVoltage();
-		if (newReset>2.0f && oldReset<=2.0f) {
-			// resets all channels; no exceptions
-			for (int i=0;i<16;i++) {currPos[i]=0;}
-		}
-		oldReset=newReset;
 
 		// let's see the clock signal by channels
 		for (int c=0;c<16;c++) {
@@ -91,6 +85,8 @@ struct FromTo : Module {
 				newVal=newVal*currPos[c];
 				newVal=newVal+paramVal[FROM_PARAM];
 				outputs[STEPPED_DIVISION_OUTPUT].setVoltage(newVal,c);
+				newVal=paramVal[TO_PARAM]-newVal+paramVal[FROM_PARAM];
+				outputs[REVERSED_DIVISION_OUTPUT].setVoltage(newVal,c);
 			}
 			oldClock[c]=newClock[c];
 		}
@@ -122,8 +118,10 @@ struct FromToWidget : ModuleWidget {
 		childKnob(FromTo::TO_PARAM, 1, HP*1, HP*6);
 		childKnob(FromTo::DIVISION_PARAM, 1, HP*1, HP*9);
 		
-		childOutput(FromTo::DIVISIONS_OUTPUT, HP*1, HP*14.5);
 		childOutput(FromTo::STEPPED_DIVISION_OUTPUT, HP*1, HP*12);
+		childOutput(FromTo::REVERSED_DIVISION_OUTPUT, HP*1, HP*14);
+		childOutput(FromTo::DIVISIONS_OUTPUT, HP*1, HP*16.5);
+
 		childSwitch(FromTo::CLOCK_SOLO_PARAM, 0, HP*1, HP*18.5);
 		childInput(FromTo::CLOCK_INPUT, HP*1, HP*20.5);
 		childInput(FromTo::RESET_INPUT, HP*1, HP*23);

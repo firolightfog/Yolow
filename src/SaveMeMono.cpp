@@ -89,6 +89,10 @@ struct SaveMeMono : Module {
 		indexShift=-1;
 	}
 	
+	// Ctrl-E bypassing: no sound but the counting stays
+	void processBypass(const ProcessArgs& args) override {
+	}
+
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {

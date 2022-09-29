@@ -27,7 +27,6 @@ I wanted to avoid typing the same thing twice, so here it is.
 			e.consume(this);
 		}
 		else if ((e.key == GLFW_KEY_I) && e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {
-		// else if((e.key == GLFW_KEY_I) && ((e.mods & RACK_MOD_MASK) != GLFW_MOD_CONTROL)) {module->invKnob(); e.consume(this);}
 			module->invKnob(); 
 			e.consume(this);
 		}

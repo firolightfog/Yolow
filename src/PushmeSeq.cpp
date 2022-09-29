@@ -5,7 +5,7 @@ const std::string labelSeqMode[7]={"1x48 random","1x48","1x32 + 1x16","3x16","2x
 
 struct PushmeSeq : Module {
 
-	enum ParamId 	{ENUMS(SEQ_PARAM,48),INDEXSEQMODE, PARAMS_LEN};
+	enum ParamId 	{ENUMS(SEQ_PARAM,48), SEQMODE_PARAM, DIV_PARAM, FETCH_SWITCH, PARAMS_LEN};
 	enum InputId 	{CLOCK_INPUT, RESET_INPUT, INPUTS_LEN};
 	enum OutputId 	{EOC_OUTPUT, TRIGGER_OUTPUT, OUTPUTS_LEN};
 	enum LightId 	{ENUMS(SEQ_LIGHT, 48),LIGHTS_LEN};
@@ -21,9 +21,11 @@ struct PushmeSeq : Module {
 		configInput(RESET_INPUT, "Reset"); 
 		configOutput(EOC_OUTPUT, "EOC"); 
 		configOutput(TRIGGER_OUTPUT, "Trigger"); 
-		configParam(INDEXSEQMODE, 	0.0f, 6.0f, 3.0f, "Sequence mode");
-		paramQuantities[INDEXSEQMODE]->randomizeEnabled = false;
-		paramQuantities[INDEXSEQMODE]->snapEnabled = true;
+		configParam(SEQMODE_PARAM, 	0.0f, 6.0f, 3.0f, "Sequence mode");
+		paramQuantities[SEQMODE_PARAM]->randomizeEnabled = false;
+		paramQuantities[SEQMODE_PARAM]->snapEnabled = true;
+		configParam(DIV_PARAM, 	1.0f, 8.0f, 1.0f, "Clock division");
+		paramQuantities[DIV_PARAM]->snapEnabled = true;
 
 		// the 48 buttons are defined with a loop
 		configParam(SEQ_PARAM,0.0f, 1.0f, 1.0f, "Zone 1 - SeqA1");
@@ -51,11 +53,6 @@ struct PushmeSeq : Module {
 	float oldClock=0.0f;
 	bool hitClock=false;
 	bool offClock=false;
-
-	// calculate the PW - not in use 
-	int theGap=0;
-	int calcGap=0;
-	int microGap=0;
 	
 	// ideintifying the step we're at
 	int stepA=0;	// current step of 48-step-sequencers
@@ -65,22 +62,37 @@ struct PushmeSeq : Module {
 	bool restartPlease=true;
 	
 	int indexSeqMode=1;
-	
-	/*
-	Instead of stepA, stepB, and stepC a single variable could have been enough. And then working with remainder formulas (stepA % 16). 
-	Maybe in v2.99.0 :)
-	*/
+	int indexPrec=0;
 	
 	// const std::string labelSeqMode[7]={"1x48 random","1x48","1x32 + 1x16","3x16","2x16 + 2x8","1x16 + 4x8 (last random)","6x8 (last random)"};
-	
+
+	// Ctrl-E bypassing: no sound but the counting stays
+	void processBypass(const ProcessArgs& args) override {
+		newReset=inputs[RESET_INPUT].getVoltage();
+		if (newReset>2.0f && oldReset<=2.0f) {restartPlease=true;}
+		oldReset=newReset;
+		hitClock=false;
+		newClock=inputs[CLOCK_INPUT].getVoltage();
+		if (newClock>2.0f && oldClock<=2.0f) {
+			hitClock=true; offClock=false;
+			if (restartPlease) {stepA=0; stepB=0; stepC=0; restartPlease=false;}
+			else {stepA++; stepB++; stepC++;}
+			if (stepA>=48 || stepA<0) {stepA=0;}
+			if (stepB>=16 || stepB<0) {stepB=0;}
+			if (stepC>=8 || stepC<0) {stepC=0;}
+		}
+		else if (newClock<=2.0f && oldClock>2.0f) {offClock=true;}
+		oldClock=newClock;
+	}
+
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
 			loop=9000;
 			// save some more CPU
-			indexSeqMode=params[INDEXSEQMODE].getValue();
+			indexSeqMode=params[SEQMODE_PARAM].getValue();
 			// indexSeqMode: 0 (random) 1 (1x48) 2 (1x32+1x16) 3 (3x16) 4 (2x16+2x8) 5 (1x16+4x8) 6 (6x8)
-			paramQuantities[INDEXSEQMODE]->description = labelSeqMode[indexSeqMode];
+			paramQuantities[SEQMODE_PARAM]->description = labelSeqMode[indexSeqMode];
 			if (indexSeqMode==0) {outputs[TRIGGER_OUTPUT].channels=1;}
 			else if (indexSeqMode==1) {outputs[TRIGGER_OUTPUT].channels=1;}
 			else if (indexSeqMode==2) {outputs[TRIGGER_OUTPUT].channels=2;}
@@ -100,21 +112,19 @@ struct PushmeSeq : Module {
 		oldReset=newReset;
 
 		// let's see the clock signal
-		calcGap++;
 		hitClock=false;
 		newClock=inputs[CLOCK_INPUT].getVoltage();
 		if (newClock>2.0f && oldClock<=2.0f) {
-			// ne clock signal is in!!
-			theGap=(theGap+calcGap)/2;
-			microGap=theGap/(8*2);
-			calcGap=0;
+			// was there a reset?
 			if (restartPlease) {
 				stepA=0; stepB=0; stepC=0; 
-				restartPlease=false;}
+				restartPlease=false;
+			}
+			// if no reset then next step
 			else {stepA++; stepB++; stepC++;}
 			if (stepA>=48 || stepA<0) {stepA=0;}
 			if (stepB>=16 || stepB<0) {stepB=0;}
-			if (stepC>=8 || stepC<0) {stepC=0;}			
+			if (stepC>=8 || stepC<0) {stepC=0;}
 			hitClock=true;
 			offClock=false;
 		}
@@ -125,13 +135,6 @@ struct PushmeSeq : Module {
 			offClock=true;
 			for (int c=0;c<outputs[TRIGGER_OUTPUT].channels;c++) {outputs[TRIGGER_OUTPUT].setVoltage(0,c);}
 		}
-		// else {
-			// a failed attempt to impelement microsteps
-			// if (indexSeqMode==5 && (calcGap % microGap)==0) {
-				// outputs[TRIGGER_OUTPUT].setVoltage(7.25,0);
-				// // outputs[TRIGGER_OUTPUT].setVoltage((((int)floor(calcGap/microGap) % 2) ==0)?9:1);
-			// }
-		// }
 		oldClock=newClock;
 		
 		// if there's a "new clock pulse" we have a lot to do
@@ -150,14 +153,17 @@ struct PushmeSeq : Module {
 			}
 			else if (indexSeqMode==1) {	
 				lights[SEQ_LIGHT+stepA].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepA]*10.0f,0);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepA),0);
+				// outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepA]*10.0f,0);
 			}
 			else if (indexSeqMode==2) {
 				// stepB=(stepA % 16);
 				lights[SEQ_LIGHT+stepA].setBrightness(0.999);
 				lights[SEQ_LIGHT+32+stepB].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepA]*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepB]*10.0f,1);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepA),0);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepB),1);
+				// outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepA]*10.0f,0);
+				// outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepB]*10.0f,1);
 				if (stepA>=32) {stepA=0;stepB=0;}
 			}
 			else if (indexSeqMode==3) {	
@@ -165,9 +171,12 @@ struct PushmeSeq : Module {
 				lights[SEQ_LIGHT+stepB].setBrightness(0.999);
 				lights[SEQ_LIGHT+16+stepB].setBrightness(0.999);
 				lights[SEQ_LIGHT+32+stepB].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepB]*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepB]*10.0f,2);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepB),0);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepB),1);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepB),2);
+				// outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
+				// outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepB]*10.0f,1);
+				// outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepB]*10.0f,2);
 			}
 			else if (indexSeqMode==4) {	
 				// stepB=(stepA % 16);
@@ -176,10 +185,10 @@ struct PushmeSeq : Module {
 				lights[SEQ_LIGHT+16+stepB].setBrightness(0.999);
 				lights[SEQ_LIGHT+32+stepC].setBrightness(0.999);
 				lights[SEQ_LIGHT+40+stepC].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepB]*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepC]*10.0f,2);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+40+stepC]*10.0f,3);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepB),0);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepB),1);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepC),2);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+40+stepC),3);
 			}
 			else if (indexSeqMode==5) {
 				// stepB=(stepA % 16);
@@ -190,10 +199,10 @@ struct PushmeSeq : Module {
 				lights[SEQ_LIGHT+24+stepC].setBrightness(0.999);
 				lights[SEQ_LIGHT+32+stepC].setBrightness(0.999);
 				lights[SEQ_LIGHT+40+stepRand].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepB]*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepC]*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+24+stepC]*10.0f,2);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepC]*10.0f,3);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepB),0);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepC),1);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+24+stepC),2);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepC),3);
 				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+40+stepRand]*10.0f,4);
 			}
 			else if (indexSeqMode==6) {	
@@ -205,18 +214,18 @@ struct PushmeSeq : Module {
 				lights[SEQ_LIGHT+24+stepC].setBrightness(0.999);
 				lights[SEQ_LIGHT+32+stepC].setBrightness(0.999);
 				lights[SEQ_LIGHT+40+stepRand].setBrightness(0.999);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+stepC]*10.0f,0);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+8+stepC]*10.0f,1);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+16+stepC]*10.0f,2);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+24+stepC]*10.0f,3);
-				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+32+stepC]*10.0f,4);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+stepC),0);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+8+stepC),1);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+16+stepC),2);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+24+stepC),3);
+				outputs[TRIGGER_OUTPUT].setVoltage(getVoltNow(SEQ_PARAM+32+stepC),4);
 				outputs[TRIGGER_OUTPUT].setVoltage(paramVal[SEQ_PARAM+40+stepRand]*10.0f,5);
 			}
 		}
 		
 	}
 
-// --------------------------------------------------
+	#include "PushmeSeq/PushmeSeq_json.hpp"
 
 };
 
@@ -246,11 +255,19 @@ struct PushmeSeqWidget : ModuleWidget {
 				module, PushmeSeq::SEQ_PARAM+b, PushmeSeq::SEQ_LIGHT+b));
 		}
 			
-		childInput(PushmeSeq::CLOCK_INPUT, HP*1, HP*22.25-HP*0.5);
-		childKnob(PushmeSeq::INDEXSEQMODE, 0, HP*3, HP*22.25-HP*0.5);
-		childInput(PushmeSeq::RESET_INPUT, HP*1, HP*24-HP*0.5);
-		childOutput(PushmeSeq::TRIGGER_OUTPUT, HP*3, HP*24-HP*0.5);
+		childInput(PushmeSeq::CLOCK_INPUT,  	HP*1, HP*21.75);
+		childKnob(PushmeSeq::SEQMODE_PARAM, 0, 	HP*3, HP*21.75);
+		childInput(PushmeSeq::RESET_INPUT,   	HP*1, HP*23.5);
+		childOutput(PushmeSeq::TRIGGER_OUTPUT, 	HP*3, HP*23.5);
 
+	}
+
+	// #include "PushmeSeq/PushmeSeq_menu.hpp"
+	void appendContextMenu(Menu* menu) override {
+		PushmeSeq* module = dynamic_cast<PushmeSeq*>(this->module);
+		assert(module);
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createIndexPtrSubmenuItem("Precision", {"Perfect (100%)","Very good (95%)","Good (85%)","Not bad (75%)","Wasted (60%)","Crap (50%)","Completely insane (35%)"}, &module->indexPrec));
 	}
 
 	#include "PushmeSeq/PushmeSeq_keys.hpp"
@@ -258,5 +275,7 @@ struct PushmeSeqWidget : ModuleWidget {
 };
 
 Model* modelPushmeSeq = createModel<PushmeSeq, PushmeSeqWidget>("PushmeSeq");
+
+// --------------------------------------------------
 
 #include "PushmeMore.hpp"	// this is a simple expander

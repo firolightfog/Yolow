@@ -104,6 +104,10 @@ struct SaveMeMonoWide : Module {
 		}
 		indexShift=-1;
 	}
+
+	// Ctrl-E bypassing: no sound but the counting stays
+	void processBypass(const ProcessArgs& args) override {
+	}
 		
 	void process(const ProcessArgs& args) override {
 
@@ -314,6 +318,7 @@ struct SaveMeMonoWideWidget : ModuleWidget {
 
 // as seen in VCV Fundamental Logic
 addParam(createLightParamCentered<VCVBezelLightBigRed>(mm2px(Vec(HP*3, HP*17)), module, SaveMeMonoWide::RECORD_PARAM, SaveMeMonoWide::LED_RECORD_PARAM));
+// addParam(createLightParamCentered<VCVButtonSquareRed>(mm2px(Vec(HP*3, HP*17)), module, SaveMeMonoWide::RECORD_PARAM, SaveMeMonoWide::LED_RECORD_PARAM));
 
 		// addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<RedLight>>>(mm2px(Vec(HP*3, HP*17)), module, SaveMeMonoWide::RECORD_PARAM, SaveMeMonoWide::LED_RECORD_PARAM));
 

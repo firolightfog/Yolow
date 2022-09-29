@@ -3,6 +3,15 @@ This file is needed by PushmeSeq and its PushmeMore expander.
 I wanted to avoid typing the same thing twice, so here it is.
 */
 
+	// changes the pre-programmed step value based on the indexPrec
+	float getVoltNow(int prm) {
+		float rndl[7]={1,0.95,0.85,0.75,0.6,0.5,0.35};
+		if (indexPrec!=0 && rndl[indexPrec]<rack::random::uniform()) {
+			return abs(paramVal[prm]-1)*10.0f;
+		}
+		return paramVal[prm]*10.0f;
+	}
+
 	// randomizes a specific zone; called by shortkeys
 	void keyKnob(int rndSection) {
 		for (int b=8*rndSection;b<8*(rndSection+1);b++) {

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 András Szabó
+// Copyright (c) 2022 Andr?s Szab?
 #include "plugin.hpp"
 
 struct Sheep : Module {
@@ -63,10 +63,12 @@ struct Sheep : Module {
 	float oldReset=0.0f;
 	float newClock=0.0f;
 	float oldClock=0.0f;
+	bool hitClock=false;
+	bool offClock=false;
 
 	// more variables
-	float newVolt;	// original idea
-	float newVolts[16]={0.0f}; // ammended idea for polyphonic output
+	float newVolt;				// original idea
+	float newVolts[16]={0.0f}; 	// ammended idea for polyphonic output
 	int readingLength=0;
 	bool readingForward=true;
 	int countDiv=-1;
@@ -140,6 +142,7 @@ struct Sheep : Module {
 		fieldColors[0]=fieldRed;
 		fieldColors[1]=fieldGreen;
 		fieldColors[2]=fieldBlue;
+		setGateTrsh();
 		for (int i=0;i<8*3;i=i+3) {
 			if (indexGateTrsh>=0.01) {
 				for (int c=0;c<3;c++) {
@@ -168,11 +171,43 @@ struct Sheep : Module {
 		if (indexGateMode==1){indexGateTrsh=0.5;}
 		else if (indexGateMode==2){indexGateTrsh=0.75;}
 		else if (indexGateMode==3){indexGateTrsh=0.9;}
-		else {indexGateTrsh=0;}		
-		drawMap();
+		else {indexGateTrsh=0;}
 	}
 
 // --------------------------------------------------
+
+	// Ctrl-E bypassing: no sound but the counting stays
+	void processBypass(const ProcessArgs& args) override {
+		newReset=inputs[RESET_INPUT].getVoltage();
+		if (newReset>2.0f && oldReset<=2.0f) {restartPlease=true;}
+		oldReset=newReset;
+		newClock=inputs[CLOCK_INPUT].getVoltage();
+		if (newClock>2.0f && oldClock<=2.0f) {
+			hitClock=true; offClock=false; countDiv++;
+			if (countDiv>=paramVal[CLOCK_DIVISION_PARAM]) {
+				countDiv=0;
+				if (restartPlease) {restartPlease=false;currStep=paramVal[START_READING_PARAM];}
+				else if (readingForward) {currStep=currStep+paramVal[READING_INCREMENTS_PARAM];
+					if (currStep>paramVal[END_READING_PARAM]) {
+						if (indexRestart==0) {currStep=paramVal[START_READING_PARAM];}
+						else {currStep-=readingLength;}
+					}
+					if (currStep<paramVal[START_READING_PARAM]) {currStep=paramVal[START_READING_PARAM];}
+				}
+				else {
+					currStep=currStep-paramVal[READING_INCREMENTS_PARAM];
+					if (currStep>paramVal[START_READING_PARAM]) {currStep=paramVal[START_READING_PARAM];}	
+					if (currStep<paramVal[END_READING_PARAM]) {
+						if (indexRestart==0) {currStep=paramVal[START_READING_PARAM];}
+						else {currStep=paramVal[START_READING_PARAM]+currStep-paramVal[END_READING_PARAM]+1;}
+					}
+				}
+			}
+		}
+		else if (newClock<=2.0f && oldClock>2.0f) {hitClock=false; offClock=true;}
+		else {hitClock=false; offClock=false;}
+		oldClock=newClock;
+	}
 
 	void process(const ProcessArgs& args) override {
 
@@ -188,6 +223,7 @@ struct Sheep : Module {
 				if (paramVal[END_READING_PARAM]!=params[END_READING_PARAM].getValue()) {
 					params[START_READING_PARAM].setValue(paramVal[START_READING_PARAM]-paramVal[END_READING_PARAM]+params[END_READING_PARAM].getValue());				
 				}
+				setGateTrsh();
 			}
 
 			// collect all paramter values for future reference
@@ -203,6 +239,7 @@ struct Sheep : Module {
 			indexMutants=paramVal[TEMPONLY_PARAM];
 		}
 
+
 		// let's see the reset signal
 		newReset=inputs[RESET_INPUT].getVoltage();
 		if (newReset>2.0f && oldReset<=2.0f) {
@@ -214,6 +251,8 @@ struct Sheep : Module {
 		newClock=inputs[CLOCK_INPUT].getVoltage();
 		if (newClock>2.0f && oldClock<=2.0f) {
 
+			hitClock=true; offClock=false; // info for the expander
+			
 			/* newer polyphonic output */
 			outputs[CV_MUTANT_OUTPUT].channels=indexMaxChan;
 
@@ -271,9 +310,8 @@ struct Sheep : Module {
 					lights[STEPS_A_COLUMN_SEGMENT+3*(currStep-1)+2].setBrightness(1);
 				}
 			
-				// send the output voltage (or a gate signal if requested so)
+				// send the output voltage (or a gate signal if requested so)				
 				
-				/* newer polyphonic output */
 				for (int c=0;c<indexMaxChan;c++) {newVolts[c]=theSeq[currStep-1];}				
 				if (indexMutants==1 && paramVal[MUTATE_PARAM]<1) {
 					if (rack::random::uniform()<paramVal[MUTATE_PARAM]) {
@@ -282,10 +320,10 @@ struct Sheep : Module {
 				}
 				for (int c=0;c<indexMaxChan;c++) {
 					if (indexMaxChan==1 || c<indexMaxChan-1) {newVolt=newVolts[c];}
-					// ez itt nem jó valahogy... mintha kimaradna egy ütem
+					// ez itt nem j? valahogy... mintha kimaradna egy ?tem
 					else {newVolt=newVolts[c-1]; newVolt=1-newVolts[c-1];}
 					if (indexGateTrsh!=0) {
-						outputs[CV_MUTANT_OUTPUT].setVoltage((newVolt>indexGateTrsh)?10:0,c);
+						outputs[CV_MUTANT_OUTPUT].setVoltage((newVolt*paramVal[RANGE_PARAM]>indexGateTrsh)?10:0,c);
 					}
 					else {
 						outputs[CV_MUTANT_OUTPUT].setVoltage(newVolt*paramVal[RANGE_PARAM],c);
@@ -295,10 +333,13 @@ struct Sheep : Module {
 		}
 		// else if (newClock>2.0f && oldClock>2.0f) {}
 		// else if (newClock<=2.0f && oldClock<=2.0f) {}
-		else if (newClock<=2.0f && oldClock>2.0f && indexGateTrsh!=0) {
-			// if gate signals are requested we also 'switch off' by the 'clock off'
-			for (int c=0;c<indexMaxChan;c++) {outputs[CV_MUTANT_OUTPUT].setVoltage(0,c);}
+		else if (newClock<=2.0f && oldClock>2.0f) {
+			hitClock=false; offClock=true; 	// info for the expander
+			if (indexGateTrsh!=0) {
+				for (int c=0;c<indexMaxChan;c++) {outputs[CV_MUTANT_OUTPUT].setVoltage(0,c);}
+			}
 		}
+		else {hitClock=false; offClock=false;}
 		oldClock=newClock;
 
 	}
@@ -308,7 +349,7 @@ struct Sheep : Module {
 	// this block is to save and reload a variable
 	json_t* dataToJson() override {
 	json_t* rootJ = json_object();
-	json_object_set_new(rootJ, "gatemode", json_real(indexGateTrsh));
+	json_object_set_new(rootJ, "gatemode", json_real(indexGateMode));
 	json_object_set_new(rootJ, "restart", json_integer(indexRestart));
 	json_object_set_new(rootJ, "mutants", json_integer(indexMutants));
 	json_object_set_new(rootJ, "maxout", json_integer(indexMaxChan));
@@ -325,7 +366,7 @@ struct Sheep : Module {
 
 	void dataFromJson(json_t* rootJ) override {
 	json_t *gateM = json_object_get(rootJ, "gatemode");
-	if (gateM) indexGateTrsh = json_real_value(gateM);
+	if (gateM) indexGateMode = json_real_value(gateM);
 	json_t *restartM = json_object_get(rootJ, "restart");
 	if (restartM) indexRestart = json_integer_value(restartM);
 	json_t *mutantM = json_object_get(rootJ, "mutants");
@@ -467,3 +508,7 @@ struct SheepWidget : ModuleWidget {
 };
 
 Model* modelSheep = createModel<Sheep, SheepWidget>("Sheep");
+
+// --------------------------------------------------
+
+#include "SheepMore.hpp"	// this is a simple expander

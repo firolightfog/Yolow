@@ -207,6 +207,22 @@ void rndKnob() {
 	std::string sx=""; 
 */
 	
+	// Ctrl-E bypassing: no sound but the counting stays
+	void processBypass(const ProcessArgs& args) override {
+		newReset=inputs[RESET_INPUT].getVoltage();
+		if (newReset>2.0f && oldReset<=2.0f) {stepA=-1; stepB=1; stepC=1;}
+		oldReset=newReset;
+		newClock=inputs[CLOCK_INPUT].getVoltage();
+		if (newClock>2.0f && oldClock<=2.0f) {
+			stepA++; if (stepA==0) {stepA++;}
+			if (stepA>params[SEQ_A_STEPS_PARAM].getValue()) {stepA=1; stepB++;}
+			if (stepB>params[SEQ_B_STEPS_PARAM].getValue()) {stepB=1; stepC++;}
+			if (stepC>params[SEQ_C_STEPS_PARAM].getValue()) {stepC=1;}
+		}
+		oldClock=newClock;	
+	}
+
+	
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {

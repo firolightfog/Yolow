@@ -92,7 +92,7 @@ struct RotaTrig : Module {
 				for (int i=6;i>=0;i--) {
 					if (lights[LED_1_LIGHT+i].getBrightness()>0){selOut=i;break;}
 				}					
-				outputs[THE_1_OUTPUT+selOut].setVoltage(9.90);
+				outputs[THE_1_OUTPUT+selOut].setVoltage(10.f);
 			}
 			else if (newClock<=2.0f && oldClock>2.0f) {
 				lights[LED_1_LIGHT+selOut].setBrightness(0);
@@ -107,7 +107,7 @@ struct RotaTrig : Module {
 				for (int i=6;i>=0;i--) {
 					if (lights[LED_1_LIGHT+i].getBrightness()>0){selOut=i;break;}
 				}					
-				outputs[THE_1_OUTPUT+selOut].setVoltage(9.91);
+				outputs[THE_1_OUTPUT+selOut].setVoltage(10.f);
 				currStep++;
 				if (currStep>=maxStep) {currStep=0;}
 			}			
@@ -123,7 +123,7 @@ struct RotaTrig : Module {
 				outputs[THE_1_OUTPUT+o].setVoltage(0);
 				lights[LED_1_LIGHT+selOut].setBrightness(0);
 			}					
-			outputs[THE_1_OUTPUT+floor((newClock/10)*6)].setVoltage(9.92);
+			outputs[THE_1_OUTPUT+floor((newClock/10)*6)].setVoltage(10.f);
 		}
 	}
 
