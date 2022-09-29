@@ -263,6 +263,9 @@
       "keywords": [
 		"rnd",
 		"fix",
+	      "volt8",
+	      "8volt",
+	      "8rv",
 		"RV8",
         "RandVolt",
 		"ten"
@@ -460,6 +463,7 @@
       "description": "Expander module for the Sheep Random Sequencer with various outputs.",
       "tags": [
         "Random",
+	      "Expander",
         "Low-frequency",
         "Sequencer"
       ]
