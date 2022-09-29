@@ -28,6 +28,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
 |[Sheep](#Sheep)|Provides random stepped voltages or gates with a lot of flexibility|
+|[SheepMore](#SheepMore)|Expander module with additional CV and gates outputs for Sheep|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[NearMess](#NearMess)|An almost passive VCA and mixer|
@@ -200,6 +201,11 @@ Similar to SaveMeMono but all options are available from the panel. I love it.
 
 ### Sheep
 A module to provide stepped voltage. A mutating 32-steps map is read and sent to the output step by step. 
+
+### SheepMore
+An expander module to add output sockets to Sheep. They share the same 'green field' (see map of CVs). 
+
+<img width="534" alt="image" src="https://user-images.githubusercontent.com/34127628/192956323-b9463332-d8da-4499-b668-f341dbde1418.png">
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
