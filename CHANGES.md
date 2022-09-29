@@ -1,14 +1,23 @@
 # Changelog
 
+v2.1.14 2022-09-29
+- new expander module: SheepMore an extension for adding outputs to Sheep module
+- bug fix with clock division of PushMeMore (random sequences & multi-trigger for others)
+- new feature in PushmeSeq & PushmeMore (precision settings in context menu); I couldn't resist :)
+- new feature in PushmeSeq, Celei, Celesta, Sheep (step calculation isn't affected by bypassing)
+- minor bug fix in Celei for reset V levels
+- new reversed output on FromTo
+- bug fix in Sheep on the startup display
+
 v2.1.13 2022-09-18
+- new module added: Sheep (stepped voltage again)
+- new expander module: PushMeMore an extension for adding tracks to PushMeSeq module
 - adding first step indicator LED to SaveMeMono and SaveMeMonoWide to see the value of first step (I like drumpatterns with a first-hit-start)
 - label fix in Quant12, and adding a trigger indicator LED
 - clock indicator level set to 2.0V (instead of the previously coded 0.2V :> ) in Celei, Celesta, FromTo, PushMeSeq, Quant12, QuantET, RandVolt10, RandVolt8, RotaTrig, Sequin
 - bug fix in RotaTrig CV step mode (0-10V)
 - label fix and heavy code renovation in PushMe (Zone 6 labels corrected)
 - minor enhancement of RandVolt8 (fixed voltages are from 0-7V and variable by the knob/switch)
-- new module added: Sheep (stepped voltage again)
-- new expander module: PushMeMore an extension for adding tracks to PushMeSeq module
 
 v2.1.12 2022-08-20
 - modifying descriptions and labels in QuantET, PushMe
