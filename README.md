@@ -146,7 +146,7 @@ Keyboard shortcuts are also available:
 ![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
 ### PushMeMore
-An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. 
+An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. If you feel that it's too perfect you can always check the context menu and reduce the precision. 
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources.
@@ -203,9 +203,19 @@ Similar to SaveMeMono but all options are available from the panel. I love it.
 A module to provide stepped voltage. A mutating 32-steps map is read and sent to the output step by step. 
 
 ### SheepMore
-An expander module to add output sockets to Sheep. They share the same 'green field' (see map of CVs). 
+An expander module to add output sockets to Sheep. They share the same 'green field' (see map of CVs). Additional available sockets:
+- CV pure (0-1v CV provided by the reading head of Sheep)
+- CV inverted (0-1V inverted CV of the previous socket)
+- CV amplified (CV of the 1st socket but amplified by 'Voltage range' value of Sheep)
+- CV inverted amplified
+- CV modified (the mutated CV, unique for each expander modules)
+- CV inverted modified
+- GATE pure (knob of the expander defines the level compared the current CV to)
+- GATE inverted (inverted of the previous socket)
+- GATE modified (the mutated gates, unique for each expander modules)
+- GATE inverted modified
 
-<img width="534" alt="image" src="https://user-images.githubusercontent.com/34127628/192956323-b9463332-d8da-4499-b668-f341dbde1418.png">
+<img width="535" alt="image" src="https://user-images.githubusercontent.com/34127628/192959193-db908873-ac8b-4a56-b46c-a7fda5d75c50.png">
 
 ### Slide6
 A module to provide a six channel polyphonic output with the fixed voltages set by the six sliders. The two knobs (see MIN & MAX) on the top defines the range of voltages. The context menu offers
