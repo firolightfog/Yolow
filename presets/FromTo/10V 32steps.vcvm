@@ -1,0 +1,23 @@
+{
+  "plugin": "Yolow",
+  "model": "FromTo",
+  "version": "2.1.12",
+  "params": [
+    {
+      "value": 0.0,
+      "id": 0
+    },
+    {
+      "value": 10.0,
+      "id": 1
+    },
+    {
+      "value": 32.0,
+      "id": 2
+    },
+    {
+      "value": 0.0,
+      "id": 3
+    }
+  ]
+}
