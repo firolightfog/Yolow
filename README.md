@@ -22,7 +22,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
 |[RandVolt8](#RandVolt8)|Provider of fix (7V, 6V, 5V, etc) or random stepped voltage with range settings|
 |[FromTo](#FromTo)|Provides stepped voltage in a range|
-|[RotaTrig](#RotaTrig)|Distributes incoming clock in carious ways|
+|[RotaTrig](#RotaTrig)|Distributes incoming clock in various ways|
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
 |[Sheep](#Sheep)|Provides random stepped voltages or gates with a lot of flexibility|
