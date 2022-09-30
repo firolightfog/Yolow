@@ -187,19 +187,19 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 Similar to SaveMeMono but all options are available from the panel. I love it. 
 
 ### Sheep
-A module to provide stepped voltage. A mutating 32-steps map is read and sent to the output step by step. The map is a sequence of 0-1V values that can be amplified by the range knob on the top. Appart from the common clock (CLK) and reset (RST) inputs there are also knobs available:
-- RND knob changes the values of the map
-- MUT switch defines if the mutation is permanent of temporary
-- INC knob changes the tightness of steps
+A module to provide stepped voltage. A mutating 32-steps map is read and sent to the output. The map is a sequence of 0-1V values amplified by the range knob on the top. Appart from the common clock (CLK) and reset (RST) inputs there are also knobs available:
+- RND knob changes/mutates the values of the map
+- MUT switch defines if the mutation is 'permanent' or 'temporary'
+- INC knob changes the distance of steps
 - DIV knob allows clock division
-- STR knob defines the starting step of the reading head
+- STR knob defines the first step for the reading head
 - END knob defines the last step of the reading
 
 There's also a pretty rich context menu
-- Restart mode: `always` jumps back to the very first step but `on reset` allows more creating use of the INC knob 
+- Restart mode: `always` jumps back to the very first step but `on reset` allows more creative use of the INC knob 
 - Voltage mode: allows CV output or gates (see also hotkey `g`)
-- Number of output channels: number of output channels
-- Link start and end knobs: if linked the number of steps remain unchanged by turning one of the knobs
+- Number of output channels: allows to create a polyphonic output with differently mutated variations of the same signal
+- Link start and end knobs: if `linked` the number of steps remain unchanged by turning one of the knobs
 
 Keyboard shortcuts are available:
 - `1-4`: randomizes a column in the 'CV map'
@@ -208,7 +208,7 @@ Keyboard shortcuts are available:
 - `g`: allows CV output or gates (based on comparison to 0.5V, 0.75V, 0.9V)
 
 ### SheepMore
-An expander module to add output sockets to Sheep. They share the same 'green field' (see 'map of CVs'). Additional available sockets:
+An expander module to add more outputs to Sheep. They share the same 'green field' (see 'map of CVs'). Additional available sockets:
 - CV pure (0-1v CV provided by the reading head of Sheep)
 - CV inverted (0-1V inverted CV of the previous socket)
 - CV amplified (CV of the 1st socket but amplified by 'Voltage range' value of Sheep)
