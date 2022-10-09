@@ -157,6 +157,8 @@ A simple fix voltage provider module. The context menu offers
 - Quantize: `nope` / `octave` / `notes`
 - Range: `0V to 10V` or `-5V to 5V`
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
+
+If no poly output or quantization is needed then go for [VCV 8vert](https://library.vcvrack.com/Fundamental/8vert) instead. It's the standard module to provide fix voltages.  
  
 ### RandVolt8
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (lower and upper limit voltage) are on the panel. 
