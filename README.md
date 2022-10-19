@@ -166,7 +166,7 @@ Similar to RandVolt10 but with 8 outputs only. It has no context menu but some r
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
 
 ### FromTo
-This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix).
+This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix). (See a VCV selection demo [here](demo/Demo_FromTo.vcvs).)
 
 The OUT is monophonic by default but a switch allows you to have multiple copies of the same CV on multiple channels of a polyphonic OUT. It can be useful sometimes: 
 
