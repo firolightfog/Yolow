@@ -164,6 +164,7 @@ If no poly output or quantization is needed then go for [VCV 8vert](https://libr
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (lower and upper limit voltage) are on the panel. 
 - Without a clock input: it provides eight fix voltages between in the valid range.
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
+
 See a VCV selection demo here: [demo/Demo_RandVolt8.vcvs](demo/Demo_RandVolt8.vcvs).
 
 ### FromTo
