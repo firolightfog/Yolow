@@ -164,9 +164,10 @@ If no poly output or quantization is needed then go for [VCV 8vert](https://libr
 Similar to RandVolt10 but with 8 outputs only. It has no context menu but some range options (lower and upper limit voltage) are on the panel. 
 - Without a clock input: it provides eight fix voltages between in the valid range.
 - With a clock input: it provides random voltages. Practically a S&H unit with internal noise source.
+(See a VCV selection demo here: [demo/Demo_RandVolt8.vcvs](demo/Demo_RandVolt8.vcvs).)
 
 ### FromTo
-This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix). (See a VCV selection demo [here](demo/Demo_FromTo.vcvs).)
+This module provides stepped voltage in a specific range (FROM and TO) according the defined division (DIV). (E.g. if FROM=1V, TO=5V, DIV=4 then the OUT will provide 1V, 2V, 3V, and 4V.) The module was specificially created to assist me playing with docB's [TheMatrix](https://library.vcvrack.com/dbRackSequencer/TheMatrix). (See a VCV selection demo here: [demo/Demo_FromTo.vcvs](demo/Demo_FromTo.vcvs).)
 
 The OUT is monophonic by default but a switch allows you to have multiple copies of the same CV on multiple channels of a polyphonic OUT. It can be useful sometimes: 
 
