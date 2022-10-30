@@ -17,6 +17,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Sequin](#Sequin)|Queen of Sequencers|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
+|[Euclk](#Euclk)|Basic Euclidean sequencer|
+|[EuclkExp](#EuclkExp)|Expander module with additional tracks for Euclk|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -143,6 +145,16 @@ Keyboard shortcuts are also available:
 
 ### PushMeMore
 An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. If you feel that it's too perfect you can always check the context menu and reduce the precision. 
+
+### Euclk
+I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical imprtance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
+
+Euclk is a single track sequencer with clock (CLK) and reset (RST) inputs. There is a knob for the pattern length (LEN), hits (HIT), shift (SHF) paramters. There is also a precision (PRC) settings available for instant randomization. The two outputs provide the calculated trigger sequence and its inverted variation.
+
+If you need more complextiy I suggest checking out docB [N3](https://library.vcvrack.com/dbRackSequencer/N3) or the mighty Frozen Wasteland [Quad Algorithmic Rhythm Generator](https://library.vcvrack.com/FrozenWasteland/QuadAlgorithmicRhythm).
+
+### EuclkExp
+An expander for Euclk. It uses the clock and reset signal of Euclk and adds additional tracks. The with the LEN and HIT CV inputs (0-10V) you can modify parameters on the fly. There is one more big knob added to select the behaviour of the MXD output. It can be the inverted or a random sequence but it also allows you to choose a logical combination with mother module.  
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources. See a VCV selection demo here: [demo/Demo_SeqP5.vcvs](demo/Demo_SeqP5.vcvs).
