@@ -1,5 +1,14 @@
 # Changelog
 
+v2.1.15 2022-10-30
+- changed Sheep with a mild mutation settings on startup 
+- changed Quant12 poly output to reflect transposition
+- bug fix in Quant12 in the quantized transposition mode
+- changed RotaTrig CV stepper behaviour to consider SLOT settings
+- potential bug fix in RotaTrig to avoid unitialized inputVolt
+- new module added: Euclk (basic Euclidean sequencer)
+- new expander: EuclkExp an extension for adding outputs to Sheep module
+
 v2.1.14 2022-09-29
 - new expander module: SheepMore an extension for adding outputs to Sheep module
 - bug fix with clock division of PushMeMore (random sequences & multi-trigger for others)
