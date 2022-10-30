@@ -21,8 +21,8 @@ struct RotaTrig : Module {
 		LED_6_LIGHT, LIGHTS_LEN};
 
 	// small assistance to save older values for reference;
-	float paramVal[PARAMS_LEN]={0};
-	float inputVolt[INPUTS_LEN]={0};
+	float paramVal[PARAMS_LEN]={0,0};
+	float inputVolt[INPUTS_LEN]={0,0,0,0,0,0,0};
 	// float lightVal[LIGHTS_LEN]={0};
 
 // --------------------------------------------------
@@ -59,7 +59,7 @@ struct RotaTrig : Module {
 	float oldClock=0.0f;
 	int indexMode=0;		// PARAM value; mode of selection
 	int currStep=0;			// calculated step (aka output) for the next step
-	int maxStep=0;			// PARAM value; max number of outputs available
+	int maxStep=6;			// PARAM value; max number of outputs available
 	int selOut=0;			// selected output
 	int CLOCK_INPUT=TRIGGER_INPUT;
 	
@@ -119,6 +119,7 @@ struct RotaTrig : Module {
 		}
 		else if (indexMode==2) {	// 0-10V CV controlled
 			newClock=inputs[CLOCK_INPUT].getVoltage();
+			newClock=newClock/6*maxStep;
 			for (int o=0;o<6;o++) {
 				outputs[THE_1_OUTPUT+o].setVoltage(0);
 				lights[LED_1_LIGHT+selOut].setBrightness(0);

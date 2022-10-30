@@ -114,19 +114,22 @@ struct Quant12 : Module {
 			theOct=floor(newNoise);
 			theNote=newNoise - theOct;
 			// newVoltOut=theOct + round(newNoise*12)/12;
-			newVoltOut=theOct + roundTo(newNoise);
+			// newVoltOut=theOct + roundTo(newNoise);
+			newVoltOut=theOct + roundTo(theNote);
 		}
 		else if (paramVal[MODE_PARAM]==0) {
 			theOct=floor(newNoise+newTransp);
 			theNote=(newNoise+newTransp) - theOct;
 			// newVoltOut=theOct + round(newNoise*12)/12;
-			newVoltOut=theOct + roundTo(newNoise);
+			// newVoltOut=theOct + roundTo(newNoise);
+			newVoltOut=theOct + roundTo(theNote);
 		}
 		else if (paramVal[MODE_PARAM]==2) {
 			theOct=floor(newNoise);
 			theNote=(newNoise) - theOct;
 			// newVoltOut=theOct + round(newNoise*12)/12 + newTransp;
-			newVoltOut=theOct + roundTo(newNoise) + newTransp;
+			// newVoltOut=theOct + roundTo(newNoise) + newTransp;
+			newVoltOut=theOct + roundTo(theNote) + newTransp;
 		}		
 		if (oldVoltOut!=newVoltOut) {
 			outputs[NOTE_OUTPUT].setVoltage(newVoltOut);
@@ -158,7 +161,17 @@ struct Quant12 : Module {
 				// lights[NOTE_LIGHT+p].setBrightness(paramVal[NOTE_PARAM+p]);
 				if (paramVal[NOTE_PARAM+p]==1) {
 					lights[NOTE_LIGHT+p].setBrightness(0.8f);
-					outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f,cc);
+					if (paramVal[MODE_PARAM]==1) {
+						outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f,cc);
+					}
+					else if (paramVal[MODE_PARAM]==0) {
+						theOct=floor(newTransp);
+						theNote=newTransp - theOct;						
+						outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f+theOct + roundTo(theNote),cc);						
+					}
+					else if (paramVal[MODE_PARAM]==2) {
+						outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f+newTransp,cc);
+					}
 					cc++;
 				} 
 				else {lights[NOTE_LIGHT+p].setBrightness(0.0f);}

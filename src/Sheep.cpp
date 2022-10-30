@@ -32,7 +32,7 @@ struct Sheep : Module {
 
 	Sheep() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(MUTATE_PARAM, 	0.0f, 1.0f, 0.0f, "Mutation frequency","%", 0, 100);
+		configParam(MUTATE_PARAM, 	0.0f, 1.0f, 0.0125f, "Mutation frequency","%", 0, 100);
 		configParam(START_READING_PARAM, 		1.0f, 32.0f, 17.0f, "Start reading");
 		configParam(END_READING_PARAM, 			1.0f, 32.0f, 32.0f, "End reading");
 		configParam(READING_INCREMENTS_PARAM, 	1.0f, 16.0f, 1.0f, "Reading increments");
