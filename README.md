@@ -154,7 +154,7 @@ Euclk is a single track sequencer with clock (CLK) and reset (RST) inputs. There
 If you need more complextiy I suggest checking out docB [N3](https://library.vcvrack.com/dbRackSequencer/N3) or the mighty Frozen Wasteland [Quad Algorithmic Rhythm Generator](https://library.vcvrack.com/FrozenWasteland/QuadAlgorithmicRhythm).
 
 ### EuclkExp
-An expander for Euclk. It uses the clock and reset signal of Euclk and adds additional tracks. The with the LEN and HIT CV inputs (0-10V) you can modify parameters on the fly. There is one more big knob added to select the behaviour of the MXD output. It can be the inverted or a random sequence but it also allows you to choose a logical combination with mother module.  
+An expander for Euclk. It uses the clock and reset signal of Euclk and adds an additional track. With the LEN and HIT CV inputs (0-10V) you can modify parameters on the fly. There is one more big knob added to select the behaviour of the MXD output. It can be the inverted or a random sequence but it also allows you to choose a logical combination with mother module.  
 
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources. See a VCV selection demo here: [demo/Demo_SeqP5.vcvs](demo/Demo_SeqP5.vcvs).
