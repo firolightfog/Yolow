@@ -160,7 +160,7 @@ An expander for Euclk. It uses the clock and reset signal of Euclk and adds an a
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources. See a VCV selection demo here: [demo/Demo_SeqP5.vcvs](demo/Demo_SeqP5.vcvs).
 
 ### SeqP16
-A tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step a clock (see CLK) is needed. Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels.
+A tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step a clock (see CLK) is needed. Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels. (Recommended reading: [musical dice game] (https://en.wikipedia.org/wiki/Musikalisches_Würfelspiel).)
 
 -----
 
