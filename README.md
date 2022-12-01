@@ -2,7 +2,7 @@
 
 Missing a few simple module from my VCV Rack patches I decided to code a bit. But I would also like to share them with you. If you successfully use any of them in your project or you like it please let me know. Your advices and [support](https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU) would be also appreciated.  
 
-<img width="600" alt="image" src="https://user-images.githubusercontent.com/34127628/182356626-c14c51d3-7d8a-40c0-891c-cfe173f832db.png">
+<img width="520" alt="image" src="https://user-images.githubusercontent.com/34127628/205012222-028e6599-32bb-48e9-9808-22e99cb6298a.png">
 
 |Module|Short desc.|
 | --- | --- |
@@ -18,7 +18,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
 |[Euclk](#Euclk)|Basic Euclidean sequencer|
-|[EuclkExp](#EuclkExp)|Expander module with additional tracks for Euclk|
+|[EuclkMore](#EuclkMore)|Expander module with additional tracks for Euclk|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
@@ -27,6 +27,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[RotaTrig](#RotaTrig)|Distributes incoming clock in various ways|
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
+|[SaveMeMore](#SaveMeMore)|Expander module with additional tracks for SaveMeMono|
 |[Sheep](#Sheep)|Provides random stepped voltages or gates with a lot of flexibility|
 |[SheepMore](#SheepMore)|Expander module with additional CV and gates outputs for Sheep|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
@@ -53,10 +54,10 @@ Select your favourite channel from a polyphonic input (see PIN). The upper secti
 
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/34127628/156900013-2fd81ae0-16ac-40fd-adf2-582d2e2ae03a.png">
 
-If there's no PIN connected then fixed voltages are sent to the output. Unfortunately the knob labels don't properly reflect the behaviour.
+If there's no PIN connected then fixed voltages are sent to the output. The upper slider reacts to pressing 1-9 numeric keys.
 
 ### ChSel6
-Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu. Similarly to the suggestion [here](https://github.com/dbgrande/GrandeModular/issues/4).
+Select upto 6 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 6 in the context menu. Similarly to the suggestion [here](https://github.com/dbgrande/GrandeModular/issues/4). But you can use the context menu to select from various alternative mono outputs (like OR, XOR, NXOR).
 
 ### ChSel8
 Select upto 8 of your favorite channels from a polyphonic input (see POLYIN). The result will be a polyphonic output (see OUT). The number of channels in the output can be set from 1 to 8 in the context menu. It's only 2HP!
@@ -133,6 +134,7 @@ Keyboard shortcuts are also available:
 - `i`: inverts all buttons values
 - `1-6`: randomizes a certain zone
 - `Shift-1` to `Shift-6`: clears a certain zone
+- `Alt-1` to `Alt-6`: delays hits of a zone
 - `r`: common dice function with unique algorhythm for sequence mode `0` and `3`
 - `x`: records a hit to the first sequence
 - `c`: records a hit to the second sequence (if available)
@@ -153,7 +155,7 @@ Euclk is a single track sequencer with clock (CLK) and reset (RST) inputs. There
 
 If you need more complextiy I suggest checking out docB [N3](https://library.vcvrack.com/dbRackSequencer/N3) or the mighty Frozen Wasteland [Quad Algorithmic Rhythm Generator](https://library.vcvrack.com/FrozenWasteland/QuadAlgorithmicRhythm).
 
-### EuclkExp
+### EuclkMore
 An expander for Euclk. It uses the clock and reset signal of Euclk and adds an additional track. With the LEN and HIT CV inputs (0-10V) you can modify parameters on the fly. There is one more big knob added to select the behaviour of the MXD output. It can be the inverted or a random sequence but it also allows you to choose a logical combination with mother module.  
 
 ### SeqP5
@@ -201,6 +203,9 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 
 ### SaveMeMonoWide
 Similar to SaveMeMono but all options are available from the panel. I love it. 
+
+### SaveMeMore
+An expander module for SaveMeMono. Not compatible with SaveMeMonoWide (yet)! It adds an additional read-head to the 256 element CV sequence stored in SaveMeMono and uses its clock.
 
 ### Sheep
 A module to provide stepped voltage. A mutating 32-steps map is read and sent to the output. The map is a sequence of 0-1V values amplified by the range knob on the top. Appart from the common clock (CLK) and reset (RST) inputs there are also knobs available:
