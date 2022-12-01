@@ -2,7 +2,7 @@
 
 Missing a few simple module from my VCV Rack patches I decided to code a bit. But I would also like to share them with you. If you successfully use any of them in your project or you like it please let me know. Your advices and [support](https://paypal.me/salix0210?country.x=HU&locale.x=hu_HU) would be also appreciated.  
 
-<img width="520" alt="image" src="https://user-images.githubusercontent.com/34127628/205012222-028e6599-32bb-48e9-9808-22e99cb6298a.png">
+<img width="720" alt="image" src="https://user-images.githubusercontent.com/34127628/205014176-79ed0271-2c23-4ab3-877c-225fb91d3d13.png">
 
 |Module|Short desc.|
 | --- | --- |
