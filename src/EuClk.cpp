@@ -179,14 +179,14 @@ Model* modelEuclk = createModel<Euclk, EuclkWidget>("Euclk");
 // using the same clock as the mother
 
 // #include "plugin.hpp"
-struct EuclkExp : Module {
+struct EuclkMore : Module {
 
 	enum ParamId	{LENGTH_PARAM, HITS_PARAM, SHIFTS_PARAM, PREC_PARAM, PW_PARAM, MIXED_PARAM, PARAMS_LEN};
 	enum InputId	{LENGTH_INPUT, HITS_INPUT, INPUTS_LEN};
 	enum OutputId	{OUTPUT_OUTPUT, MIXED_OUTPUT, OUTPUTS_LEN};
 	enum LightId 	{LIGHTS_LEN};
 
-	EuclkExp() {
+	EuclkMore() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configOutput(OUTPUT_OUTPUT, "Output"); 
 		configOutput(MIXED_OUTPUT, "Mixed"); 
@@ -201,7 +201,7 @@ struct EuclkExp : Module {
 		paramQuantities[HITS_PARAM]->snapEnabled = true;
 		paramQuantities[SHIFTS_PARAM]->snapEnabled = true;
 
-		configParam(MIXED_PARAM, 	0.0f, 7.0f, 0.0f, "Mixed clock modes");
+		configParam(MIXED_PARAM, 	0.0f, 7.0f, 1.0f, "Mixed clock modes");
 		paramQuantities[MIXED_PARAM]->snapEnabled = true;
 		paramQuantities[MIXED_PARAM]->description = ("Mixed output modes inverted, random, XOR and OR with mother, etc...");
 	}
@@ -213,8 +213,8 @@ struct EuclkExp : Module {
 				if (module->leftExpander.module->model == modelEuclk) {
 					return reinterpret_cast<Euclk*>(module->leftExpander.module);
 				}
-				// if it's EuclkExp, keep recursing
-				else if (module->leftExpander.module->model == modelEuclkExp) {
+				// if it's EuclkMore, keep recursing
+				else if (module->leftExpander.module->model == modelEuclkMore) {
 					return findHostModulePtr(module->leftExpander.module);
 				}
 			}
@@ -225,7 +225,7 @@ struct EuclkExp : Module {
 	// --------------------------------------------------
 
 	int loop=0;     // save some CPU in process()
-	int MXD=0;
+	int MXD=1;
 	int LEN=16;
 	int HIT=4;
 	int SHF=0;
@@ -313,12 +313,12 @@ struct EuclkExp : Module {
 				outputs[OUTPUT_OUTPUT].setVoltage(newVolt*10);
 				
 				if (MXD==0) {
-					outputs[MIXED_OUTPUT].setVoltage(newVolt*-10+10);
-					paramQuantities[MIXED_PARAM]->description = ("Inverted output");	
-					}
-				else if (MXD==1) {
 					outputs[MIXED_OUTPUT].setVoltage(activePrec?10:0);
 					paramQuantities[MIXED_PARAM]->description = ("Random clock");	
+					}
+				else if (MXD==1) {
+					outputs[MIXED_OUTPUT].setVoltage(newVolt*-10+10);
+					paramQuantities[MIXED_PARAM]->description = ("Inverted output");	
 					}
 				else if (MXD==2) {
 					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt + newVolt==1)?10:0);
@@ -333,11 +333,15 @@ struct EuclkExp : Module {
 					paramQuantities[MIXED_PARAM]->description = ("NOR with mother module");	
 					}
 				else if (MXD==5) {
-					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt + newVolt==2)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("AND with mother module");	
+					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt == newVolt)?10:0);
+					paramQuantities[MIXED_PARAM]->description = ("XNOR with mother module");	
 					}
 				else if (MXD==6) {
-					outputs[MIXED_OUTPUT].setVoltage(!(mother->newVolt + newVolt==2)?10:0);
+					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==1 && newVolt==1)?10:0);
+					paramQuantities[MIXED_PARAM]->description = ("AND with mother module");	
+					}
+				else if (MXD==7) {
+					outputs[MIXED_OUTPUT].setVoltage(!(mother->newVolt==1 && newVolt==1)?10:0);
 					paramQuantities[MIXED_PARAM]->description = ("NAND with mother module");	
 					}
 				else {
@@ -355,36 +359,36 @@ struct EuclkExp : Module {
 
 };
 		
-struct EuclkExpWidget : ModuleWidget {
+struct EuclkMoreWidget : ModuleWidget {
 
-	EuclkExp* module;
+	EuclkMore* module;
 	#include "share/widgetwizard.hpp"   // addChild abbreviations
 
-	EuclkExpWidget(EuclkExp* module) {
+	EuclkMoreWidget(EuclkMore* module) {
 
 		this->module = module;
 		setModule(module);
-		setPanel(createPanel(asset::plugin(pluginInstance, "res/EuclkExp.svg")));
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/EuclkMore.svg")));
 
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
-		childKnob(EuclkExp::MIXED_PARAM, 	2, HP*2, HP*2.5);
+		childKnob(EuclkMore::MIXED_PARAM, 	2, HP*2, HP*2.5);
 		
-		childKnob(EuclkExp::LENGTH_PARAM, 	1, HP*2, HP*12.5);
-		childKnob(EuclkExp::HITS_PARAM, 	1, HP*2, HP*15.5);
-		childKnob(EuclkExp::SHIFTS_PARAM, 	1, HP*2, HP*18.5);
-		childKnob(EuclkExp::PREC_PARAM, 	1, HP*2, HP*21.5);
+		childKnob(EuclkMore::LENGTH_PARAM, 	1, HP*2, HP*12.5);
+		childKnob(EuclkMore::HITS_PARAM, 	1, HP*2, HP*15.5);
+		childKnob(EuclkMore::SHIFTS_PARAM, 	1, HP*2, HP*18.5);
+		childKnob(EuclkMore::PREC_PARAM, 	1, HP*2, HP*21.5);
 		
-		childOutput(EuclkExp::OUTPUT_OUTPUT, 	HP*3, HP*5.5);
-		childOutput(EuclkExp::MIXED_OUTPUT, 	HP*1, HP*5.5);
-		childInput(EuclkExp::LENGTH_INPUT, 	HP*1, HP*8.5);
-		childInput(EuclkExp::HITS_INPUT, 	HP*3, HP*8.5);
+		childOutput(EuclkMore::OUTPUT_OUTPUT, 	HP*3, HP*5.5);
+		childOutput(EuclkMore::MIXED_OUTPUT, 	HP*1, HP*5.5);
+		childInput(EuclkMore::LENGTH_INPUT, 	HP*1, HP*8.5);
+		childInput(EuclkMore::HITS_INPUT, 	HP*3, HP*8.5);
 
 	}
 
 };
 
-Model* modelEuclkExp = createModel<EuclkExp, EuclkExpWidget>("EuclkExp");
+Model* modelEuclkMore = createModel<EuclkMore, EuclkMoreWidget>("EuclkMore");

@@ -72,7 +72,7 @@ int mulCLK=1;
 int divCLK=1;
 
 float voltOut=0;
-int indexQuant=0;	// this means no quantization
+int indexQuant=0;		// this means no quantization
 
 	float quantMe(float oldVal) {
 		if (indexQuant==0) {return oldVal;}
@@ -187,8 +187,16 @@ int indexQuant=0;	// this means no quantization
 
 // --------------------------------------------------
 
-	// spaceholder for JSON
+	// this block is to save and reload a variable
+	json_t* dataToJson() override {
+	json_t* rootJ = json_object();
+	json_object_set_new(rootJ, "quant", json_integer(indexQuant));
+	return rootJ;}
 
+	void dataFromJson(json_t* rootJ) override {
+	json_t *quantJ = json_object_get(rootJ, "quant");
+	if (quantJ) indexQuant = json_integer_value(quantJ);
+	}
 // --------------------------------------------------
 
 };
@@ -235,6 +243,7 @@ struct SequinWidget : ModuleWidget {
 		assert(module);
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
+		// menu->addChild(createIndexPtrSubmenuItem("Pulse width multiplication", {"x1","x2","x3","x4","x5","x6","x7","x8"}, &module->indexPWcalc));
 	}
 
 };

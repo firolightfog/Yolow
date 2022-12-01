@@ -72,7 +72,9 @@ struct PushmeMore : Module {
 	bool restartPlease=true;
 	
 	int indexSeqMode=1;
+	int indexPrecMode=0;
 	int indexPrec=0;
+	int indexPW=0;
 
 	void process(const ProcessArgs& args) override {
 
@@ -197,8 +199,10 @@ struct PushmeMore : Module {
 				}
 			}
 			else if (mother->offClock==true) {
-				for (int c=0;c<outputs[TRIGGER_OUTPUT].channels;c++) {
-					outputs[TRIGGER_OUTPUT].setVoltage(0.0f,c);
+				if (indexPW==0) {
+					for (int c=0;c<outputs[TRIGGER_OUTPUT].channels;c++) {
+						outputs[TRIGGER_OUTPUT].setVoltage(0.0f,c);
+					}
 				}
 			}
 		}		
@@ -247,13 +251,10 @@ struct PushmeMoreWidget : ModuleWidget {
 
 	}
 
-
-	// #include "PushmeSeq/PushmeSeq_menu.hpp"
 	void appendContextMenu(Menu* menu) override {
 		PushmeMore* module = dynamic_cast<PushmeMore*>(this->module);
 		assert(module);
-		menu->addChild(new MenuSeparator);
-		menu->addChild(createIndexPtrSubmenuItem("Precision", {"Perfect (100%)","Very good (95%)","Good (85%)","Not bad (75%)","Wasted (60%)","Crap (50%)","Completely insane (35%)"}, &module->indexPrec));
+		#include "PushmeSeq/PushmeSeq_menu.hpp"
 	}
 
 	#include "PushmeSeq/PushmeSeq_keys.hpp"

@@ -6,7 +6,7 @@ struct SheepMore : Module {
 // --------------------------------------------------
 
 	enum ParamId    {
-		GATE_TRIGGER_PARAM, PARAMS_LEN};
+		GATE_TRIGGER_PARAM, START_READING_PARAM, END_READING_PARAM, PARAMS_LEN};
 
 	enum InputId    {INPUTS_LEN};
 
@@ -22,6 +22,8 @@ struct SheepMore : Module {
 	SheepMore() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(GATE_TRIGGER_PARAM, 	0.0f, 1.0f, 0.5f, "Gate trigger");
+		// configParam(START_READING_PARAM, 		1.0f, 32.0f, 17.0f, "Start reading");
+		// configParam(END_READING_PARAM, 			1.0f, 32.0f, 32.0f, "End reading");
 
 		configOutput(CV_PURE_OUTPUT, "CV pure"); 
 		configOutput(CV_INVERT_OUTPUT, "CV invert"); 
@@ -140,8 +142,11 @@ struct SheepMoreWidget : ModuleWidget {
 		// setPanel(createPanel(asset::plugin(pluginInstance, "res/components/Empty2hp.svg")));
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/SheepMore.svg")));
 				
-		childOutput(SheepMore::CV_PURE_OUTPUT, 				HP*1, HP*2.5-HP*0.25);
-		childOutput(SheepMore::CV_INVERT_OUTPUT, 			HP*1, HP*4.5-HP*0.25);
+		// childKnob(SheepMore::START_READING_PARAM, 0, 		HP*1, HP*2.25);
+		// childKnob(SheepMore::END_READING_PARAM, 0, 		HP*1, HP*4.25);
+		childOutput(SheepMore::CV_PURE_OUTPUT, 				HP*1, HP*2.25);
+		childOutput(SheepMore::CV_INVERT_OUTPUT, 			HP*1, HP*4.25);
+
 		childOutput(SheepMore::CV_PURE_AMPLIFIED_OUTPUT, 	HP*1, HP*6.5-HP*0.25);
 		childOutput(SheepMore::CV_INVERT_AMPLIFIED_OUTPUT, 	HP*1, HP*8.5-HP*0.25);
 		childOutput(SheepMore::CV_PURE_MODIFIED_OUTPUT, 	HP*1, HP*10.5-HP*0.25);

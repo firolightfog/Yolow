@@ -62,7 +62,9 @@ struct PushmeSeq : Module {
 	bool restartPlease=true;
 	
 	int indexSeqMode=1;
+	int indexPrecMode=0;
 	int indexPrec=0;
+	int indexPW=0;
 	
 	// const std::string labelSeqMode[7]={"1x48 random","1x48","1x32 + 1x16","3x16","2x16 + 2x8","1x16 + 4x8 (last random)","6x8 (last random)"};
 
@@ -133,7 +135,11 @@ struct PushmeSeq : Module {
 		else if (newClock<=2.0f && oldClock>2.0f) {
 			// if the clock pulse is off then the output is also off
 			offClock=true;
-			for (int c=0;c<outputs[TRIGGER_OUTPUT].channels;c++) {outputs[TRIGGER_OUTPUT].setVoltage(0,c);}
+			if (indexPW==0) {
+				for (int c=0;c<outputs[TRIGGER_OUTPUT].channels;c++) {
+					outputs[TRIGGER_OUTPUT].setVoltage(0,c);
+				}
+			}
 		}
 		oldClock=newClock;
 		
@@ -141,9 +147,7 @@ struct PushmeSeq : Module {
 		if (hitClock==true) {
 
 			// fix all lights
-			for (int k=0;k<48;k++) {
-				lights[SEQ_LIGHT+k].setBrightness(paramVal[SEQ_PARAM+k]*0.452);
-			}
+			updateLights();	
 			
 			// indexSeqMode: 0 (random) 1 (1x48) 2 (1x32+1x16) 3 (3x16) 4 (2x16+2x8) 5 (1x16+4x8) 6 (6x8)		
 			if (indexSeqMode==0) {
@@ -262,12 +266,10 @@ struct PushmeSeqWidget : ModuleWidget {
 
 	}
 
-	// #include "PushmeSeq/PushmeSeq_menu.hpp"
 	void appendContextMenu(Menu* menu) override {
 		PushmeSeq* module = dynamic_cast<PushmeSeq*>(this->module);
 		assert(module);
-		menu->addChild(new MenuSeparator);
-		menu->addChild(createIndexPtrSubmenuItem("Precision", {"Perfect (100%)","Very good (95%)","Good (85%)","Not bad (75%)","Wasted (60%)","Crap (50%)","Completely insane (35%)"}, &module->indexPrec));
+		#include "PushmeSeq/PushmeSeq_menu.hpp"
 	}
 
 	#include "PushmeSeq/PushmeSeq_keys.hpp"

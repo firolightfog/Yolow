@@ -6,10 +6,22 @@ I wanted to avoid typing the same thing twice, so here it is.
 	// changes the pre-programmed step value based on the indexPrec
 	float getVoltNow(int prm) {
 		float rndl[7]={1,0.95,0.85,0.75,0.6,0.5,0.35};
-		if (indexPrec!=0 && rndl[indexPrec]<rack::random::uniform()) {
+		if (indexPrec==0) {return paramVal[prm]*10.0f;}
+		else if (indexPrecMode==0 && rndl[indexPrec]<rack::random::uniform()) {
+			return abs(paramVal[prm]-1)*10.0f;
+		}
+		else if ((indexPrecMode==1 && paramVal[prm]==0) && rndl[indexPrec]<rack::random::uniform()) {
+			return abs(paramVal[prm]-1)*10.0f;
+		}
+		else if ((indexPrecMode==2 && paramVal[prm]==1) && rndl[indexPrec]<rack::random::uniform()) {
 			return abs(paramVal[prm]-1)*10.0f;
 		}
 		return paramVal[prm]*10.0f;
+		// float rndl[7]={1,0.95,0.85,0.75,0.6,0.5,0.35};
+		// if (indexPrec!=0 && rndl[indexPrec]<rack::random::uniform()) {
+			// return abs(paramVal[prm]-1)*10.0f;
+		// }
+		// return paramVal[prm]*10.0f;
 	}
 
 	// randomizes a specific zone; called by shortkeys
@@ -18,6 +30,7 @@ I wanted to avoid typing the same thing twice, so here it is.
 			params[SEQ_PARAM+b].setValue(rand() % 2);
 			// lights[SEQ_LIGHT+b].setBrightness(params[SEQ_PARAM+b].getValue());
 		}	
+		updateLights();		
 	}
 
 	// clears a specific zone; called by shortkeys
@@ -36,6 +49,24 @@ I wanted to avoid typing the same thing twice, so here it is.
 		}
 	}
 
+	// moves the this of a specific zone earlier; called by shortkeys
+	void moveupdnKnob(int rndSection) {
+		float nextValue=0;
+		// float firstValue=params[SEQ_PARAM+8*rndSection+0].getValue();
+		float lastValue=params[SEQ_PARAM+8*rndSection+7].getValue();
+		for (int b=8*(rndSection+1)-1;b>8*rndSection;b--) {
+			nextValue=params[SEQ_PARAM+b-1].getValue();
+			// params[SEQ_PARAM+b+1].setValue(0);
+			// lights[SEQ_LIGHT+b+1].setBrightness(0);
+			params[SEQ_PARAM+b].setValue(nextValue);
+			lights[SEQ_LIGHT+b].setBrightness(nextValue);
+		}
+		nextValue=lastValue;
+		lights[SEQ_LIGHT+8*(rndSection)].setBrightness(nextValue);
+		params[SEQ_PARAM+8*(rndSection)].setValue(nextValue);	
+		updateLights();		
+	}
+
 	// unique & special randomization modes for certain modes
 	void xrndKnob() {
 		if (indexSeqMode==3) {
@@ -47,6 +78,13 @@ I wanted to avoid typing the same thing twice, so here it is.
 				params[SEQ_PARAM+32+b].setValue((theRandomValueForThisStep==2)?1:0);
 			}			
 		}
+		/* Euclidean spaceholder; how to collect expander info?!?
+		else if (indexSeqMode==1) {
+			for (int i=0;i<48;i++) {
+				params[SEQ_PARAM+i].setValue(rand()% 2);	// the trick				
+			}
+		}
+		*/
 		else if (indexSeqMode==0) {
 			int lastValueHere=-1;
 			for (int b=15;b>=0; b--) {
@@ -71,6 +109,7 @@ I wanted to avoid typing the same thing twice, so here it is.
 				params[SEQ_PARAM+b].setValue(rand() % 2);
 			}	
 		}	
+		updateLights();		
 	}
 
 	// allows recording a sequence by pressing keys (x,c,v,b,n,m)
@@ -120,4 +159,22 @@ I wanted to avoid typing the same thing twice, so here it is.
 		else if (hitKey==66 /*b*/) {outputs[TRIGGER_OUTPUT].setVoltage(10.0f,3);}
 		else if (hitKey==78 /*n*/) {outputs[TRIGGER_OUTPUT].setVoltage(10.0f,4);}
 		else if (hitKey==77 /*m*/) {outputs[TRIGGER_OUTPUT].setVoltage(10.0f,5);}
+		
+		if (inputs[CLOCK_INPUT].isConnected()==false) {
+			stepA++; stepB++; stepC++;
+			if (stepA>=48 || stepA<0) {stepA=0;}
+			if (stepB>=16 || stepB<0) {stepB=0;}
+			if (stepC>=8 || stepC<0) {stepC=0;}
+			updateLights();
+		}
+		
 	}
+
+	void updateLights() {
+		for (int k=0;k<48;k++) {
+			// lights[SEQ_LIGHT+k].setBrightness(paramVal[SEQ_PARAM+k]*0.452);
+			lights[SEQ_LIGHT+k].setBrightness(params[SEQ_PARAM+k].getValue()*0.452);
+		}
+	}
+
+

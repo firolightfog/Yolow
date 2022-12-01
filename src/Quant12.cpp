@@ -25,6 +25,11 @@ struct Quant12 : Module {
 
 // --------------------------------------------------
 
+	const std::string tmpNotes[12]={
+		"C ","C# ","D ",
+		"D# ","E ","F ",
+		"F# ","G ","G# ",
+		"A ","A# ","B "};
 	const std::string labelNotes[12]={
 		"Note C (0.000V)","Note C# (0.083V)","Note D (0.167V)",
 		"Note D# (0.250V)","Note E (0.333V)","Note F (0.417V)",
@@ -152,7 +157,7 @@ struct Quant12 : Module {
 			transIn=inputs[TRANSPOSE_INPUT].isConnected();
 
 			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
-			paramQuantities[MODE_PARAM]->description = labelModes[(int)paramVal[MODE_PARAM]];			
+			paramQuantities[MODE_PARAM]->description = labelModes[(int)paramVal[MODE_PARAM]];
 
 			// put the shortlist
 			int cc=0;	// channel counter
@@ -166,8 +171,8 @@ struct Quant12 : Module {
 					}
 					else if (paramVal[MODE_PARAM]==0) {
 						theOct=floor(newTransp);
-						theNote=newTransp - theOct;						
-						outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f+theOct + roundTo(theNote),cc);						
+						theNote=newTransp - theOct;	
+						outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f+theOct+roundTo(theNote),cc);
 					}
 					else if (paramVal[MODE_PARAM]==2) {
 						outputs[POLY_ALLOWED_OUTPUT].setVoltage(p/12.0f+newTransp,cc);
@@ -179,7 +184,6 @@ struct Quant12 : Module {
 			outputs[POLY_ALLOWED_OUTPUT].channels=cc;
 
 		}
-
 
 		// --------------------------------------------------
 

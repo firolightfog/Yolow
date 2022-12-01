@@ -5,7 +5,12 @@ I wanted to avoid typing the same thing twice, so here it is.
 
 	void onHoverKey(const event::HoverKey &e) override {
 		if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_6) {
-			if (e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) == GLFW_MOD_SHIFT)) {
+			if (e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) == GLFW_MOD_ALT)) {
+				float key_number = e.key - 49; // 49 is the ascii number for key #1
+				module->moveupdnKnob(key_number);	// this doesn't work
+				e.consume(this);
+			}
+			else if (e.action == GLFW_PRESS && ((e.mods & RACK_MOD_MASK) == GLFW_MOD_SHIFT)) {
 				float key_number = e.key - 49; // 49 is the ascii number for key #1
 				module->clearKnob(key_number);	// this doesn't work
 				e.consume(this);

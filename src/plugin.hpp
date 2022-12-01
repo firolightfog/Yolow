@@ -41,6 +41,7 @@ extern Model* modelRotaTrig;
 extern Model* modelNearMess;
 extern Model* modelSequin;
 extern Model* modelSaveMeMono;
+extern Model* modelSaveMeMore;
 extern Model* modelSaveMeMonoWide;
 extern Model* modelQuantET;
 extern Model* modelQuant12;
@@ -48,5 +49,5 @@ extern Model* modelFromTo;
 extern Model* modelSheep;
 extern Model* modelSheepMore;
 extern Model* modelEuclk;
-extern Model* modelEuclkExp;
+extern Model* modelEuclkMore;
 

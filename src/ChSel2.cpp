@@ -15,7 +15,6 @@ This module is ...
 
 #include "plugin.hpp"
 
-
 struct ChSel2 : Module {
 	enum ParamId {
 		SLIDER1_PARAM,
@@ -57,6 +56,8 @@ struct ChSel2 : Module {
 	// int polyChannels=1;
 	int chanA=0;
 	int chanB=0;
+	
+	void contextSetFirstChan(int keyForChan) {params[SLIDER1_PARAM].setValue(keyForChan);}
 	
     // the main routine
 	void process(const ProcessArgs& args) override {
@@ -148,18 +149,17 @@ struct ChSel2Widget : ModuleWidget {
     // menu->addChild(createMenuLabel("1-9: Set top precision between 10%-90%"));
     // }
 
-	// void onHoverKey(const event::HoverKey &e) override {
-		// if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_4) {
-			// if (e.action == GLFW_PRESS) {
-				// float key_number = e.key - 49; // 49 is the ascii number for key #1
-				// module->contextRnd(key_number);
-				// e.consume(this);
-			// }
-		// }
-	// ModuleWidget::onHoverKey(e);
-	// }
+	void onHoverKey(const event::HoverKey &e) override {
+		if (e.action == GLFW_PRESS) {
+			if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_9) {
+				float key_number = e.key - 49; // 49 is the ascii number for key #1
+				module->contextSetFirstChan(key_number);
+				e.consume(this);
+			}
+		}
+	ModuleWidget::onHoverKey(e);
+	}
 
 };
-
 
 Model* modelChSel2 = createModel<ChSel2, ChSel2Widget>("ChSel2");

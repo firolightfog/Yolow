@@ -140,3 +140,42 @@ struct squareToggle : VoxglitchSwitch {
 }
 */
 
+/* -------------------------------------------------- */
+
+// --------------------------------------------------
+
+// as seen in VCV Fundamental Logic
+// usage: addParam(createLightParamCentered<VCVBezelLightBigRed>(mm2px(Vec(HP*3, HP*17)), module, 
+//		SaveMeMonoWide::RECORD_PARAM, SaveMeMonoWide::LED_RECORD_PARAM));
+
+struct VCVButton_square : app::SvgSwitch {
+	VCVButton_square() {momentary = false;
+	addFrame(Svg::load(asset::plugin(pluginInstance, "res/components/VCVButton_square.svg")));
+	}
+};
+
+template <typename TBase>
+struct VCVBezelLightBig : TBase {
+	VCVBezelLightBig() {
+		this->borderColor = color::BLACK_TRANSPARENT;
+		this->bgColor = color::BLACK_TRANSPARENT;
+		this->box.size = mm2px(math::Vec(5, 5));
+	}
+};
+
+template <typename TBase, typename TLight = WhiteLight>
+struct LightButton : TBase {
+	app::ModuleLightWidget* light;
+	LightButton() {light = new TLight;
+		light->box.pos = this->box.size.div(2).minus(light->box.size.div(2));
+		this->addChild(light);}
+	app::ModuleLightWidget* getLight() {return light;}
+};
+
+using VCVButtonSquareRed = LightButton<VCVButton_square, VCVBezelLightBig<RedLight>>;
+using VCVButtonSquareGreen = LightButton<VCVButton_square, VCVBezelLightBig<GreenLight>>;
+using VCVButtonSquareBlue = LightButton<VCVButton_square, VCVBezelLightBig<BlueLight>>;
+using VCVButtonSquareWhite = LightButton<VCVButton_square, VCVBezelLightBig<WhiteLight>>;
+using VCVButtonSquareYellow = LightButton<VCVButton_square, VCVBezelLightBig<YellowLight>>;
+
+

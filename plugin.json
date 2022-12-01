@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.15",
+  "version": "2.1.16",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -403,6 +403,12 @@
       "tags": ["Sequencer"]
     },
     {
+      "slug": "SaveMeMore",
+      "name": "SaveMeMore",
+      "description": "Passive module to show the current set of CVs in SaveMeMono",
+      "tags": ["Expander"]
+    },
+    {
       "slug": "SaveMeMonoWide",
       "name": "SaveMeMonoWide",
       "description": "Saving and replaying a sequence of voltages",
@@ -480,7 +486,7 @@
       ]
     },
     {
-      "slug": "EuclkExp",
+      "slug": "EuclkMore",
       "name": "Euclkid Expander",
       "description": "Euphoric euclidean expander for Euclk sequencer",
       "keywords": [
@@ -488,6 +494,7 @@
       ],
       "tags": [
         "Expander",
+        "Logic",
         "Sequencer"
       ]
     },

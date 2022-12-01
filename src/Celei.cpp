@@ -18,7 +18,10 @@ struct Celei : Module {
 	
 	enum LightId    {
 		SEQ_1_LED_LIGHT, SEQ_2_LED_LIGHT, SEQ_3_LED_LIGHT, SEQ_4_LED_LIGHT, SEQ_5_LED_LIGHT, 
-		SEQ_6_LED_LIGHT, SEQ_7_LED_LIGHT, SEQ_8_LED_LIGHT, LIGHTS_LEN};
+		SEQ_6_LED_LIGHT, SEQ_7_LED_LIGHT, SEQ_8_LED_LIGHT, 
+		// BG_1_LED_LIGHT, BG_2_LED_LIGHT, BG_3_LED_LIGHT, BG_4_LED_LIGHT, BG_5_LED_LIGHT, 
+		// BG_6_LED_LIGHT, BG_7_LED_LIGHT, BG_8_LED_LIGHT, 		
+		LIGHTS_LEN};
 
 	// small assistance to save older values for reference;
 	float paramVal[PARAMS_LEN]={0};
@@ -189,6 +192,11 @@ int freezCv=0;
 //				vOct[j]=pOct+pRng*pSx[j];
 //				lengthInBeats[j]=0.9;
 //			}
+
+			// for (int i=0;i<8;i++) {
+				// lights[BG_1_LED_LIGHT+i].setBrightness(pSx[i]);
+			// }
+
 		}
 
 		// let's see the reset signal
@@ -283,6 +291,11 @@ struct CeleiWidget : ModuleWidget {
 		childKnob(Celei::OCTAVE_PARAM, 0, HP*1.5, HP*10.5);
 		childKnob(Celei::RANGE_PARAM, 0, HP*1.5, HP*13);
 		childKnob(Celei::TRIGGER_STEP_PARAM, 0, HP*1.5, HP*15.5);
+
+		// for (int i=0;i<8;i++) {
+			// childLight(Celei::BG_1_LED_LIGHT+i, 2, HP*4.5, HP*5.5+i*2.5);
+			// addChild(createLightCentered<LargeLight<WhiteLight>>(mm2px(Vec(5.08*4.5, 5.08*(5.5+i*2.5))), module, Celei::BG_1_LED_LIGHT+i));
+		// }
 		
 		childLight(Celei::SEQ_1_LED_LIGHT, 0, HP*4.5, HP*5.5);
 		childLight(Celei::SEQ_2_LED_LIGHT, 0, HP*4.5, HP*8);
