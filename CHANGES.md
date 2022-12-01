@@ -1,5 +1,18 @@
 # Changelog
 
+v2.1.16 2022-12-01
+- renamed EuclkExp to EuclkMore
+- changed EuclkExp startup value for the mixed output and added NXOR
+- new shortkey in PushMe and PushMeMore: Alt+number delays hits of a zone by a step
+- feature added to PushMe and PushMeMore context menu: pulse width can be set to 100% or "as-clocked"
+- feature added to PushMe and PushMeMore context menu: limit the precision settings to adding or skipping
+- minor change in lights redrawing in PushMe and PushMeMore
+- new features in ChanSel6: logic features, new mono output modes are added to the context menu (OR, NOR, solo XOR, solo NXOR, odd XOR, odd NXOR)
+- new shortkey in ChanSel2: 1-9 keys change the upper channel selection slider (no shortkey for 10-16 channels though)
+- new layout for SaveMeMono: it put on some HPs :)
+- new module added: SaveMeMore an expander to add additional reading heads to SaveMeMono
+- bugfix in Sequin to save the quantization mode
+- 
 v2.1.15 2022-10-30
 - changed Sheep with a mild mutation settings on startup 
 - changed Quant12 poly output to reflect transposition
