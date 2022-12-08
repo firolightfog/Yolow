@@ -149,7 +149,7 @@ Keyboard shortcuts are also available:
 An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. If you feel that it's too perfect you can always check the context menu and reduce the precision. 
 
 ### Vulcan (alpha-name only, unreleased, target release in 2.1.18?)
-Simple 16 step trigger sequencer with 8-tracks. Advance usage allows monophonic or 8 channel polyphonic clock and reset inputs. All track has a separated output and a randomize button (also available as keyboard shortcut). Tracks have a pulse width switch to change between 'clock width' or 'full (100%) length'.
+Simple 16 step trigger sequencer with 8-tracks. Advance usage allows monophonic or 8 channel polyphonic clock and reset inputs. All track has a separated output and a randomize button (also available as keyboard shortcut). Tracks have a pulse width switch to change between 'clock width' or 'full (100%) length'. Special thanks to Bret Truchan for all the contribution!
 
 ![image](https://user-images.githubusercontent.com/34127628/206441140-42ca8e05-9cab-47cf-8fea-aea85622498c.png)
 
@@ -172,6 +172,7 @@ Mouse functions:
 
 Keyboard shortcuts are also available:
 - `1` to `8` randomizes the relevant track with triggers (according to the denstiy and mode settings)
+- `Shift-1` to `Shift-8` sets the random density settings
 - `Ctrl-1` to `Ctrl-8` selects some of the mode settings (`0` and `9` are ignored here)
 
 ### Euclk
