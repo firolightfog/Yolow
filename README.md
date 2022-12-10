@@ -17,6 +17,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Sequin](#Sequin)|Queen of Sequencers|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
+|[Vulcan](#Vulcan)|Simple 8-track trigger sequencer with 16-steps|
 |[Euclk](#Euclk)|Basic Euclidean sequencer|
 |[EuclkMore](#EuclkMore)|Expander module with additional tracks for Euclk|
 |[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
@@ -164,6 +165,7 @@ Available trigger modes (also presented by the colorful squares):
 - `7 - Rarity B` (trigger is missed the Nth time)
 - `8 Rarity and Probabiltiy A` (trigger is played only the Nth time with a probability condition)
 - `9 Rarity and Probabiltiy B` (trigger is played only the Nth time with a probability condition)
+- `10 Restart` it resets the track to the first step
 
 Mouse functions:
 - `Left-Click` onto the grid changes the relevant step between non-trigger (aka blank or empty) and the selected kind of trigger
