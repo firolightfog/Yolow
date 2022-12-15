@@ -149,10 +149,10 @@ Keyboard shortcuts are also available:
 ### PushMeMore
 An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. If you feel that it's too perfect you can always check the context menu and reduce the precision. 
 
-### Vulcan (alpha-name only, unreleased, target release in 2.1.18?)
+### Vulcan (unreleased, targeted for 2.1.18?)
 Simple 16-steps trigger sequencer with 8-tracks. Advanced usage allows monophonic or 8 channel polyphonic clock and reset inputs. All tracks has a separated output and a button to randomize (also available as keyboard shortcut). Tracks have a pulse width switch to change between 'clock width' or 'full (100%) length'. Special thanks to Bret Truchan for all the help!
 
-![image](https://user-images.githubusercontent.com/34127628/206441140-42ca8e05-9cab-47cf-8fea-aea85622498c.png)
+![image](https://user-images.githubusercontent.com/34127628/207824967-d5bad2e0-a3a3-4a41-b4a6-d7f2d6d2fcfd.png)
 
 Available trigger modes (also presented by the colorful squares):
 - `0 Blank`
@@ -176,6 +176,8 @@ Keyboard shortcuts are also available:
 - `1` to `8` randomizes the relevant track with triggers (according to the denstiy and mode settings)
 - `Shift-1` to `Shift-8` sets the random density settings
 - `Ctrl-1` to `Ctrl-8` selects some of the mode settings (`0`, `9`, and `10` are ignored here)
+
+There is a switch available for change between one-shot and looping sequencer mode. Another switch allows switching off the highlights for the current step.
 
 ### Euclk
 I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical imprtance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
