@@ -175,8 +175,8 @@ Mouse functions:
 
 Keyboard shortcuts are also available:
 - `1` to `8` randomizes the relevant track with triggers (according to the denstiy and mode settings)
-- `Shift-1` to `Shift-8` sets the random density settings
-- `Ctrl-1` to `Ctrl-8` selects some of the mode settings (`0`, `9`, and `10` are ignored here)
+- `Shift-1` to `Shift-9` sets the random density settings from 10% to 90%
+- `Ctrl-1` to `Ctrl-9` selects some of the mode settings (option `0` and `10` are ignored here)
 
 There is a switch available for change between one-shot and looping sequencer mode. Another switch allows switching off the highlights for the current step.
 
