@@ -72,25 +72,12 @@ void invKnob() {
 
 // pressing r randomizes the note knobs only
 void rndKnob() {
+	// https://github.com/Ahornberg/Ahornberg-VCV-Modules/blob/master/src/modules/FlyingFader/FlyingFaderWidget.cpp
+	// Push ParamChange history action
 	float nSx[8]={0.0f};
 	for (int k=0;k<8;k++) {nSx[k]=rack::random::uniform();}
 	for (int k=0;k<8;k++) {params[SEQ_1_VOLTAGE_PARAM+k].setValue(nSx[k]);}
 	params[STEPS_PARAM].setValue(rand() % 7 + 2);	// random steps between 2-8
-/*
-	// https://github.com/Ahornberg/Ahornberg-VCV-Modules/blob/master/src/modules/FlyingFader/FlyingFaderWidget.cpp
-	// Push ParamChange history action
-	ParamQuantity* paramQuantity = getParamQuantity();
-	history::ComplexAction* complexAction = new history::ComplexAction;
-	complexAction->name = "randomize knobs";
-	history::ParamChange* oldKnobValue = new history::ParamChange;
-	oldKnobValue->name = "randomize knobs";
-	oldKnobValue->moduleId = paramQuantity->module->id;
-	oldKnobValue->paramId = Celei::STEPS_PARAM;
-	oldKnobValue->oldValue = pSteps;
-	oldKnobValue->newValue = params[STEPS_PARAM].getValue();
-	complexAction->push(oldKnobValue);
-	APP->history->push(complexAction);
-*/
 }
 
 // pressing u moves knobvalues upwards
@@ -169,6 +156,18 @@ int freezCv=0;
 		else if (newClock<=2.0f && oldClock>2.0f) {if (freezCv>=0) {freezCv--;}}
 		oldClock=newClock;
 	}
+
+/*
+// ChatGPT: This function adds a change to the undo history
+  void addChangeToUndoHistory() {
+    history::ModuleChange *h = new history::ModuleChange;
+    h->name = "My Change";
+    h->moduleId = this->id;
+    h->oldModuleJ = toJson();
+    h->newModuleJ = h->oldModuleJ;
+    APP->history->push(h);
+  }
+*/
 
 	void process(const ProcessArgs& args) override {
 

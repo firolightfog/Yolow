@@ -18,7 +18,7 @@ This module is to modify the incoming two trigger sequences by randomly removing
 
 */
 
-#include "plugin.hpp"
+#include "plugin.HPp"
 
 struct TrigPrec1 : Module {
 	enum ParamId {
@@ -231,8 +231,6 @@ float xVal=0.0f;
 	};
 };
 
-float HP=5.08f;
-float hp=5.08f;
 struct TrigPrec1Widget : ModuleWidget {
 
     TrigPrec1* module;
@@ -247,22 +245,24 @@ struct TrigPrec1Widget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(hp, 2*hp)), module, TrigPrec1::CLK_INPUT));
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(hp, 4.5*hp)), module, TrigPrec1::RNDBUTTON2_PARAM, TrigPrec1::RNDLED2_LIGHT));
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(hp, 6.5*hp)), module, TrigPrec1::RNDBUTTON1_PARAM, TrigPrec1::RNDLED1_LIGHT));
+		float HP=5.08f;
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(hp, 9.5*hp)), module, TrigPrec1::KNOB1_PARAM));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(hp, 12*hp)), module, TrigPrec1::KNOB1_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 2*HP)), module, TrigPrec1::CLK_INPUT));
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, 4.5*HP)), module, TrigPrec1::RNDBUTTON2_PARAM, TrigPrec1::RNDLED2_LIGHT));
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, 6.5*HP)), module, TrigPrec1::RNDBUTTON1_PARAM, TrigPrec1::RNDLED1_LIGHT));
+
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, 9.5*HP)), module, TrigPrec1::KNOB1_PARAM));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 12*HP)), module, TrigPrec1::KNOB1_INPUT));
 		
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(hp, 14.5*hp)), module, TrigPrec1::IN1_INPUT));
-		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(hp, 99.06)), module, TrigPrec1::IN2_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 14.5*HP)), module, TrigPrec1::IN1_INPUT));
+		// addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 99.06)), module, TrigPrec1::IN2_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(hp, 17*hp)), module, TrigPrec1::OUT1_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(hp, 19*hp)), module, TrigPrec1::OUT2_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(hp, 21*hp)), module, TrigPrec1::OUT3_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(hp, 23*hp)), module, TrigPrec1::OUT4_OUTPUT));
-		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(hp, 86.36)), module, TrigPrec1::KNOB2_PARAM));
-		// addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(hp, 128.5-hp)), module, TrigPrec1::DEBUG_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 17*HP)), module, TrigPrec1::OUT1_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 19*HP)), module, TrigPrec1::OUT2_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 21*HP)), module, TrigPrec1::OUT3_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 23*HP)), module, TrigPrec1::OUT4_OUTPUT));
+		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, 86.36)), module, TrigPrec1::KNOB2_PARAM));
+		// addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 128.5-HP)), module, TrigPrec1::DEBUG_OUTPUT));
 
 	}
 

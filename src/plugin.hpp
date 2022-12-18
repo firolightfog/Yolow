@@ -50,4 +50,6 @@ extern Model* modelSheep;
 extern Model* modelSheepMore;
 extern Model* modelEuclk;
 extern Model* modelEuclkMore;
+extern Model* modelTicklet;
+extern Model* modelVulcan;
 

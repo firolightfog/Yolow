@@ -48,16 +48,16 @@ struct PolyCopy10 : Module {
 	PolyCopy10() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configSwitch(SYNC_PARAM, 0, 1, 0, "Sync mode", {"Soft", "Hard"}); 	// new
-		configInput(MONOIN1_INPUT, "Mono chan");
-		configInput(MONOIN2_INPUT, "Mono chan");
-		configInput(MONOIN3_INPUT, "Mono chan");
-		configInput(MONOIN4_INPUT, "Mono chan");
-		configInput(MONOIN5_INPUT, "Mono chan");
-		configInput(MONOIN6_INPUT, "Mono chan");
-		configInput(MONOIN7_INPUT, "Mono chan");
-		configInput(MONOIN8_INPUT, "Mono chan");
-		configInput(MONOIN9_INPUT, "Mono chan");
-		configInput(MONOIN10_INPUT, "Mono chan");
+		configInput(MONOIN1_INPUT, "Mono chan 1");
+		configInput(MONOIN2_INPUT, "Mono chan 2");
+		configInput(MONOIN3_INPUT, "Mono chan 3");
+		configInput(MONOIN4_INPUT, "Mono chan 4");
+		configInput(MONOIN5_INPUT, "Mono chan 5");
+		configInput(MONOIN6_INPUT, "Mono chan 6");
+		configInput(MONOIN7_INPUT, "Mono chan 7");
+		configInput(MONOIN8_INPUT, "Mono chan 8");
+		configInput(MONOIN9_INPUT, "Mono chan 9");
+		configInput(MONOIN10_INPUT, "Mono chan 10");
 		configOutput(POLYOUT_OUTPUT, "Poly out");
 	}
 	

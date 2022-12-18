@@ -68,9 +68,19 @@ int indexRange=0;
 int indexQuant=0;	// this means no quantization
 
 	float quantMe(float oldVal) {
+		paramQuantities[KNOBA_PARAM]->snapEnabled = false;
+		paramQuantities[KNOBB_PARAM]->snapEnabled = false;
+		paramQuantities[KNOBC_PARAM]->snapEnabled = false;
+		paramQuantities[KNOBD_PARAM]->snapEnabled = false;
 		oldVal=oldVal+5*indexRange;
 		if (indexQuant==0) {return oldVal;}
-		else if (indexQuant==1) {return round(oldVal);}
+		else if (indexQuant==1) {
+			paramQuantities[KNOBA_PARAM]->snapEnabled = true;
+			paramQuantities[KNOBB_PARAM]->snapEnabled = true;
+			paramQuantities[KNOBC_PARAM]->snapEnabled = true;
+			paramQuantities[KNOBD_PARAM]->snapEnabled = true;
+			return round(oldVal);
+		}
 		else {return round(oldVal*12)/12;}
 	}
 
@@ -135,21 +145,23 @@ struct MKnobWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/MKnob.svg")));
 
-		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
+		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 25.4-2.54)), module, MKnob::KNOBA_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 35.56-2.54)), module, MKnob::KNOBB_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 45.72-2.54)), module, MKnob::KNOBC_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10.16, 55.88-2.54)), module, MKnob::KNOBD_PARAM));
+		float HP=5.08f;
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10.16, 66.04)), module, MKnob::SOCKETA_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10.16, 76.2)), module, MKnob::SOCKETB_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10.16, 86.36)), module, MKnob::SOCKETC_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10.16, 96.52)), module, MKnob::SOCKETD_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10.16, 111.76)), module, MKnob::POLYOUT_OUTPUT));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*3.0)), module, MKnob::KNOBA_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*5.5)), module, MKnob::KNOBB_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*8.0)), module, MKnob::KNOBC_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*10.5)), module, MKnob::KNOBD_PARAM));
+
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*13)), module, MKnob::SOCKETA_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*15)), module, MKnob::SOCKETB_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*17)), module, MKnob::SOCKETC_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*19)), module, MKnob::SOCKETD_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*22)), module, MKnob::POLYOUT_OUTPUT));
 	}
 	
 	void appendContextMenu(Menu* menu) override {

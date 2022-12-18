@@ -259,11 +259,11 @@ struct SaveMeMonoWidget : ModuleWidget {
 		
 		childKnob(SaveMeMono::STEPS_PARAM, 1, HP*1.5, HP*2);
 		// childPushbutton(SaveMeMono::RECORD_PARAM, SaveMeMono::LED_RECORD_PARAM, HP*1, HP*8);	// this is yellow
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<RedLight>>>(mm2px(Vec(HP*1.5, HP*8.5)), module, SaveMeMono::RECORD_PARAM, SaveMeMono::LED_RECORD_PARAM));	// this is red
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<RedLight>>>(mm2px(Vec(HP*1.5, HP*8)), module, SaveMeMono::RECORD_PARAM, SaveMeMono::LED_RECORD_PARAM));	// this is red
 		
 		childInput(SaveMeMono::MONO_LFO_INPUT, HP*1.5, HP*5.5);
-		childInput(SaveMeMono::RECORD_INPUT, HP*1.5, HP*10);
-		childLight(SaveMeMono::FIRST_HIT_LIGHT, 14, HP*2.5, HP*11);
+		childInput(SaveMeMono::RECORD_INPUT, HP*1.5, HP*9.5);
+		childLight(SaveMeMono::FIRST_HIT_LIGHT, 14, HP*2.5, HP*8.75);
 		childInput(SaveMeMono::CLOCK_INPUT, HP*1.5, HP*13);
 		childInput(SaveMeMono::RESET_INPUT, HP*1.5, HP*15.5);		
 		childOutput(SaveMeMono::MONO_REPLAY_OUTPUT, HP*1.5, HP*19);
@@ -277,12 +277,12 @@ struct SaveMeMonoWidget : ModuleWidget {
 		SaveMeMono* module = dynamic_cast<SaveMeMono*>(this->module);
 		assert(module);
 		menu->addChild(new MenuSeparator);
+		menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
+		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Pulse width", {"Full width","Only clock wide"}, &module->indexPW));
 		menu->addChild(createIndexPtrSubmenuItem("Internal LFO", {"Gates","-5V to 5V","0V to 10V","-1V to 1V","0V to 1V"}, &module->indexLFO));
 		menu->addChild(createIndexPtrSubmenuItem("Record mode", {"One cycle","Momentary","Always"}, &module->indexRec));
 		menu->addChild(createIndexPtrSubmenuItem("Shift sequence", {"Earlier","Later"}, &module->indexShift));	// ugly stuff
-		menu->addChild(new MenuSeparator);
-		menu->addChild(createMenuItem("Randomize all", "", [=]() {module->randomizeFields();}));	
 	}
 
 };
@@ -296,7 +296,7 @@ Model* modelSaveMeMono = createModel<SaveMeMono, SaveMeMonoWidget>("SaveMeMono")
 
 struct SaveMeMore : Module {
 	
-	enum ParamId    {START_PARAM, LENGT_PARAM, PREC_PARAM, PW_PARAM, SYNC_PARAM, PARAMS_LEN};
+	enum ParamId    {START_PARAM, LENGT_PARAM, PREC_PARAM, PW_PARAM, SYNC_PARAM, DELAY_PARAM, PARAMS_LEN};
 	enum InputId    {INPUTS_LEN};
 	enum OutputId	{MONO_REPLAY_OUTPUT, REVERSE_REPLAY_OUTPUT, RANDOM_REPLAY_OUTPUT, OUTPUTS_LEN};
 	enum LightId	{ENUMS(LED_SEGMENT,16), PW_LIGHT, SYNC_LIGHT, LIGHTS_LEN};
@@ -308,6 +308,8 @@ struct SaveMeMore : Module {
 		configParam(START_PARAM, 	1.0f, 256.0f, 1.0f, "Section start");
 		configParam(PW_PARAM, 	0.0f, 1.0f, 0.0f, "Clock pulse width or full");
 		configParam(SYNC_PARAM, 	0.0f, 1.0f, 0.0f, "Sync to mother");
+		configParam(DELAY_PARAM, 	0.0f, 16.0f, 0.0f, "Delay the beat");
+		paramQuantities[DELAY_PARAM]->snapEnabled = true;
 		paramQuantities[SYNC_PARAM]->snapEnabled = true;
 		paramQuantities[PW_PARAM]->snapEnabled = true;
 		paramQuantities[START_PARAM]->snapEnabled = true;
@@ -343,56 +345,82 @@ struct SaveMeMore : Module {
 	float theSeq[256]={0};	// this contains the sequence, 256 slots available
 	int theStep=0;
 	int rndStep=0;
-	int START_VAL=0;
+	int START_VAL=1;
 	int LENGT_VAL=16;
+	int DELAY_VAL=0;
 	float PREC_VAL=1;
+	int loop=1;
 	
 	void process(const ProcessArgs& args) override {
-		
-		lights[PW_LIGHT].setBrightness(params[PW_PARAM].getValue());
-		lights[SYNC_LIGHT].setBrightness(params[SYNC_PARAM].getValue());
+
+		if (loop++>8769) {
+			loop=1;
+			lights[PW_LIGHT].setBrightness(params[PW_PARAM].getValue());
+			lights[SYNC_LIGHT].setBrightness(params[SYNC_PARAM].getValue());
+			// we may need info if the end position is bigger than the start
+			rndStep=(rand() % LENGT_VAL) + START_VAL;
+			if (theStep<START_VAL) {theStep=START_VAL;}
+		}
 		
 		SaveMeMono const* mother = findHostModulePtr(this);
 		if (mother) {
+		
 			if (mother->childClockWarning==true) {
 				// let's remember the knob settings
 				PREC_VAL=params[PREC_PARAM].getValue();
 				LENGT_VAL=params[LENGT_PARAM].getValue();
 				START_VAL=params[START_PARAM].getValue()-1;
-				// we may need info if the end position is bigger than the start
-				rndStep=(rand() % LENGT_VAL) + START_VAL;
+				DELAY_VAL=params[DELAY_PARAM].getValue();
 				
 				// let's calculate the current step
-				if (mother->childResetWarning==true) {theStep=START_VAL;}
+				if (mother->childResetWarning==true) {
+					// oh, no! mother got a RESET signal!
+					theStep=START_VAL;
+					}
 				else if (params[SYNC_PARAM].getValue()==1 && mother->currPos==0) {
+					// let's restart if mother gets to her first slot 
 					theStep=START_VAL;
 					lights[SYNC_LIGHT].setBrightness(0);
 					params[SYNC_PARAM].setValue(0);
 				}
 				else {
+					// cool, let's take the next step
 					theStep++;
 					if (theStep>=START_VAL+LENGT_VAL || theStep>=256) {theStep=START_VAL;}
 				}
 				
-				// let's collect the value related to the current step
+				// let's collect the value for MONO_REPLAY_OUTPUT
+				int truStep=theStep-DELAY_VAL;
+				if (truStep<START_VAL) {truStep+=LENGT_VAL;}
 				if (PREC_VAL==1 || PREC_VAL>rack::random::uniform()) {
-					outputs[MONO_REPLAY_OUTPUT].setVoltage(mother->theSeq[theStep]);
+					outputs[MONO_REPLAY_OUTPUT].setVoltage(mother->theSeq[truStep]);
 				} else {
-					outputs[RANDOM_REPLAY_OUTPUT].setVoltage(mother->theSeq[rndStep]);
+					outputs[MONO_REPLAY_OUTPUT].setVoltage(mother->theSeq[rndStep]);
 				}
-				outputs[REVERSE_REPLAY_OUTPUT].setVoltage(mother->theSeq[LENGT_VAL+START_VAL-theStep]);
-				outputs[RANDOM_REPLAY_OUTPUT].setVoltage(mother->theSeq[rndStep]);
+				
+				// let's collect the value for REVERSE_REPLAY_OUTPUT				
+				truStep=(LENGT_VAL+START_VAL)-(theStep-START_VAL)-1;
+				truStep=theStep-DELAY_VAL;
+				if (truStep<START_VAL) {truStep+=LENGT_VAL;}
+				if (PREC_VAL==1 || PREC_VAL>rack::random::uniform()) {
+					outputs[REVERSE_REPLAY_OUTPUT].setVoltage(mother->theSeq[truStep]);
+				} else {
+					outputs[REVERSE_REPLAY_OUTPUT].setVoltage(mother->theSeq[rndStep]);
+				}
+				
+				// let's collect the value for RANDOM_REPLAY_OUTPUT				
+				// outputs[RANDOM_REPLAY_OUTPUT].setVoltage(mother->theSeq[rndStep]);
 			}
 			else if (mother->childSleepWarning==true && params[PW_PARAM].getValue()==0) {
 				outputs[MONO_REPLAY_OUTPUT].setVoltage(0);
 				outputs[REVERSE_REPLAY_OUTPUT].setVoltage(0);
-				outputs[RANDOM_REPLAY_OUTPUT].setVoltage(0);
+				// outputs[RANDOM_REPLAY_OUTPUT].setVoltage(0);
 			}
 		}
 		else {
 			outputs[MONO_REPLAY_OUTPUT].setVoltage(-4.04);
 			outputs[REVERSE_REPLAY_OUTPUT].setVoltage(-4.04);
-			outputs[RANDOM_REPLAY_OUTPUT].setVoltage(-4.04);
+			// outputs[RANDOM_REPLAY_OUTPUT].setVoltage(-4.04);
 		}
 		
 	}
@@ -414,19 +442,21 @@ struct SaveMeMoreWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, HP*8.5)), module, SaveMeMore::SYNC_PARAM, SaveMeMore::SYNC_LIGHT));
-
-		addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, HP*13)), module, SaveMeMore::PW_PARAM, SaveMeMore::PW_LIGHT));
-
 		childKnob(SaveMeMore::LENGT_PARAM, 1, HP*1.5, HP*2);
 		childKnob(SaveMeMore::START_PARAM, 1, HP*1.5, HP*5);
-		childKnob(SaveMeMore::PREC_PARAM, 0, HP*1.5, HP*15.5);
-				
-		childOutput(SaveMeMono::MONO_REPLAY_OUTPUT, HP*1.5, HP*19);
-		childOutput(SaveMeMono::REVERSE_REPLAY_OUTPUT, HP*1.5, HP*21);
-		childOutput(SaveMeMono::RANDOM_REPLAY_OUTPUT, HP*1.5, HP*23);
+		childKnob(SaveMeMore::DELAY_PARAM, 0, HP*1.5, HP*8);
 
-		childLabel(HP*1, HP*3*10, "DEV", 12);
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, HP*11)), module, SaveMeMore::SYNC_PARAM, SaveMeMore::SYNC_LIGHT));
+
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, HP*15.5)), module, SaveMeMore::PW_PARAM, SaveMeMore::PW_LIGHT));
+
+		childKnob(SaveMeMore::PREC_PARAM, 0, HP*1.5, HP*18);
+				
+		childOutput(SaveMeMono::MONO_REPLAY_OUTPUT, HP*1.5, HP*21);
+		childOutput(SaveMeMono::REVERSE_REPLAY_OUTPUT, HP*1.5, HP*23);
+		// childOutput(SaveMeMono::RANDOM_REPLAY_OUTPUT, HP*1.5, HP*23);
+
+		// childLabel(HP*1, HP*3*10, "DEV", 12);
 	}
 };
 

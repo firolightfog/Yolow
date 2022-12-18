@@ -162,7 +162,6 @@ int totalNr=2;
 	};
 };
 
-
 struct TrigPrec2Widget : ModuleWidget {
 
     TrigPrec2* module;
@@ -177,19 +176,21 @@ struct TrigPrec2Widget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(5.08, 48.26)), module, TrigPrec2::KNOB1_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(5.08, 86.36)), module, TrigPrec2::KNOB2_PARAM));
+		float HP=5.08f;
+		
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, 48.26)), module, TrigPrec2::KNOB1_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, 86.36)), module, TrigPrec2::KNOB2_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 10.16)), module, TrigPrec2::CLK_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 60.96)), module, TrigPrec2::IN1_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 99.06)), module, TrigPrec2::IN2_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 10.16)), module, TrigPrec2::CLK_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 60.96)), module, TrigPrec2::IN1_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 99.06)), module, TrigPrec2::IN2_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 73.66)), module, TrigPrec2::OUT1_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 111.76)), module, TrigPrec2::OUT2_OUTPUT));
-		// addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 128.5-5.08)), module, TrigPrec2::DEBUG_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 73.66)), module, TrigPrec2::OUT1_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 111.76)), module, TrigPrec2::OUT2_OUTPUT));
+		// addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, 128.5-5.08)), module, TrigPrec2::DEBUG_OUTPUT));
 
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(5.08, 22.86)), module, TrigPrec2::RNDBUTTON2_PARAM, TrigPrec2::RNDLED2_LIGHT));
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(5.08, 33.02)), module, TrigPrec2::RNDBUTTON1_PARAM, TrigPrec2::RNDLED1_LIGHT));
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, 22.86)), module, TrigPrec2::RNDBUTTON2_PARAM, TrigPrec2::RNDLED2_LIGHT));
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<WhiteLight>>>(mm2px(Vec(HP*1.5, 33.02)), module, TrigPrec2::RNDBUTTON1_PARAM, TrigPrec2::RNDLED1_LIGHT));
 
 	}
 

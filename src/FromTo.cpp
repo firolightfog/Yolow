@@ -114,17 +114,17 @@ struct FromToWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
-		childKnob(FromTo::FROM_PARAM, 1, HP*1, HP*3);
-		childKnob(FromTo::TO_PARAM, 1, HP*1, HP*6);
-		childKnob(FromTo::DIVISION_PARAM, 1, HP*1, HP*9);
+		childKnob(FromTo::FROM_PARAM, 1, HP*1.5, HP*3);
+		childKnob(FromTo::TO_PARAM, 1, HP*1.5, HP*6);
+		childKnob(FromTo::DIVISION_PARAM, 1, HP*1.5, HP*9);
 		
-		childOutput(FromTo::STEPPED_DIVISION_OUTPUT, HP*1, HP*12);
-		childOutput(FromTo::REVERSED_DIVISION_OUTPUT, HP*1, HP*14);
-		childOutput(FromTo::DIVISIONS_OUTPUT, HP*1, HP*16.5);
+		childOutput(FromTo::STEPPED_DIVISION_OUTPUT, HP*1.5, HP*12);
+		childOutput(FromTo::REVERSED_DIVISION_OUTPUT, HP*1.5, HP*14);
+		childOutput(FromTo::DIVISIONS_OUTPUT, HP*1.5, HP*16.5);
 
-		childSwitch(FromTo::CLOCK_SOLO_PARAM, 0, HP*1, HP*18.5);
-		childInput(FromTo::CLOCK_INPUT, HP*1, HP*20.5);
-		childInput(FromTo::RESET_INPUT, HP*1, HP*23);
+		childSwitch(FromTo::CLOCK_SOLO_PARAM, 0, HP*1.5, HP*18.5);
+		childInput(FromTo::CLOCK_INPUT, HP*1.5, HP*20.5);
+		childInput(FromTo::RESET_INPUT, HP*1.5, HP*23);
 	}
 
 };
