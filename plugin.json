@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.16",
+  "version": "2.1.18",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -355,6 +355,18 @@
       ]
     },
     {
+      "slug": "Vulcan",
+      "name": "Vulcan Trigger Sequencer",
+      "description": "Simple 8-track 16-step trigger sequencer",
+      "keywords": [
+        "trigger",
+		"drum sequencer"
+      ],
+      "tags": [
+        "Sequencer"
+      ]
+    },
+    {
       "slug": "PushmeSeq",
       "name": "PushMeSeq Trigger Sequencer",
       "description": "Variable trigger sequencer in  4HP",
@@ -498,6 +510,17 @@
         "Sequencer"
       ]
     },
+    {
+      "slug": "Ticklet",
+      "name": "Ticklet Clock Divider",
+      "description": "A simple clock divider",
+      "keywords": [
+        "tick"
+      ],
+      "tags": [
+        "Clock modifier"
+      ]
+    },	
    {
       "slug": "ChSel2",
       "name": "Channel Selector 2",
