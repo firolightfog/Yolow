@@ -151,7 +151,10 @@ An expander for PushMeSeq. It adds additional tracks, it can clone the sequence 
 
 ### Vulcan
 #### (unreleased, targeted for 2.1.18?)
-Simple 16-steps trigger sequencer with 8-tracks. Advanced usage allows monophonic or 8 channel polyphonic clock and reset inputs. All tracks has a separated output and a button to randomize (also available as keyboard shortcut). Tracks have a pulse width switch to change between 'clock width' or 'full (100%) length'. Special thanks to Bret Truchan for all the help!
+Simple 16-steps trigger sequencer with 8-tracks. Advanced usage allows monophonic or 8 channel polyphonic clock and reset inputs. All tracks has a separated output and a button to randomize (also available as keyboard shortcut). Tracks have a switch to change behaviour between 
+- 'full (100%) length' gate or 
+- 'clock width' gate or 
+- 'double hit' triggers. 
 
 ![image](https://user-images.githubusercontent.com/34127628/207826827-9e3a02b8-fab5-4cbc-a4de-839e8954ad77.png)
 
