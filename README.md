@@ -151,12 +151,9 @@ An expander for PushMeSeq. It adds additional tracks, it can clone the sequence 
 
 ### Vulcan
 #### (unreleased, targeted for 2.1.18?)
-Simple 16-steps trigger sequencer with 8-tracks. Advanced usage allows monophonic or 8 channel polyphonic clock and reset inputs. All tracks has a separated output and a button to randomize (also available as keyboard shortcut). Tracks have a switch to change behaviour between 
-- 'full (100%) length' gate or 
-- 'clock width' gate or 
-- 'double hit' triggers. 
+Simple 16-steps trigger sequencer with 8-tracks. Advanced usage allows monophonic or 8 channel polyphonic clock and reset inputs. All tracks has a separated output and a knob for division of the main clock. Tracks have a switch to change behaviour between 'full (100%) length' gate or 'clock width' gate. 
 
-![image](https://user-images.githubusercontent.com/34127628/207826827-9e3a02b8-fab5-4cbc-a4de-839e8954ad77.png)
+<img width="643" alt="image" src="https://user-images.githubusercontent.com/34127628/208769332-5f8d3db4-22ef-4a8b-8e41-2fb22c7cd8ee.png">
 
 Available trigger modes (also presented by the colorful squares):
 - `0 Blank`
@@ -164,8 +161,8 @@ Available trigger modes (also presented by the colorful squares):
 - `2 Probability A` probability value is applied to the trigger; i.e. 90% PROB A means that the trigger is mostly hit
 - `3 Probability B` probability value is applied to the trigger; i.e. 50% PROB B means that about half of the triggers are missed
 - `4 + Rarity A` trigger is played only the Nth time
-- `5 + Rarity B` trigger is played only the Nth time
-- `6 - Rarity A` trigger is missed the Nth time
+- `5 - Rarity A` trigger is missed the Nth time
+- `6 + Rarity B` trigger is played only the Nth time
 - `7 - Rarity B` trigger is missed the Nth time
 - `8 Rarity and Probabiltiy A` trigger is played only the Nth time with a probability condition
 - `9 Rarity and Probabiltiy B` trigger is played only the Nth time with a probability condition
@@ -181,7 +178,7 @@ Keyboard shortcuts are also available:
 - `Shift-1` to `Shift-9` sets the random density settings from 10% to 90%
 - `Ctrl-1` to `Ctrl-9` selects some of the mode settings (option `0` and `10` are ignored here)
 
-There is a switch available for change between one-shot and looping sequencer mode. Another switch allows switching off the highlights for the current step.
+There is a switch available for change between one-shot and looping sequencer mode. Another switch allows turning off the highlights for the current step.
 
 ### Euclk
 I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical imprtance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
