@@ -8,20 +8,16 @@
 #define CELL_HEIGHT HP*2.75*2
 #define CELL_PADDING HP*0.35
 
-#define DRAW_AREA_WIDTH COLS*(CELL_WIDTH+CELL_PADDING)+CELL_PADDING
-#define DRAW_AREA_HEIGHT ROWS*(CELL_HEIGHT+CELL_PADDING)+CELL_PADDING
-
 /*
 Missing features:
 labels
 history/undo
 
-
 9 RND & NTH B 
 8 RND & NTH A
 7 - NTH B
-6 - NTH A
-5 + NTH B
+6 + NTH B
+5 - NTH A
 4 + NTH A
 3 RND B
 2 RND A
@@ -33,7 +29,8 @@ history/undo
 struct Vulcan : Module{
 	
     int grid_data[COLS][ROWS];
-	int CURR_COL[8]={0};
+	int CURR_COL[8]={0,0,0,0,0,0,0,0};
+	int CURR_DIV[8]={0,0,0,0,0,0,0,0};
 	int CURR_MODE=1;
 	// https://community.vcvrack.com/t/16-colour-cable-palette/15951/3
 	NVGcolor grid_RGBA[11]={
@@ -48,7 +45,7 @@ struct Vulcan : Module{
 		nvgRGBA(232, 82, 255, 225),
 		nvgRGBA(255, 82, 154, 225),
 		nvgRGBA(125,125,125,125)};	// unknown
-	// grid_RGBA[grid_RGBA.size()-1];
+// grid_RGBA[grid_RGBA.size()-1];
 		// nvgRGBA(255, 165, 82, 225),
 		// nvgRGBA(255, 203, 82, 225),
 		// nvgRGBA(255, 238, 82, 225),
@@ -67,7 +64,7 @@ struct Vulcan : Module{
 	
     enum ParamIds  {RESET_PARAM, DENS_PARAM, FOCUS_PARAM, LOOP_PARAM,
 		CLICKMODE_PARAM, PROB1_PARAM, PROB2_PARAM, SKIP1_PARAM, SKIP2_PARAM,
-		ENUMS(DICE_PARAM, ROWS), ENUMS(PW_PARAM, ROWS), PARAMS_LEN};
+		ENUMS(DICE_PARAM, ROWS), ENUMS(PW_PARAM, ROWS), ENUMS(DIV_PARAM, ROWS), PARAMS_LEN};
     enum InputIds  {CLOCK_INPUT, RESET_INPUT, INPUTS_LEN};
     enum OutputIds {DEBUG_OUTPUT, ENUMS(TRACK_OUTPUT, ROWS),OUTPUTS_LEN};
     enum LightIds  {CLICKMODE_LIGHT,DENS_LIGHT,LIGHTS_LEN};
@@ -75,15 +72,15 @@ struct Vulcan : Module{
     Vulcan() {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(DENS_PARAM, 0.f, 1.f, 0.4f, "Density for dice");
-		configParam(FOCUS_PARAM, 0.f, 1.f, 1.f, "Show reading head");
 		configParam(LOOP_PARAM, 0.f, 1.f, 1.f, "Restart without reset");
+		configParam(FOCUS_PARAM, 0.f, 1.f, 1.f, "Show reading head");
 		configParam(RESET_PARAM, 0.f, 1.f, 0.f, "Reset button");
-		paramQuantities[RESET_PARAM]->snapEnabled = true;
 		paramQuantities[DENS_PARAM]->randomizeEnabled = false;
-		paramQuantities[FOCUS_PARAM]->randomizeEnabled = false;
 		paramQuantities[LOOP_PARAM]->randomizeEnabled = false;
-		paramQuantities[FOCUS_PARAM]->snapEnabled = true;
+		paramQuantities[FOCUS_PARAM]->randomizeEnabled = false;
 		paramQuantities[LOOP_PARAM]->snapEnabled = true;
+		paramQuantities[FOCUS_PARAM]->snapEnabled = true;
+		paramQuantities[RESET_PARAM]->snapEnabled = true;
 
 		configParam(CLICKMODE_PARAM, 0.f, 10.f, 1.f, "Click mode");
 		configParam(PROB1_PARAM, 0.f, 1.f, 0.9f, "Probabilty A");
@@ -99,62 +96,33 @@ struct Vulcan : Module{
 		paramQuantities[SKIP1_PARAM]->snapEnabled = true;
 		paramQuantities[SKIP2_PARAM]->snapEnabled = true;
 		paramQuantities[PROB1_PARAM]->description="Influences mode 2 and 8";
-		paramQuantities[PROB2_PARAM]->description="Influences mode 2 and 9";
-		paramQuantities[SKIP1_PARAM]->description="Influences mode 4, 6, and 8";
-		paramQuantities[SKIP2_PARAM]->description="Influences mode 5, 7, and 9";
+		paramQuantities[PROB2_PARAM]->description="Influences mode 3 and 9";
+		paramQuantities[SKIP1_PARAM]->description="Influences mode 4, 5, and 8";
+		paramQuantities[SKIP2_PARAM]->description="Influences mode 6, 7, and 9";
 
 		configInput(CLOCK_INPUT, "Clock");
 		configInput(RESET_INPUT, "Reset");
 		configOutput(DEBUG_OUTPUT, "DEBUG OUT");
 
-		configOutput(TRACK_OUTPUT+0, "Track 1");
-		configOutput(TRACK_OUTPUT+1, "Track 2");
-		configOutput(TRACK_OUTPUT+2, "Track 3");
-		configOutput(TRACK_OUTPUT+3, "Track 4");
-		configOutput(TRACK_OUTPUT+4, "Track 5");
-		configOutput(TRACK_OUTPUT+5, "Track 6");
-		configOutput(TRACK_OUTPUT+6, "Track 7");
-		configOutput(TRACK_OUTPUT+7, "Track 8");
-
-		configParam(DICE_PARAM+0, 0.f, 1.f, 0.f, "Dice 1");
-		configParam(DICE_PARAM+1, 0.f, 1.f, 0.f, "Dice 2");
-		configParam(DICE_PARAM+2, 0.f, 1.f, 0.f, "Dice 3");
-		configParam(DICE_PARAM+3, 0.f, 1.f, 0.f, "Dice 4");
-		configParam(DICE_PARAM+4, 0.f, 1.f, 0.f, "Dice 5");
-		configParam(DICE_PARAM+5, 0.f, 1.f, 0.f, "Dice 6");
-		configParam(DICE_PARAM+6, 0.f, 1.f, 0.f, "Dice 7");
-		configParam(DICE_PARAM+7, 0.f, 1.f, 0.f, "Dice 8");
-		paramQuantities[DICE_PARAM+0]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+1]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+2]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+3]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+4]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+5]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+6]->snapEnabled = true;
-		paramQuantities[DICE_PARAM+7]->snapEnabled = true;
-
-		configParam(PW_PARAM+0, 0.f, 1.f, 0.f, "Pulse width type 1");
-		configParam(PW_PARAM+1, 0.f, 1.f, 0.f, "Pulse width type 2");
-		configParam(PW_PARAM+2, 0.f, 1.f, 0.f, "Pulse width type 3");
-		configParam(PW_PARAM+3, 0.f, 1.f, 0.f, "Pulse width type 4");
-		configParam(PW_PARAM+4, 0.f, 1.f, 0.f, "Pulse width type 5");
-		configParam(PW_PARAM+5, 0.f, 1.f, 0.f, "Pulse width type 6");
-		configParam(PW_PARAM+6, 0.f, 1.f, 0.f, "Pulse width type 7");
-		configParam(PW_PARAM+7, 0.f, 1.f, 0.f, "Pulse width type 8");
-		paramQuantities[PW_PARAM+0]->snapEnabled = true;
-		paramQuantities[PW_PARAM+1]->snapEnabled = true;
-		paramQuantities[PW_PARAM+2]->snapEnabled = true;
-		paramQuantities[PW_PARAM+3]->snapEnabled = true;
-		paramQuantities[PW_PARAM+4]->snapEnabled = true;
-		paramQuantities[PW_PARAM+5]->snapEnabled = true;
-		paramQuantities[PW_PARAM+6]->snapEnabled = true;
-		paramQuantities[PW_PARAM+7]->snapEnabled = true;
-
+		// clock division knobs, PW switches, outputs
         for(int row=0; row < ROWS; row++) {
+			// configParam(DICE_PARAM+row, 0.f, 1.f, 0.f, "Dice "+ std::to_string(row+1));
+			// paramQuantities[DICE_PARAM+row]->snapEnabled = true;
+			configOutput(TRACK_OUTPUT+row, "Track "+ std::to_string(row+1));
+			configParam(PW_PARAM+row, 0.f, 1.f, 0.f, "Pulse width type " + std::to_string(row+1));
+			configParam(DIV_PARAM+row, 1.f, 16.f, 8.f, "Clock division " + std::to_string(row+1));
+			paramQuantities[DIV_PARAM+row]->randomizeEnabled = false;
+			paramQuantities[DIV_PARAM+row]->snapEnabled = true;
+			paramQuantities[PW_PARAM+row]->snapEnabled = true;
             for(int col=0; col < COLS; col++) {
                 grid_data[col][row] = 0;
             }
         }
+
+		// switch on some lights, but only once
+		lights[CLICKMODE_LIGHT].setBrightness(1);
+		lights[DENS_LIGHT].setBrightness(1);
+
     }
 
 	void diceGrid(int track_ref) {
@@ -172,28 +140,26 @@ struct Vulcan : Module{
 	float newClock[8]={0};
 	float oldClock[8]={0};
 
-	int oldTrackVals[8]={0};	// this assist the step highlighting
 	float newVolt=0;
 	float paramVal[PARAMS_LEN]={0};
 
-	int SKIP1_VAL[8]={1};
-	int SKIP2_VAL[8]={1};
+	int SKIP1_VAL[8]={1,1,1,1,1,1,1,1};
+	int SKIP2_VAL[8]={1,1,1,1,1,1,1,1};
 	
-	std::string CLICKMODE_ARRAY[11]={
+	const std::string CLICKMODE_ARRAY[11]={
 		"Blank",
 		"Trigger",
 		"Trigger with probability A",
 		"Trigger with probability B",
 		"Trigger with rarity A",
-		"Trigger with rarity B",
 		"Trigger without rarity A",
+		"Trigger with rarity B",
 		"Trigger without rarity B",
 		"Trigger with probability & rarity A",
 		"Trigger with probability & rarity B",
 		"Restart",
 	};
-	
-	
+		
 	// it's OK
 	int loop=0;	// save some CPU
 	int chan=1; // collect number of RESET_INPUT or CLOCK_INPUT channels
@@ -202,13 +168,9 @@ struct Vulcan : Module{
 		
 		if (loop++>8018) {
 			loop=0;
-			lights[CLICKMODE_LIGHT].setBrightness(1);
-			lights[DENS_LIGHT].setBrightness(1);
-			// collect all parameters into a sequence/array
-			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
-			// if any of the dice buttons are pressed the channel is randomized
-			for (int i=0; i<8; i++) {
-				if (paramVal[DICE_PARAM+i]==1) {diceGrid(i);}
+			// collect ALMOST all parameters into a sequence/array
+			for (int p=0;p<DIV_PARAM;p++) {
+				paramVal[p]=params[p].getValue();
 			}
 			// most used variable, set the color/mode for entering hits
 			CURR_MODE=paramVal[CLICKMODE_PARAM];
@@ -220,6 +182,7 @@ struct Vulcan : Module{
 			if (paramVal[RESET_PARAM]==1) {
 				for (int c=0;c<8;c++) {
 					CURR_COL[c]=0; 
+					CURR_DIV[c]=0; 
 					SKIP1_VAL[c]=1; 
 					SKIP2_VAL[c]=1;
 					thisIsNewReset[c]=true;
@@ -228,7 +191,9 @@ struct Vulcan : Module{
 
 		}
 
-		// experimental code
+		// experimental code; prgramming enabled  by 
+		// - FOCUS should be switched off
+		// - chan#16 of RESET_INPUT should be set to 25
 		if (loop == 25 && 0==paramVal[FOCUS_PARAM] 
 			&& 25==inputs[RESET_INPUT].getVoltage(15)) {
 			int PRG_INPUT=RESET_INPUT;
@@ -241,12 +206,13 @@ struct Vulcan : Module{
 			// get a clock (or an old one if single-source)
 			if (c>0 && chan<8) {newReset[c]=newReset[0];}
 			else {newReset[c]=inputs[RESET_INPUT].getVoltage(c);}
-			// do your thing
+			// the reset signal was received
 			if (newReset[c]>2.0f && oldReset[c]<=2.0f) {
+				thisIsNewReset[c]=true;
 				CURR_COL[c]=0; 
+				CURR_DIV[c]=0; 
 				SKIP1_VAL[c]=1; 
 				SKIP2_VAL[c]=1;
-				thisIsNewReset[c]=true;
 			}
 			oldReset[c]=newReset[c];
 		}
@@ -254,61 +220,111 @@ struct Vulcan : Module{
 		// let's see the clock signal
 		chan=inputs[CLOCK_INPUT].channels;
 		for (int c=0;c<8;c++) {
+			
 			// get a clock (or an old one if single-source)
 			if (c>0 && chan<8) {newClock[c]=newClock[0];}
 			else {newClock[c]=inputs[CLOCK_INPUT].getVoltage(c);}
-			// do your thing
-			if (newClock[c]<=2.0f && oldClock[c]>2.0f) {
-				if (paramVal[PW_PARAM+c]==0) {outputs[TRACK_OUTPUT+c].setVoltage(0);}
+			
+			// falling edge of clock pluse
+			if (newClock[c]<=2.0f && oldClock[c]>2.0f) {	
+				if (paramVal[PW_PARAM+c]==0) {
+					if (CURR_DIV[c]>=paramVal[DIV_PARAM+c]-1) {
+						outputs[TRACK_OUTPUT+c].setVoltage(0);
+					}
+				}
 			}
+			
+			// rising edge of clock pulse
 			else if (newClock[c]>2.0f && oldClock[c]<=2.0f) {
-				// calculate the next step	
-				if (thisIsNewReset[c]==true) {
-					thisIsNewReset[c]=false; // everything is set earlier
-				}
-				else if (paramVal[LOOP_PARAM]==1) {
-					CURR_COL[c]=(CURR_COL[c]>=COLS-1)?0:CURR_COL[c]+1;	
-				} 
-				else {
-					CURR_COL[c]=(CURR_COL[c]>=COLS-1)?100:CURR_COL[c]+1;	
-				}
-				// calculating the voltage row by row - a special case: restart
-				if (grid_data[CURR_COL[c]][c]==10) {
-					if (paramVal[LOOP_PARAM]==1) {CURR_COL[c]=0;}
-					else {CURR_COL[c]=100;}
-					}  // Restart
-				// calculating for the rarity counters
+
+				// calculating for the rarity counters - new start adds to the SKIPX_VAL counters
 				if (CURR_COL[c]==0) {
 					// calculate the SKIP/RARE AB
 					SKIP1_VAL[c]++; if (SKIP1_VAL[c]>paramVal[SKIP1_PARAM]) {SKIP1_VAL[c]=1;}
 					SKIP2_VAL[c]++; if (SKIP2_VAL[c]>paramVal[SKIP2_PARAM]) {SKIP2_VAL[c]=1;}
+					paramVal[DIV_PARAM+c]=params[DIV_PARAM+c].getValue();
 				}
-				// calculating the voltage row by row
-				switch ((int)grid_data[CURR_COL[c]][c]) {
-					case 0: newVolt=0.0f; break; 	// Blank
-					case 1: newVolt=10.0f; break; 	// Trigger
-					case 2: newVolt=(rack::random::uniform()<paramVal[PROB1_PARAM])?10:0; break; // Trigger with probability A
-					case 3: newVolt=(rack::random::uniform()<paramVal[PROB2_PARAM])?10:0; break; // Trigger with probability B
-					case 4: newVolt=(paramVal[SKIP1_PARAM]==SKIP1_VAL[c])?10:0; break; // Trigger with rarity A
-					case 5: newVolt=(paramVal[SKIP2_PARAM]==SKIP2_VAL[c])?10:0; break; // Trigger with rarity B
-					case 6: newVolt=(paramVal[SKIP1_PARAM]==SKIP1_VAL[c])?0:10; break; // Trigger without rarity A
-					case 7: newVolt=(paramVal[SKIP2_PARAM]==SKIP2_VAL[c])?0:10; break; // Trigger without rarity B
-					case 8: newVolt=(paramVal[SKIP1_PARAM]==SKIP1_VAL[c] 
-						&& rack::random::uniform()<paramVal[PROB1_PARAM])?10:0; break; 
-						// Trigger with probability & rarity A
-					case 9: newVolt=(paramVal[SKIP2_PARAM]==SKIP2_VAL[c] 
-						&& rack::random::uniform()<paramVal[PROB2_PARAM])?10:0; break; 
-						// Trigger with probability & rarity B
-					default: newVolt=-4.04f; // Error
+				
+				// calculate the next step - no need if we've recently had a reset
+				if (thisIsNewReset[c]==true) {
+					thisIsNewReset[c]=false;
 				}
-				outputs[TRACK_OUTPUT+c].setVoltage(newVolt);
+				// calculate the next step - if looping is set
+				else if (paramVal[LOOP_PARAM]==1) {
+					CURR_DIV[c]++;
+					if (CURR_DIV[c]>=paramVal[DIV_PARAM+c]) {
+						CURR_DIV[c]=0; 
+						CURR_COL[c]=(CURR_COL[c]>=COLS-1)?0:CURR_COL[c]+1;	
+					}
+				} 
+				// calculate the next step - if looping is not allowed 
+				else {
+					CURR_DIV[c]++;
+					if (CURR_DIV[c]>=paramVal[DIV_PARAM+c]) {
+						CURR_DIV[c]=0;
+						CURR_COL[c]=(CURR_COL[c]>=COLS-1)?100:CURR_COL[c]+1;	
+					}
+				}
+				
+				// outputs[DEBUG_OUTPUT].setVoltage(CURR_COL[c]);
+				
+				if (CURR_DIV[c]==0) {
+				
+					// calculating the voltage row by row - a special case: restart
+					if (grid_data[CURR_COL[c]][c]==10) {
+						if (paramVal[LOOP_PARAM]==1) {CURR_COL[c]=0;}
+						else {CURR_COL[c]=100;}
+						}  // Restart
+
+/*						
+					// calculating for the rarity counters - new start adds to the SKIPX_VAL counters
+					if (CURR_COL[c]==0) {
+						// calculate the SKIP/RARE AB
+						SKIP1_VAL[c]++; if (SKIP1_VAL[c]>paramVal[SKIP1_PARAM]) {SKIP1_VAL[c]=1;}
+						SKIP2_VAL[c]++; if (SKIP2_VAL[c]>paramVal[SKIP2_PARAM]) {SKIP2_VAL[c]=1;}
+						paramVal[DIV_PARAM+c]=params[DIV_PARAM+c].getValue();
+					}
+*/
+					
+					// calculating the voltage row by row - common cells
+//					if (CURR_DIV[c]==0) {
+						switch ((int)grid_data[CURR_COL[c]][c]) {
+							case 0: newVolt=0.0f; break; 	// Blank
+							case 1: newVolt=10.0f; break; 	// Trigger
+							case 2: newVolt=(rack::random::uniform()<paramVal[PROB1_PARAM])?10:0; break; // Trigger with probability A
+							case 3: newVolt=(rack::random::uniform()<paramVal[PROB2_PARAM])?10:0; break; // Trigger with probability B
+							case 4: newVolt=(paramVal[SKIP1_PARAM]==SKIP1_VAL[c])?10:0; break; // Trigger with rarity A
+							case 5: newVolt=(paramVal[SKIP1_PARAM]==SKIP1_VAL[c])?0:10; break; // Trigger without rarity A
+							case 6: newVolt=(paramVal[SKIP2_PARAM]==SKIP2_VAL[c])?10:0; break; // Trigger with rarity B
+							case 7: newVolt=(paramVal[SKIP2_PARAM]==SKIP2_VAL[c])?0:10; break; // Trigger without rarity B
+							case 8: newVolt=(paramVal[SKIP1_PARAM]==SKIP1_VAL[c] 
+								&& rack::random::uniform()<paramVal[PROB1_PARAM])?10:0; break; 
+								// Trigger with probability & rarity A
+							case 9: newVolt=(paramVal[SKIP2_PARAM]==SKIP2_VAL[c] 
+								&& rack::random::uniform()<paramVal[PROB2_PARAM])?10:0; break; 
+								// Trigger with probability & rarity B
+							default: newVolt=-4.04f; // Error
+						}
+//					}
+					outputs[TRACK_OUTPUT+c].setVoltage(newVolt);
+					
+				}
+					
 			}
+
+			else {
+			
+			/* do nothing */
+				
+			}
+			
 			oldClock[c]=newClock[c];
 		}
     }
 
     void onRandomize() override {		
         for(int row=0; row < ROWS; row++) {
+			params[PW_PARAM+row].setValue(rand() %2);			
             for(int col=0; col < COLS; col++) {
 				grid_data[col][row] = (rack::random::uniform() < paramVal[DENS_PARAM])?CURR_MODE:0;
             }
@@ -317,7 +333,11 @@ struct Vulcan : Module{
 	}
 
     void onReset(const ResetEvent &e) override {
+		// params[LOOP_PARAM].setValue(1);
+		// params[FOCUS_PARAM].setValue(1);
         for(int row=0; row < ROWS; row++) {
+			params[PW_PARAM+row].setValue(0);
+			params[DIV_PARAM+row].setValue(8);
             for(int col=0; col < COLS; col++) {
                 grid_data[col][row] = 0;
             }
@@ -400,10 +420,13 @@ struct VulcanWidget : ModuleWidget {
 		for (int i=0;i<8;i++) {
 			addOutput(createOutputCentered<PJ301MPort>
 				(mm2px(Vec(HP*6+HP*2*i, HP*2.5)), module, Vulcan::TRACK_OUTPUT+i));
+			// addParam(createParamCentered<CKSSThree>
 			addParam(createParamCentered<CKSS>
 				(mm2px(Vec(HP*6+HP*2*i, HP*4.5)), module, Vulcan::PW_PARAM+i)); 
-			addParam(createParamCentered<VCVButton>
-				(mm2px(Vec(HP*6+HP*2*i, HP*6.5)), module, Vulcan::DICE_PARAM+i));
+			addParam(createParamCentered<RoundSmallBlackKnob>
+				(mm2px(Vec(HP*6+HP*2*i, HP*6.5)), module, Vulcan::DIV_PARAM+i));
+			// addParam(createParamCentered<VCVButton>
+				// (mm2px(Vec(HP*6+HP*2*i, HP*6.5)), module, Vulcan::DICE_PARAM+i));
 		}
 		addParam(createLightParamCentered<VCVLightSlider<GreenLight>>
 			(mm2px(Vec(HP*21.5, HP*4.5)), module, Vulcan::DENS_PARAM, Vulcan::DENS_LIGHT));
@@ -413,19 +436,9 @@ struct VulcanWidget : ModuleWidget {
 		grid_widget->box.pos = mm2px(Vec(HP*0.75,HP*8.0));
 		grid_widget->module = module;
 		addChild(grid_widget);
-
-/*
-addOutput(createOutputCentered<PJ301MPort> 
-	(mm2px(Vec(HP*34.5, HP*7.0)), module, Vulcan::DEBUG_OUTPUT));
-
-		Label* label_widget = new Label();
-		label_widget->box.pos = mm2px(Vec(HP*31.5, HP*6.5));
-		label_widget->text = "DEV";
-		label_widget->fontSize = 25;
-		label_widget->color = nvgRGBA(25, 25, 25, 251);
-		// label_widget->alignment = rack::ui::Label::CENTER_ALIGNMENT;
-		addChild(label_widget);
-*/
+	
+		// addOutput(createOutputCentered<PJ301MPort> 
+			// (mm2px(Vec(HP*5, HP*24.5)), module, Vulcan::DEBUG_OUTPUT));
 
 	}
 
@@ -445,17 +458,19 @@ addOutput(createOutputCentered<PJ301MPort>
 	ModuleWidget::onHoverKey(e);
 	}
 
-	// void appendContextMenu(Menu* menu) override {
-		// Vulcan* module = dynamic_cast<Vulcan*>(this->module);
-		// assert(module);
+	void appendContextMenu(Menu* menu) override {
+		Vulcan* module = dynamic_cast<Vulcan*>(this->module);
+		assert(module);
 		// menu->addChild(new MenuSeparator);
 		// menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
 		// menu->addChild(new MenuSeparator);
-		// menu->addChild(createIndexSubmenuItem("Track #1 clock division", {
-			// "1","2","3","4","5","6","7","8","9","10"},
-		// [=]() {return module->params[module->CLICKMODE_PARAM].getValue();},
-		// [=](int mode) {module->params[module->CLICKMODE_PARAM].setValue(mode);}));
-	// }
+		// menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createIndexSubmenuItem("Set all clock division", {
+			"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"},
+		[=]() {return module->params[module->DIV_PARAM+0].getValue()-1;},
+		[=](int mode) {for (int x=0;x<8;x++) {module->params[module->DIV_PARAM+x].setValue(mode+1);}}));
+	}
 
 };
 
