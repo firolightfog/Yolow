@@ -233,6 +233,10 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 - `reverse` order
 - `random` order. 
 
+An example to record a simple melody using your keyboard:  
+<img width="297" alt="image" src="https://user-images.githubusercontent.com/34127628/209512719-32ceb994-969a-43dd-8f37-c2c3c4ac7b7e.png">
+
+
 ### SaveMeMonoWide
 Similar to SaveMeMono but all options are available from the panel. I love it. 
 
