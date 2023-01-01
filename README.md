@@ -26,6 +26,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[RandVolt8](#RandVolt8)|Provider of fix (7V, 6V, 5V, etc) or random stepped voltage with range settings|
 |[FromTo](#FromTo)|Provides stepped voltage in a range|
 |[RotaTrig](#RotaTrig)|Distributes incoming clock in various ways|
+|[RotaTrig](#Ticklet)|Clock modifier module with a polyphonic 8-channel output of divided clock pulses|
 |[SaveMeMono](#SaveMeMono)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMonoWide](#SaveMeMonoWide)|S&H that saves upto 256 stepped voltage|
 |[SaveMeMore](#SaveMeMore)|Expander module with additional tracks for SaveMeMono|
@@ -33,7 +34,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[SheepMore](#SheepMore)|Expander module with additional CV and gates outputs for Sheep|
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
-|[NearMess](#NearMess)|An almost passive VCA and mixer|
+|[NearMess](#NearMess)|An almost passive VCA and mixer, 2-to-9|
+|[NearMix](#NearMix)|An almost passive VCA and mixer, 9-to-2|
 |[TrigPrec1](#TrigPrec1)|Trigger sequence randomizer|
 |[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
@@ -227,6 +229,9 @@ Feeding a looping LFO (0-10V) to the CLK socket you can also send the voltages s
 
 <img width="714" alt="image" src="https://user-images.githubusercontent.com/34127628/187549668-e54ad8a6-10b0-48e2-a6de-fd032893bbd9.png">
 
+### Ticklet
+A simple clock division module with the option of 8 monopohonic clock output and an 8-channel polyphonic clock output.
+
 ### SaveMeMono
 Tricky little module to save and return upto 256 voltages. Source input can be external (see LFO) or internal noise. If internal noise is selected then voltages can be set to be gates (0V or 10V), bi (-5V to 5V), or uni (0v to 10V). The recorded values can be shifted to left (i.e. previous) or right (i.e. next) slot. There's a tiny yellow LED indicating the voltage of the first step. The output is provided 3 ways:
 - `normal` order
@@ -235,7 +240,6 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 
 An example to record a simple melody using your keyboard:  
 <img width="297" alt="image" src="https://user-images.githubusercontent.com/34127628/209512719-32ceb994-969a-43dd-8f37-c2c3c4ac7b7e.png">
-
 
 ### SaveMeMonoWide
 Similar to SaveMeMono but all options are available from the panel. I love it. 
@@ -299,6 +303,9 @@ The 'poly channels' setting doesn't influence the sequence created by the JUMP i
 It is a very simple mixer that will combine two monophonic inputs (A and B) according to fixed ratios. This module is a tribute to my Takab [Nearness](https://www.modulargrid.net/e/takaab-nearness) Eurorack module that I dearly loved for it's simplicity and practicality.  
 
 <img width="363" alt="image" src="https://user-images.githubusercontent.com/34127628/178104155-491bdf4e-58f1-40fb-af54-ab3bfbafdba2.png">
+
+### NearMix
+The little sister of NearMess. But this module has nine inputs and two outputs. The inputs are weighted so changing the socket for the cable the signal in the mix can be more or less dominant. No mixer can be simpler than this.
 
 -----
 
