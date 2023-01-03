@@ -1,4 +1,4 @@
-// Copyright (c) 2022 András Szabó
+// Copyright (c) 2022 AndrÃ¡s SzabÃ³
 // too many menu items -> panel to be redesigned
 
 #include "plugin.hpp"
@@ -80,6 +80,17 @@ struct SaveMeMono : Module {
 		bool signalReset=false;
 	};
 
+	/*
+	// Voxglitch Zero Point text file export - doesn't work
+	void exportFields() {
+		std::string buffer="";
+		for (int i=0; i<256; i++) {buffer=buffer + std::to_string(theSeq[i]) +",";}
+		std::ofstream newFile("SaveMe_CVsequence.txt");
+		newFile << buffer;
+		newFile.close();	 
+	}
+	*/
+	
 	// OK, I know ... this is ugly but I had to find a way to shift the (unvisible) sequence 
 	void shiftSeq() {
 		float tempStep=0.0f;
