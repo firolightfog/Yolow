@@ -1,5 +1,32 @@
 # Changelog
 
+v2.1.19 changes unreleased
+- new module NearMix: an almost passive mixer with 9-ins & 2-outs
+- bug fix in Vulcan: rarity feature was messed up
+- bug fix in Vulcan: pulse width calculation revised
+- new layout to Ticklet: some labels added
+- new feature in SaveMeMonoWide: randomization in the context menu
+- new feature in Vulcan, SaveMeMono and SaveMeMonoWide: export to text file (to assist Voxglitch One Point/Zero modules)
+- new feature in SaveMeMono and SaveMeMonoWide: import from (Voxglitch One Point/Zero) text files
+- bug fix in SaveMeMore: the reverse output calculation revised
+- bug fix in SaveMeMore: sync improved
+- new feature in SaveMeMore: CV input to modify the START position
+- new (half-baked) feature in Vulcan: tooltip boxes over the grid
+
+v2.1.18 changes  2022-12-25
+- new module added: Vulcan trigger sequencer
+- new module added: Ticklet a simple clock divider
+
+v2.1.17 changes 2022-12-25
+- bugfix in SaveMeMore: DEV label removed and latch button layout unified
+- bugfix in SaveMeMore: reverse output was messed upper
+- bugfix in SaveMeMore: startup calculation is greatly improved
+- bugfix in SaveMeMore: precision was enabled for the outputs
+- new feature in SaveMeMore: rhythm can be delayed by a knob
+- new output on Quant12 for the sampling trigger
+- new layout to FromTo, TrigPrec1, TrigPRec2: gained some HPs
+- new layout to MKnob: lost some HPs
+
 v2.1.16 2022-12-01
 - renamed EuclkExp to EuclkMore
 - changed EuclkExp startup value for the mixed output and added NXOR
