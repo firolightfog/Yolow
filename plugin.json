@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.18",
+  "version": "2.1.19",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -367,6 +367,19 @@
       ]
     },
     {
+      "slug": "OneTxt",
+      "name": "OneTxt Sequencer",
+      "description": "Simple 8-track sequencer playing VosxGlitch OneZero and OnePoint text files",
+      "keywords": [
+        "text file",
+        "trigger",
+		"drum sequencer"
+      ],
+      "tags": [
+        "Sequencer"
+      ]
+    },
+    {
       "slug": "PushmeSeq",
       "name": "PushMeSeq Trigger Sequencer",
       "description": "Variable trigger sequencer in  4HP",
@@ -403,7 +416,15 @@
     {
       "slug": "NearMess",
       "name": "NearMess Mixer",
-      "description": "An almost passive mixer",
+      "description": "An almost passive mixer with 2 inputs and 9 outputs",
+      "tags": [
+        "Mixer", "VCA"
+      ]
+    },
+    {
+      "slug": "NearMix",
+      "name": "NearMix Mixer",
+      "description": "An almost passive mixer with 9 inputs and 2 outputs",
       "tags": [
         "Mixer", "VCA"
       ]
