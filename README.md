@@ -241,6 +241,8 @@ Tricky little module to save and return upto 256 voltages. Source input can be e
 An example to record a simple melody using your keyboard:  
 <img width="297" alt="image" src="https://user-images.githubusercontent.com/34127628/209512719-32ceb994-969a-43dd-8f37-c2c3c4ac7b7e.png">
 
+If you like the concept but are not fan of this module then check out [PdArray Array](https://library.vcvrack.com/PdArray/Array).
+
 ### SaveMeMonoWide
 Similar to SaveMeMono but all options are available from the panel. I love it. 
 
