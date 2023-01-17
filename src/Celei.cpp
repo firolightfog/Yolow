@@ -14,7 +14,10 @@ struct Celei : Module {
 		TRANSPOSE_INPUT, CLOCK_INPUT, RESET_INPUT, INPUTS_LEN};
 
 	enum OutputId    {
-		MONO_OUTPUT, TRIGGER_STEP_OUTPUT, OUTPUTS_LEN};
+		MONO_OUTPUT, TRIGGER_STEP_OUTPUT, 
+		SEQ_1_OUTPUT, SEQ_2_OUTPUT, SEQ_3_OUTPUT, SEQ_4_OUTPUT, 
+		SEQ_5_OUTPUT, SEQ_6_OUTPUT, SEQ_7_OUTPUT, SEQ_8_OUTPUT, 
+		OUTPUTS_LEN};
 	
 	enum LightId    {
 		SEQ_1_LED_LIGHT, SEQ_2_LED_LIGHT, SEQ_3_LED_LIGHT, SEQ_4_LED_LIGHT, SEQ_5_LED_LIGHT, 
@@ -25,8 +28,8 @@ struct Celei : Module {
 
 	// small assistance to save older values for reference;
 	float paramVal[PARAMS_LEN]={0};
-	float inputVolt[INPUTS_LEN]={0};
-	float lightVal[LIGHTS_LEN]={0};
+	// float inputVolt[INPUTS_LEN]={0};
+	// float lightVal[LIGHTS_LEN]={0};
 
 // --------------------------------------------------
 
@@ -52,6 +55,15 @@ struct Celei : Module {
 		configInput(TRANSPOSE_INPUT, "Transpose"); 
 		configInput(CLOCK_INPUT, "Clock"); 
 		configInput(RESET_INPUT, "Reset"); 
+
+		configOutput(SEQ_1_OUTPUT, "Active step 1"); 
+		configOutput(SEQ_2_OUTPUT, "Active step 2"); 
+		configOutput(SEQ_3_OUTPUT, "Active step 3"); 
+		configOutput(SEQ_4_OUTPUT, "Active step 4"); 
+		configOutput(SEQ_5_OUTPUT, "Active step 5"); 
+		configOutput(SEQ_6_OUTPUT, "Active step 6"); 
+		configOutput(SEQ_7_OUTPUT, "Active step 7"); 
+		configOutput(SEQ_8_OUTPUT, "Active step 8"); 
 
 		configOutput(MONO_OUTPUT, "Mono"); 
 		configOutput(TRIGGER_STEP_OUTPUT, "Trigger step"); 
@@ -120,7 +132,8 @@ int freezCv=0;
 	float oldReset=0.0f;
 	float newClock=0.0f;
 	float oldClock=0.0f;
-
+	bool hitClock=false;
+	
 	// storing parameter positions occaisonly
 	float pSx[8]={0.0f};
 	float pSteps=0.0f;
@@ -136,6 +149,8 @@ int freezCv=0;
 	// hidden trick: if true it sends a clock pulse instead of a constant CV
 	bool modeClock=false;
 	int indexQuant=0;	// this means no quantization
+	int indexStepo=0;	// this means 10V output on active step
+	int indexStepl=0;	// clock width, full width
 
 	float quantMe(float oldVal) {
 		// oldVal=oldVal+5*indexRange;
@@ -218,16 +233,20 @@ int freezCv=0;
 			if (stepA>0) {lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(0);}
 			stepA++; 
 			if (stepA>pSteps || stepA<1) {stepA=1;}
-			if (stepA==pTrg) {outputs[TRIGGER_STEP_OUTPUT].setVoltage(10);}
+			// if (stepA==pTrg) {outputs[TRIGGER_STEP_OUTPUT].setVoltage(10);}
 			lights[SEQ_1_LED_LIGHT-1+stepA].setBrightness(10);
+			hitClock=true;
 			
 		}
 		// else if (newClock>0.2 && oldClock>0.2) {}
 		// else if (newClock<=0.2 && oldClock<=0.2) {}
 		else if (newClock<=2.0f && oldClock>2.0f) {
-			outputs[TRIGGER_STEP_OUTPUT].setVoltage(0);
+			// outputs[TRIGGER_STEP_OUTPUT].setVoltage(0);
 			if (modeClock==true) {voltA=0;}
 			if (freezCv>=0) {freezCv--;}
+			if (indexStepl==0) { // clock width
+				for (int i=0;i<8;i++) {outputs[SEQ_1_OUTPUT+i].setVoltage(0);}
+			}
 			}
 		oldClock=newClock;
 
@@ -241,20 +260,46 @@ int freezCv=0;
 				voltA=voltA+remainder(inputs[TRANSPOSE_INPUT].getVoltage(), 10.0f);
 			}
 		}
-		outputs[MONO_OUTPUT].setVoltage(quantMe(voltA));
-
+		
+		if (hitClock==true) {
+			outputs[MONO_OUTPUT].setVoltage(quantMe(voltA));			
+			// if (indexStepo!=2) {
+				// for (int i=0;i<8;i++) {outputs[SEQ_1_OUTPUT+i].setVoltage(0);}
+			// }
+			if (indexStepl==1) { // full/step width
+				for (int i=0;i<8;i++) {outputs[SEQ_1_OUTPUT+i].setVoltage(0);}
+				if (indexStepo==0) {outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(10);}
+				else if (indexStepo==1) {outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(quantMe(voltA));}
+				else if (indexStepo==2) {outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(voltA-rack::random::uniform());}
+			}
+			else if (indexStepl==2 /* && outputs[SEQ_1_OUTPUT+stepA-1].getVoltage>0 */) { // toggle
+				// outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(0);
+			}
+			else {
+				if (indexStepo==0) {outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(10);}
+				else if (indexStepo==1) {outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(quantMe(voltA));}
+				else if (indexStepo==2) {outputs[SEQ_1_OUTPUT+stepA-1].setVoltage(voltA-rack::random::uniform());}
+			}
+			hitClock=false;
+		}
 	}
 
 	// this JSON block is to save and reload a variable
 	json_t* dataToJson() override {
 	json_t* rootJ = json_object();
 	json_object_set_new(rootJ, "quant", json_integer(indexQuant));
+	json_object_set_new(rootJ, "stepout", json_integer(indexStepo));
+	json_object_set_new(rootJ, "steplen", json_integer(indexStepl));
 //    json_object_set_new(rootJ, "type", json_string("note"));	// portable seq
 //    json_object_set_new(rootJ, "pitch", json_real(vOct);		// portable seq
 //    json_object_set_new(rootJ, "length", json_real(lengthInBeats);	// portable seq
 	return rootJ;}
 
 	void dataFromJson(json_t* rootJ) override {
+	json_t *steplJ = json_object_get(rootJ, "steplen");
+	if (steplJ) indexStepl = json_integer_value(steplJ);
+	json_t *stepoJ = json_object_get(rootJ, "stepout");
+	if (stepoJ) indexStepo = json_integer_value(stepoJ);
 	json_t *quantJ = json_object_get(rootJ, "quant");
 	if (quantJ) indexQuant = json_integer_value(quantJ);}
 
@@ -277,38 +322,57 @@ struct CeleiWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		
-		childKnob(Celei::SEQ_1_VOLTAGE_PARAM, 1, HP*4.5, HP*5.5);
-		childKnob(Celei::SEQ_2_VOLTAGE_PARAM, 1, HP*4.5, HP*8);
-		childKnob(Celei::SEQ_3_VOLTAGE_PARAM, 1, HP*4.5, HP*10.5);
-		childKnob(Celei::SEQ_4_VOLTAGE_PARAM, 1, HP*4.5, HP*13);
-		childKnob(Celei::SEQ_5_VOLTAGE_PARAM, 1, HP*4.5, HP*15.5);
-		childKnob(Celei::SEQ_6_VOLTAGE_PARAM, 1, HP*4.5, HP*18);
-		childKnob(Celei::SEQ_7_VOLTAGE_PARAM, 1, HP*4.5, HP*20.5);
-		childKnob(Celei::SEQ_8_VOLTAGE_PARAM, 1, HP*4.5, HP*23);
+				
 		childKnob(Celei::STEPS_PARAM, 0, HP*4.5, HP*2.5);
 		childKnob(Celei::OCTAVE_PARAM, 0, HP*1.5, HP*10.5);
 		childKnob(Celei::RANGE_PARAM, 0, HP*1.5, HP*13);
-		childKnob(Celei::TRIGGER_STEP_PARAM, 0, HP*1.5, HP*15.5);
+		// childKnob(Celei::TRIGGER_STEP_PARAM, 0, HP*1.5, HP*15.5);
+
+		childInput(Celei::TRANSPOSE_INPUT, HP*1.5, HP*5.5);
+		childOutput(Celei::MONO_OUTPUT, HP*1.5, HP*8);
+		// childOutput(Celei::TRIGGER_STEP_OUTPUT, HP*1.5, HP*18);
+		childInput(Celei::CLOCK_INPUT, HP*1.5, HP*20.5);
+		childInput(Celei::RESET_INPUT, HP*1.5, HP*23);
 
 		// for (int i=0;i<8;i++) {
 			// childLight(Celei::BG_1_LED_LIGHT+i, 2, HP*4.5, HP*5.5+i*2.5);
 			// addChild(createLightCentered<LargeLight<WhiteLight>>(mm2px(Vec(5.08*4.5, 5.08*(5.5+i*2.5))), module, Celei::BG_1_LED_LIGHT+i));
 		// }
 		
-		childLight(Celei::SEQ_1_LED_LIGHT, 0, HP*4.5, HP*5.5);
-		childLight(Celei::SEQ_2_LED_LIGHT, 0, HP*4.5, HP*8);
-		childLight(Celei::SEQ_3_LED_LIGHT, 0, HP*4.5, HP*10.5);
-		childLight(Celei::SEQ_4_LED_LIGHT, 0, HP*4.5, HP*13);
-		childLight(Celei::SEQ_5_LED_LIGHT, 0, HP*4.5, HP*15.5);
-		childLight(Celei::SEQ_6_LED_LIGHT, 0, HP*4.5, HP*18);
-		childLight(Celei::SEQ_7_LED_LIGHT, 0, HP*4.5, HP*20.5);
-		childLight(Celei::SEQ_8_LED_LIGHT, 0, HP*4.5, HP*23);
-		childInput(Celei::TRANSPOSE_INPUT, HP*1.5, HP*5.5);
-		childOutput(Celei::MONO_OUTPUT, HP*1.5, HP*8);
-		childOutput(Celei::TRIGGER_STEP_OUTPUT, HP*1.5, HP*18);
-		childInput(Celei::CLOCK_INPUT, HP*1.5, HP*20.5);
-		childInput(Celei::RESET_INPUT, HP*1.5, HP*23);
+		for (int i=0;i<8;i++) {
+			childKnob(Celei::SEQ_1_VOLTAGE_PARAM+i, 1, HP*3.5, HP*5.5+HP*i*2.5);
+			childLight(Celei::SEQ_1_LED_LIGHT+i, 0, HP*3.5, HP*5.5+HP*i*2.5);
+			childOutput(Celei::SEQ_1_OUTPUT+i, HP*5.5, HP*5.5+HP*i*2.5);
+		}
+
+/* 
+		childKnob(Celei::SEQ_1_VOLTAGE_PARAM, 1, HP*3.5, HP*5.5);
+		childKnob(Celei::SEQ_2_VOLTAGE_PARAM, 1, HP*3.5, HP*8);
+		childKnob(Celei::SEQ_3_VOLTAGE_PARAM, 1, HP*3.5, HP*10.5);
+		childKnob(Celei::SEQ_4_VOLTAGE_PARAM, 1, HP*3.5, HP*13);
+		childKnob(Celei::SEQ_5_VOLTAGE_PARAM, 1, HP*3.5, HP*15.5);
+		childKnob(Celei::SEQ_6_VOLTAGE_PARAM, 1, HP*3.5, HP*18);
+		childKnob(Celei::SEQ_7_VOLTAGE_PARAM, 1, HP*3.5, HP*20.5);
+		childKnob(Celei::SEQ_8_VOLTAGE_PARAM, 1, HP*3.5, HP*23);
+
+		childLight(Celei::SEQ_1_LED_LIGHT, 0, HP*3.5, HP*5.5);
+		childLight(Celei::SEQ_2_LED_LIGHT, 0, HP*3.5, HP*8);
+		childLight(Celei::SEQ_3_LED_LIGHT, 0, HP*3.5, HP*10.5);
+		childLight(Celei::SEQ_4_LED_LIGHT, 0, HP*3.5, HP*13);
+		childLight(Celei::SEQ_5_LED_LIGHT, 0, HP*3.5, HP*15.5);
+		childLight(Celei::SEQ_6_LED_LIGHT, 0, HP*3.5, HP*18);
+		childLight(Celei::SEQ_7_LED_LIGHT, 0, HP*3.5, HP*20.5);
+		childLight(Celei::SEQ_8_LED_LIGHT, 0, HP*3.5, HP*23);
+
+		childOutput(Celei::SEQ_1_OUTPUT, HP*5.5, HP*5.5);
+		childOutput(Celei::SEQ_2_OUTPUT, HP*5.5, HP*8);
+		childOutput(Celei::SEQ_3_OUTPUT, HP*5.5, HP*10.5);
+		childOutput(Celei::SEQ_4_OUTPUT, HP*5.5, HP*13);
+		childOutput(Celei::SEQ_5_OUTPUT, HP*5.5, HP*15.5);
+		childOutput(Celei::SEQ_6_OUTPUT, HP*5.5, HP*18);
+		childOutput(Celei::SEQ_7_OUTPUT, HP*5.5, HP*20.5);
+		childOutput(Celei::SEQ_8_OUTPUT, HP*5.5, HP*23);
+ */
 	}
 
 	// menu for basic quantization
@@ -317,6 +381,8 @@ struct CeleiWidget : ModuleWidget {
 		assert(module);
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes" /*,"Gates (>2V)"*/}, &module->indexQuant));
+		menu->addChild(createIndexPtrSubmenuItem("Active step CV", {"10V","CV","Random"}, &module->indexStepo));
+		menu->addChild(createIndexPtrSubmenuItem("Active step length", {"Clock length","Step length"}, &module->indexStepl));
 	}
 
 	// shortkey

@@ -39,6 +39,7 @@ extern Model* modelPushmeSeq;
 extern Model* modelPushmeMore;
 extern Model* modelRotaTrig;
 extern Model* modelNearMess;
+extern Model* modelNearMix;
 extern Model* modelSequin;
 extern Model* modelSaveMeMono;
 extern Model* modelSaveMeMore;
@@ -52,4 +53,5 @@ extern Model* modelEuclk;
 extern Model* modelEuclkMore;
 extern Model* modelTicklet;
 extern Model* modelVulcan;
+extern Model* modelOneTxt;
 

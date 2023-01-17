@@ -11,8 +11,6 @@
 	#define CELL_HEIGHT HP*5
 	#define CELL_PADDING HP/3
 
-	#define DRAW_AREA_WIDTH COLS*(CELL_WIDTH+CELL_PADDING)+CELL_PADDING
-	#define DRAW_AREA_HEIGHT ROWS*(CELL_HEIGHT+CELL_PADDING)+CELL_PADDING
 ...
 
     int grid_data[COLS][ROWS];
@@ -32,6 +30,8 @@
 
 */
 
+#define DRAW_AREA_WIDTH COLS*(CELL_WIDTH+CELL_PADDING)+CELL_PADDING
+#define DRAW_AREA_HEIGHT ROWS*(CELL_HEIGHT+CELL_PADDING)+CELL_PADDING
 
 struct GridWidget : TransparentWidget {
 
@@ -48,7 +48,6 @@ struct GridWidget : TransparentWidget {
 	// it's OK
 	void draw(const DrawArgs &args) override {
 		const auto vg = args.vg;
-
 		// Save the drawing context to restore later
 		nvgSave(vg);
 
@@ -57,7 +56,7 @@ struct GridWidget : TransparentWidget {
 		nvgRect(vg, 0, 0, box.size.x, box.size.y);
 		nvgFillColor(vg, nvgRGBA(25, 25, 25, 250));
 		nvgFill(vg);
-		
+			
 		if(module) {
 			for(int xcol=0; xcol < COLS; xcol++) {
 			// for(int xcol=0; xcol < module->paramVal[module->DEBUG_PARAM]; xcol++) {
@@ -79,9 +78,40 @@ struct GridWidget : TransparentWidget {
 					nvgFill(vg);
 				}
 			}
-		}
 
+			// this is not good, itt
+			if (module->paramVal[module->FOCUS_PARAM]==0
+			 || mousey<0 || mousey>=box.size.y ) {
+			nvgBeginPath(vg);
+			nvgRect(vg, mousex-2, mousey+16, 42, 21);	
+			nvgFillColor(vg, nvgRGBA(25,25,25,225));	// sötét
+			nvgFill(vg);
+			nvgFillColor(vg, nvgRGBA(225,225,225,225));	// világos
+			nvgText(vg, mousex, mousey+30, tooltiptext, NULL);
+			}
+
+		}
+		
 		nvgRestore(vg);
+	}
+
+	// it's probably not OK at all
+	// char colLetter[17]="ABCDEFGHIJKLMNOP";
+	char colLetter[17]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'};
+	char tooltiptext[64];
+	float mousex=0;
+	float mousey=0;
+	void onHover(const event::Hover& e) override {
+		TransparentWidget::onHover(e);
+		if(isMouseInDrawArea(e.pos)) {
+			e.consume(this);
+			mousex=e.pos[0];
+			mousey=e.pos[1];		
+			getRowAndColumnFromVec(e.pos);
+			module->outputs[module->DEBUG_OUTPUT].setVoltage(module->grid_data[column][row]);
+			sprintf(tooltiptext,"%c%d: %d",colLetter[column],row,module->grid_data[column][row]);
+		} 
+		else {mousex=0;mousey=0;}
 	}
 
 	// it's OK
@@ -140,22 +170,6 @@ struct GridWidget : TransparentWidget {
 			}
 		}
 		else {this->mouse_lock = false;}
-	}
-
-	// it's probably not OK at all
-	// char colLetter[17]="ABCDEFGHIJKLMNOP";
-	char colLetter[17]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'};
-	char buffer[64];
-	void onHover(const event::Hover& e) override {
-		TransparentWidget::onHover(e);
-		if(isMouseInDrawArea(e.pos)) {
-			e.consume(this);
-			getRowAndColumnFromVec(e.pos);
-			module->outputs[module->DEBUG_OUTPUT].setVoltage(module->grid_data[column][row]);
-			sprintf(buffer,"Type: %d at %d-%d",module->grid_data[column][row],column,row);
-			// sprintf(buffer,"Type: %d at %s%d",module->grid_data[column][row],colLetter[column],row);
-			// and now I need the call to write it to a label
-		} 
 	}
 
 	// it's OK

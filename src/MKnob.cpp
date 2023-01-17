@@ -163,14 +163,29 @@ struct MKnobWidget : ModuleWidget {
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*19)), module, MKnob::SOCKETD_OUTPUT));
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*22)), module, MKnob::POLYOUT_OUTPUT));
 	}
+
+	// #include "share/menuspecials.hpp"
 	
 	void appendContextMenu(Menu* menu) override {
 		MKnob* module = dynamic_cast<MKnob*>(this->module);
 		assert(module);
 		menu->addChild(new MenuSeparator);
+
+		// menu->addChild(createSubmenuItem("Import selection", "", [=](Menu* menu) {
+			// WeakPtr<ModuleWidget> weakThis = this;
+			// menu->addChild(createMenuLabel("User selections"));
+			// appendSelectionItems(menu, weakThis, asset::user("selections"));
+			// menu->addChild(new ui::MenuSeparator);
+			// menu->addChild(createMenuLabel("Factory selections"));
+			// appendSelectionItems(menu, weakThis, asset::plugin(pluginInstance, system::join("selections", model->slug)));
+		// }));
+	
+		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
 		menu->addChild(createIndexPtrSubmenuItem("Range", {"-5V to 5V","0 to 10V"}, &module->indexRange));
 		menu->addChild(createIndexPtrSubmenuItem("Poly channels", {"1","2","3","4"}, &module->indexChan));
+		
+		
 	}
 
 };

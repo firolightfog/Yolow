@@ -1,4 +1,7 @@
 #include "plugin.hpp"
+
+#include <fstream>
+#include <osdialog.h>
 	
 #define HP 5.08
 #define ROWS 8
@@ -159,6 +162,8 @@ struct Vulcan : Module{
 		"Trigger with probability & rarity B",
 		"Restart",
 	};
+
+	#include "Vulcan/Vulcan_routines.hpp"
 		
 	// it's OK
 	int loop=0;	// save some CPU
@@ -228,7 +233,10 @@ struct Vulcan : Module{
 			// falling edge of clock pluse
 			if (newClock[c]<=2.0f && oldClock[c]>2.0f) {	
 				if (paramVal[PW_PARAM+c]==0) {
-					if (CURR_DIV[c]>=paramVal[DIV_PARAM+c]-1) {
+					if (CURR_DIV[c]==0) {
+						outputs[TRACK_OUTPUT+c].setVoltage(0);
+					}
+					else if (CURR_DIV[c]>=paramVal[DIV_PARAM+c]-1) {
 						outputs[TRACK_OUTPUT+c].setVoltage(0);
 					}
 				}
@@ -240,8 +248,8 @@ struct Vulcan : Module{
 				// calculating for the rarity counters - new start adds to the SKIPX_VAL counters
 				if (CURR_COL[c]==0) {
 					// calculate the SKIP/RARE AB
-					SKIP1_VAL[c]++; if (SKIP1_VAL[c]>paramVal[SKIP1_PARAM]) {SKIP1_VAL[c]=1;}
-					SKIP2_VAL[c]++; if (SKIP2_VAL[c]>paramVal[SKIP2_PARAM]) {SKIP2_VAL[c]=1;}
+					// SKIP1_VAL[c]++; if (SKIP1_VAL[c]>paramVal[SKIP1_PARAM]) {SKIP1_VAL[c]=1;}
+					// SKIP2_VAL[c]++; if (SKIP2_VAL[c]>paramVal[SKIP2_PARAM]) {SKIP2_VAL[c]=1;}
 					paramVal[DIV_PARAM+c]=params[DIV_PARAM+c].getValue();
 				}
 				
@@ -276,15 +284,13 @@ struct Vulcan : Module{
 						else {CURR_COL[c]=100;}
 						}  // Restart
 
-/*						
 					// calculating for the rarity counters - new start adds to the SKIPX_VAL counters
 					if (CURR_COL[c]==0) {
 						// calculate the SKIP/RARE AB
 						SKIP1_VAL[c]++; if (SKIP1_VAL[c]>paramVal[SKIP1_PARAM]) {SKIP1_VAL[c]=1;}
 						SKIP2_VAL[c]++; if (SKIP2_VAL[c]>paramVal[SKIP2_PARAM]) {SKIP2_VAL[c]=1;}
-						paramVal[DIV_PARAM+c]=params[DIV_PARAM+c].getValue();
+						// paramVal[DIV_PARAM+c]=params[DIV_PARAM+c].getValue();
 					}
-*/
 					
 					// calculating the voltage row by row - common cells
 //					if (CURR_DIV[c]==0) {
@@ -349,6 +355,7 @@ struct Vulcan : Module{
 	// it's OK
     json_t *dataToJson() override {
         json_t *json_root = json_object();
+		// json_object_set_new(json_root, "selectionDir", json_string(selectionDir.c_str()));
 		json_t *notes_json_array = json_array();
 		for (int notes_row=0; notes_row<8; notes_row++) {
 			json_t *track_json_array = json_array();
@@ -363,6 +370,8 @@ struct Vulcan : Module{
 	// it's OK
     void dataFromJson(json_t *json_root) override {
 		json_t *notes_json_array = json_object_get(json_root, "notes");
+		// json_t *sdir_json = json_object_get(json_root, "selectionDir");
+		// if (sdir_json) selectionDir = json_string_value(sdir_json);
 		if(notes_json_array) {
 			json_t *track_json_array;
 			size_t track_number;	// aka 'row'
@@ -470,6 +479,19 @@ struct VulcanWidget : ModuleWidget {
 			"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"},
 		[=]() {return module->params[module->DIV_PARAM+0].getValue()-1;},
 		[=](int mode) {for (int x=0;x<8;x++) {module->params[module->DIV_PARAM+x].setValue(mode+1);}}));
+		menu->addChild(new MenuSeparator);
+
+		menu->addChild(createSubmenuItem("Text export/import", "",
+			[=](Menu* menu) {
+				menu->addChild(createMenuLabel("(OneZero format: 10101101)"));
+				menu->addChild(createMenuItem("Export to OneZero text file", "", [=]() {module->exportFieldsToTxt(0);}));	
+				menu->addChild(createMenuItem("Import from OneZero text file", "", [=]() {module->importFieldsFromTxt(0);}));
+				menu->addChild(createMenuLabel("(OnePoint format: 1.16, 2.25, 4.22)"));
+				menu->addChild(createMenuItem("Export to OnePoint text file", "", [=]() {module->exportFieldsToTxt(1);}));	
+				// menu->addChild(createMenuItem("Import from OnePoint text file", "", [=]() {module->importFieldsFromTxt(1);}));
+			}
+		));
+
 	}
 
 };
