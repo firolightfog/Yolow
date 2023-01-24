@@ -15,6 +15,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Celesta](#Celesta)|Three 8 step CV sequencers|
 |[Celei](#Celesta)|Single 8 step CV sequencer|
 |[Sequin](#Sequin)|Queen of Sequencers|
+|[PokeMe](#PokeMe)|Simple single track trigger sequencer with upto 32 steps|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
 |[Vulcan](#Vulcan)|Simple 8-track trigger sequencer with 16-steps|
@@ -121,12 +122,11 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
 ### PokeMe
-
 #### unreleased
 
 PokeMe is a 32-step single track trigger sequencer. There is a reset and clock input and a monophonic output.
 
-Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a choke function and selection two between pulse length modes.
+Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a choke function and selection between two pulse length modes.
 
 By default triggers can be entered to the cell grid by mouse. Shift-Left-Click and Ctrl-Left-Click allows changing of the trigger modes. Various colors of the cells represent these different behaviors:
 
@@ -144,7 +144,7 @@ By default triggers can be entered to the cell grid by mouse. Shift-Left-Click a
 
 Short keys from Alt-1 to Alt-9 can also be used to set the trigger mode of the next click. Alt-X is dedicated to entering a "restart" cell.
 
-An additional feature is that placing multiple PokeMe modules next to each other the clock and reset signals are shared. I wouldn't group too many of them but 3-4 tracks can be easily built.
+An additional feature is that placing multiple PokeMe modules next to each other the clock and reset signals are shared. I wouldn't group too many of them but a 3-4 track sequencer can be built easily.
 
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
 
