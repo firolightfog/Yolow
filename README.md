@@ -120,6 +120,34 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
+### PokeMe
+
+#### unreleased
+
+PokeMe is a 32-step single track trigger sequencer. There is a reset and clock input and a monophonic output.
+
+Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a choke function and selection two between pulse length modes.
+
+By default triggers can be entered to the cell grid by mouse. Shift-Left-Click and Ctrl-Left-Click allows changing of the trigger modes. Various colors of the cells represent these different behaviors:
+
+- `0` (grey) blank
+- `1` (green) 100% probability hit
+- `2` 95% probability hit
+- `3` 85% probability hit
+- `4` 75% probability hit
+- `5` 60% probability hit
+- `6` 50% probability hit
+- `7` only every 2nd 
+- `8` only every 3rd
+- `9` only every 4th
+- `10` (red) restart
+
+Short keys from Alt-1 to Alt-9 can also be used to set the trigger mode of the next click. Alt-X is dedicated to entering a "restart" cell.
+
+An additional feature is that placing multiple PokeMe modules next to each other the clock and reset signals are shared. I wouldn't group too many of them but 3-4 tracks can be easily built.
+
+<img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
+
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
 
