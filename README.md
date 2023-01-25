@@ -136,7 +136,7 @@ By default triggers can be entered to the cell grid by mouse. Shift-Left-Click a
 - `3` 85% probability hit
 - `4` 75% probability hit
 - `5` 60% probability hit
-- `6` 50% probability hit
+- `6` I don't know yet... :)
 - `7` only every 2nd 
 - `8` only every 3rd
 - `9` only every 4th
