@@ -124,9 +124,7 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 ### PokeMe
 #### unreleased
 
-PokeMe is a 32-step single track trigger sequencer. There is a reset and clock input and a monophonic output.
-
-Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a choke function and selection between two pulse length modes.
+PokeMe is a 32-step single track trigger sequencer. There is a reset and clock input and a monophonic output. Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a `choke` function and selection between two `pulse width` modes.
 
 By default triggers can be entered to the cell grid by mouse. Shift-Left-Click and Ctrl-Left-Click allows changing of the trigger modes. Various colors of the cells represent these different behaviors:
 
@@ -148,7 +146,9 @@ An additional feature is that placing multiple PokeMe modules next to each other
 
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
 
-There is an `Extended output` option in the context menu. By default the output is monolithic but switching this on additional channels are opened with a counter of the current step (0-31V), the mark value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
+There is also an experimental `Extended output` option in the context menu. By default the output is monophonic but switching this on additional channels are opened with a counter of the current step (0-31V), the mark value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
+
+<img width="252" alt="image" src="https://user-images.githubusercontent.com/34127628/215619594-f328d0e0-e4ca-455b-8580-07338b1f0b45.png">
 
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
