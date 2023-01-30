@@ -136,7 +136,7 @@ By default triggers can be entered to the cell grid by mouse. Shift-Left-Click a
 - `3` 85% probability hit
 - `4` 75% probability hit
 - `5` 60% probability hit
-- `6` I don't know yet... :)
+- `6` racheting
 - `7` only every 2nd 
 - `8` only every 3rd
 - `9` only every 4th
@@ -147,6 +147,8 @@ Short keys from Alt-1 to Alt-9 can also be used to set the trigger mode of the n
 An additional feature is that placing multiple PokeMe modules next to each other the clock and reset signals are shared. I wouldn't group too many of them but a 3-4 track sequencer can be built easily.
 
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
+
+There is an `Extended output` option in the context menu. By default the output is monolithic but switching this on additional channels are opened with a counter of the current step (0-31V), the mark value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
 
 ### PushMeSeq
 It is a variable trigger sequencer. It expects monophonic clock and reset input. Simple 'push and play' kind of sequencer with an additional knob on setting the mode. The available modes are:
