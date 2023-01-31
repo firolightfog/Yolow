@@ -1,0 +1,248 @@
+{
+  "modules": [
+    {
+      "id": 4294807332913596,
+      "plugin": "GrandeModular",
+      "model": "LFO3",
+      "version": "2.7.2",
+      "params": [
+        {
+          "value": 2.7280001640319824,
+          "id": 0
+        },
+        {
+          "value": 1.0,
+          "id": 1
+        },
+        {
+          "value": 1.0,
+          "id": 2
+        },
+        {
+          "value": 0.0,
+          "id": 3
+        },
+        {
+          "value": 0.0,
+          "id": 4
+        },
+        {
+          "value": 0.0,
+          "id": 5
+        }
+      ],
+      "rightModuleId": 2496623503879195,
+      "pos": [
+        -17,
+        1
+      ]
+    },
+    {
+      "id": 2496623503879195,
+      "plugin": "Yolow",
+      "model": "PokeMe",
+      "version": "2.1.20",
+      "params": [
+        {
+          "value": 5.9285058975219727,
+          "id": 0
+        },
+        {
+          "value": 0.80770581960678101,
+          "id": 1
+        }
+      ],
+      "leftModuleId": 4294807332913596,
+      "rightModuleId": 7456757539623264,
+      "data": {
+        "choke": false,
+        "loop": true,
+        "extendedout": true,
+        "pw": 0,
+        "notes": [
+          1,
+          0,
+          3,
+          0,
+          2,
+          0,
+          3,
+          0,
+          4,
+          0,
+          1,
+          0,
+          2,
+          0,
+          3,
+          0,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pos": [
+        -15,
+        1
+      ]
+    },
+    {
+      "id": 6846547963206487,
+      "plugin": "SickoCV",
+      "model": "DrumPlayer",
+      "version": "2.5.1",
+      "params": [
+        {
+          "value": 1.0,
+          "id": 0
+        },
+        {
+          "value": 1.0,
+          "id": 1
+        },
+        {
+          "value": 1.0,
+          "id": 2
+        },
+        {
+          "value": 1.0,
+          "id": 3
+        },
+        {
+          "value": 1.0,
+          "id": 4
+        },
+        {
+          "value": 1.0,
+          "id": 5
+        },
+        {
+          "value": 1.0,
+          "id": 6
+        },
+        {
+          "value": 1.0,
+          "id": 7
+        },
+        {
+          "value": 1.0,
+          "id": 8
+        },
+        {
+          "value": 1.0,
+          "id": 9
+        },
+        {
+          "value": 1.0,
+          "id": 10
+        },
+        {
+          "value": 1.0,
+          "id": 11
+        },
+        {
+          "value": 0.0,
+          "id": 12
+        },
+        {
+          "value": 0.0,
+          "id": 13
+        },
+        {
+          "value": 1.0,
+          "id": 14
+        }
+      ],
+      "leftModuleId": 7456757539623264,
+      "data": {
+        "Interpolation": 3,
+        "AntiAlias": 1,
+        "OutsMode": 2,
+        "Slot1": "C:\\Users\\aszabo\\OneDrive - UNICEF\\private\\SchismTracker\\samples\\Generated\\Toum kick acoustic 1.wav",
+        "Slot2": "C:\\Users\\aszabo\\OneDrive - UNICEF\\private\\SchismTracker\\samples\\HIPHOPMAKERS-Free-Drum-Samples\\lazzzy_drumkit_vol2\\snare2.wav",
+        "Slot3": "C:\\Users\\aszabo\\OneDrive - UNICEF\\private\\SchismTracker\\samples\\Generated\\ChipNoise short 1.wav",
+        "Slot4": "C:\\Users\\aszabo\\OneDrive - UNICEF\\private\\SchismTracker\\samples\\Generated\\ChipNoise hat1.wav"
+      },
+      "pos": [
+        -10,
+        1
+      ]
+    },
+    {
+      "id": 7456757539623264,
+      "plugin": "GrandeModular",
+      "model": "Split8",
+      "version": "2.7.2",
+      "params": [],
+      "leftModuleId": 2496623503879195,
+      "rightModuleId": 6846547963206487,
+      "pos": [
+        -12,
+        1
+      ]
+    }
+  ],
+  "cables": [
+    {
+      "id": 402862774104755,
+      "outputModuleId": 2496623503879195,
+      "outputId": 0,
+      "inputModuleId": 7456757539623264,
+      "inputId": 0,
+      "color": "#8b4ade"
+    },
+    {
+      "id": 12837226564130,
+      "outputModuleId": 7456757539623264,
+      "outputId": 3,
+      "inputModuleId": 6846547963206487,
+      "inputId": 2,
+      "color": "#00b56e"
+    },
+    {
+      "id": 6094626462218849,
+      "outputModuleId": 7456757539623264,
+      "outputId": 2,
+      "inputModuleId": 6846547963206487,
+      "inputId": 1,
+      "color": "#00b56e"
+    },
+    {
+      "id": 2354161668563032,
+      "outputModuleId": 7456757539623264,
+      "outputId": 1,
+      "inputModuleId": 6846547963206487,
+      "inputId": 0,
+      "color": "#00b56e"
+    },
+    {
+      "id": 4025060716025591,
+      "outputModuleId": 7456757539623264,
+      "outputId": 4,
+      "inputModuleId": 6846547963206487,
+      "inputId": 3,
+      "color": "#00b56e"
+    },
+    {
+      "id": 3199916736446493,
+      "outputModuleId": 4294807332913596,
+      "outputId": 0,
+      "inputModuleId": 2496623503879195,
+      "inputId": 0,
+      "color": "#f3374b"
+    }
+  ]
+}
