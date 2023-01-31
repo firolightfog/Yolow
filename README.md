@@ -122,7 +122,7 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
 ### PokeMe
-#### unreleased
+#### (unreleased, targeted for 2.1.20?)
 
 PokeMe is a 32-step single track trigger sequencer. There is a reset and clock input and a monophonic output. Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a `choke` function and selection between two `pulse width` modes.
 
@@ -146,7 +146,7 @@ An additional feature is that placing multiple PokeMe modules next to each other
 
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
 
-There is also an experimental `Extended output` option in the context menu. By default the output is monophonic but switching this on additional channels are opened with a counter of the current step (0-31V), the mark value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
+There is also an experimental `Extended output` option in the context menu. By default the output is monophonic but switching this on additional channels are opened with a counter of the current step (0-31V), the step value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
 
 <img width="252" alt="image" src="https://user-images.githubusercontent.com/34127628/215619594-f328d0e0-e4ca-455b-8580-07338b1f0b45.png">
 
@@ -182,7 +182,6 @@ Keyboard shortcuts are also available:
 An expander for PushMeSeq. It adds additional tracks, it can clone the sequence of the 'mother module' and divide its clock signal. If you feel that it's too perfect you can always check the context menu and reduce the precision. 
 
 ### Vulcan
-#### (unreleased, targeted for 2.1.18?)
 Simple 16-steps trigger sequencer with 8-tracks. Advanced usage allows monophonic or 8 channel polyphonic clock and reset inputs. All tracks has a separated output and a knob for division of the main clock. Tracks have a switch to change behaviour between 'full (100%) length' gate or 'clock width' gate. 
 
 <img width="643" alt="image" src="https://user-images.githubusercontent.com/34127628/208769332-5f8d3db4-22ef-4a8b-8e41-2fb22c7cd8ee.png">
