@@ -1,6 +1,15 @@
 # Changelog
 
-v2.1.19 changes unreleased
+v2.1.20 changes unreleased
+- bug fix in Vulcan: row reference in tooltip text modified
+- new hotkey: Vulcan focus switch can be toggled by 'F'
+- new feature to Vulcan: option for extended outputs
+- new layout to Vulcan: minor position fix of the grid
+- new layout to Sequin: gained some HPs
+- new layout to ChanSel6: lost some HPs
+- new module PokeMe: another take on a 32-step trigger sequencer
+
+v2.1.19 changes 2023-01-18
 - new module NearMix: an almost passive mixer with 9-ins & 2-outs
 - bug fix in Vulcan: rarity feature was messed up
 - bug fix in Vulcan: pulse width calculation revised
