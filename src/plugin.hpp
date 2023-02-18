@@ -53,5 +53,5 @@ extern Model* modelEuclk;
 extern Model* modelEuclkMore;
 extern Model* modelTicklet;
 extern Model* modelVulcan;
-extern Model* modelOneTxt;
+extern Model* modelPokeMe;
 

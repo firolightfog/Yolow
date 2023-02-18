@@ -4,13 +4,23 @@
 #include <osdialog.h>
 	
 #define HP 5.08
+
+const int ROWS=8;
+const int COLS=16;
+const int CELL_WIDTH=HP*3*2;
+// const int CELL_HEIGHT=HP*2.75*2;
+const int CELL_HEIGHT=HP*2.9*2;
+const int CELL_PADDING=HP*0.35;
+
+/* 
 #define ROWS 8
 #define COLS 16
 
 #define CELL_WIDTH HP*3*2
 #define CELL_HEIGHT HP*2.75*2
 #define CELL_PADDING HP*0.35
-
+ */
+ 
 /*
 Missing features:
 labels
@@ -145,6 +155,7 @@ struct Vulcan : Module{
 
 	float newVolt=0;
 	float paramVal[PARAMS_LEN]={0};
+	bool indexExt[8]={false,false,false,false,false,false,false,false};
 
 	int SKIP1_VAL[8]={1,1,1,1,1,1,1,1};
 	int SKIP2_VAL[8]={1,1,1,1,1,1,1,1};
@@ -163,6 +174,7 @@ struct Vulcan : Module{
 		"Restart",
 	};
 
+
 	#include "Vulcan/Vulcan_routines.hpp"
 		
 	// it's OK
@@ -170,6 +182,10 @@ struct Vulcan : Module{
 	int chan=1; // collect number of RESET_INPUT or CLOCK_INPUT channels
 	bool thisIsNewReset[8]={false};
     void process(const ProcessArgs &args) override {
+
+		for (int c=0;c<8;c++) {
+			outputs[TRACK_OUTPUT+c].channels=(indexExt[c])?12:1;
+		}
 		
 		if (loop++>8018) {
 			loop=0;
@@ -193,8 +209,12 @@ struct Vulcan : Module{
 					thisIsNewReset[c]=true;
 				}
 			}
-
+outputs[DEBUG_OUTPUT].channels=16;
+outputs[DEBUG_OUTPUT].setVoltage(COLS,0);
+outputs[DEBUG_OUTPUT].setVoltage(ROWS,1);
 		}
+
+outputs[DEBUG_OUTPUT].setVoltage(CURR_COL[0],2);
 
 		// experimental code; prgramming enabled  by 
 		// - FOCUS should be switched off
@@ -234,10 +254,16 @@ struct Vulcan : Module{
 			if (newClock[c]<=2.0f && oldClock[c]>2.0f) {	
 				if (paramVal[PW_PARAM+c]==0) {
 					if (CURR_DIV[c]==0) {
-						outputs[TRACK_OUTPUT+c].setVoltage(0);
+						outputs[TRACK_OUTPUT+c].setVoltage(0,0);
+						if (indexExt[c]) {
+							outputs[TRACK_OUTPUT+c].setVoltage(0,grid_data[CURR_COL[c]][c]);
+						}
 					}
 					else if (CURR_DIV[c]>=paramVal[DIV_PARAM+c]-1) {
-						outputs[TRACK_OUTPUT+c].setVoltage(0);
+						outputs[TRACK_OUTPUT+c].setVoltage(0,0);
+						if (indexExt[c]) {
+							outputs[TRACK_OUTPUT+c].setVoltage(0,grid_data[CURR_COL[c]][c]-1);
+						}
 					}
 				}
 			}
@@ -312,10 +338,21 @@ struct Vulcan : Module{
 							default: newVolt=-4.04f; // Error
 						}
 //					}
-					outputs[TRACK_OUTPUT+c].setVoltage(newVolt);
-					
+					outputs[TRACK_OUTPUT+c].setVoltage(newVolt,0);
+					if (indexExt[c]) {
+						// outputs[TRACK_OUTPUT+c].setVoltage(10,grid_data[CURR_COL[c]][c]);
+						// for (int i=1;i<10;i++) {
+							// if (!(i==grid_data[CURR_COL[c]][c])) {
+								// outputs[TRACK_OUTPUT+c].setVoltage(0,i);
+							// }
+						// }
+						for (int i=1;i<10;i++) {
+							outputs[TRACK_OUTPUT+c].setVoltage((grid_data[CURR_COL[c]][c]==i)?10:0,i);
+						}
+						outputs[TRACK_OUTPUT+c].setVoltage(grid_data[CURR_COL[c]][c],10);
+						outputs[TRACK_OUTPUT+c].setVoltage(CURR_COL[c],11);
+					}				
 				}
-					
 			}
 
 			else {
@@ -364,7 +401,12 @@ struct Vulcan : Module{
 			}	
 			json_array_append_new(notes_json_array,track_json_array);
 		}	
-		json_object_set(json_root, "notes", notes_json_array);
+		json_object_set_new(json_root, "notes", notes_json_array);
+		json_t *extout_json_array = json_array();
+		for (int extout_index=0; extout_index<8; extout_index++) {
+			json_array_append_new(extout_json_array, json_boolean(indexExt[extout_index]));
+		}	
+		json_object_set_new(json_root, "extendedout", extout_json_array);					
         return json_root;}
 
 	// it's OK
@@ -383,6 +425,15 @@ struct Vulcan : Module{
 				}
 			}
 		}
+		json_t *extout_json_array = json_object_get(json_root, "extendedout");
+		size_t extout_index;
+		json_t *json_value;
+		if (extout_json_array) {
+			json_array_foreach(extout_json_array, extout_index, json_value) {
+				indexExt[extout_index] = json_boolean_value(json_value);
+			}
+		}
+		
     }
 
 };
@@ -442,7 +493,8 @@ struct VulcanWidget : ModuleWidget {
 
 		GridWidget *grid_widget = new GridWidget();
 		// grid_widget->box.pos = Vec(HP*2.5,HP*24);
-		grid_widget->box.pos = mm2px(Vec(HP*0.75,HP*8.0));
+		// grid_widget->box.pos = mm2px(Vec(HP*0.75,HP*8.0));
+		grid_widget->box.pos = mm2px(Vec(HP*1.50,HP*8.0));
 		grid_widget->module = module;
 		addChild(grid_widget);
 	
@@ -463,6 +515,16 @@ struct VulcanWidget : ModuleWidget {
 				else {module->diceGrid(e.key - 49);} // 49 is the ascii number for key #1
 				e.consume(this);
 			}
+			else if (e.key == GLFW_KEY_F) {
+				int x=module->paramVal[module->FOCUS_PARAM];
+				x=abs(x-1);
+				module->params[module->FOCUS_PARAM].setValue(x);
+			}
+			else if (e.key == GLFW_KEY_X) {
+				if ((e.mods & RACK_MOD_MASK) == GLFW_MOD_CONTROL) {
+					module->params[module->CLICKMODE_PARAM].setValue(10);
+				}
+			}
 		}
 	ModuleWidget::onHoverKey(e);
 	}
@@ -475,10 +537,25 @@ struct VulcanWidget : ModuleWidget {
 		// menu->addChild(new MenuSeparator);
 		// menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
 		menu->addChild(new MenuSeparator);
+
 		menu->addChild(createIndexSubmenuItem("Set all clock division", {
 			"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"},
 		[=]() {return module->params[module->DIV_PARAM+0].getValue()-1;},
 		[=](int mode) {for (int x=0;x<8;x++) {module->params[module->DIV_PARAM+x].setValue(mode+1);}}));
+
+		menu->addChild(createSubmenuItem("Extended output", "",
+			[=](Menu* menu) {
+				menu->addChild(createBoolPtrMenuItem("Track 1", "", &module->indexExt[0]));
+				menu->addChild(createBoolPtrMenuItem("Track 2", "", &module->indexExt[1]));
+				menu->addChild(createBoolPtrMenuItem("Track 3", "", &module->indexExt[2]));
+				menu->addChild(createBoolPtrMenuItem("Track 4", "", &module->indexExt[3]));
+				menu->addChild(createBoolPtrMenuItem("Track 5", "", &module->indexExt[4]));
+				menu->addChild(createBoolPtrMenuItem("Track 6", "", &module->indexExt[5]));
+				menu->addChild(createBoolPtrMenuItem("Track 7", "", &module->indexExt[6]));
+				menu->addChild(createBoolPtrMenuItem("Track 8", "", &module->indexExt[7]));
+			}
+		));
+
 		menu->addChild(new MenuSeparator);
 
 		menu->addChild(createSubmenuItem("Text export/import", "",

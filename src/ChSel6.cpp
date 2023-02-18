@@ -63,10 +63,14 @@ struct ChSel6 : Module {
 	}
 
 	float paramVal[PARAMS_LEN]={0};
-	const std::string valOutMode[7]={"rearranged poly channels",
-	"any hits","if no hits",
-	"only if one hit","only if not one hit",
-	"if odd number of hits","only if not odd number of hits"};
+	const std::string valOutMode[7]={
+	"rearranged poly channels",
+	"OR any hits on selected channels",
+	"NOR if no hits on selected channels",
+	"XOR only if one hit",
+	"NXOR only if not one hit",
+	"if odd number of hits",
+	"only if not odd number of hits"};
 
 	int indexChan=5; // this means 6 preferred outgoing channels
 	int indexOutMode=0;	// defines the output mode (all selected, mono OR, inverted OR, )
@@ -77,12 +81,12 @@ struct ChSel6 : Module {
 		int newVolt=0;
 
 		if (loop--<=0) {
-			loop=15421;
-			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
-			if (paramVal[BUTTON_MODE_PARAM]==1) {
+			loop=5421;
+			if (!(params[BUTTON_MODE_PARAM].getValue()==paramVal[BUTTON_MODE_PARAM])) {
 				indexOutMode++;
 				if (indexOutMode>=7) {indexOutMode=0;}
 			}
+			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
 			paramQuantities[BUTTON_MODE_PARAM]->description =  valOutMode[indexOutMode]; 
 			paramQuantities[SELECT_CH1_PARAM]->description =  valOutMode[indexOutMode]; 
 			paramQuantities[SELECT_CH2_PARAM]->description =  valOutMode[indexOutMode]; 
@@ -178,18 +182,18 @@ struct ChSel6Widget : ModuleWidget {
 
 		float HP=5.08;
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2, HP*8.5)), module, ChSel6::SELECT_CH1_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2, HP*10.5)), module, ChSel6::SELECT_CH2_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2, HP*12.5)), module, ChSel6::SELECT_CH3_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2, HP*14.5)), module, ChSel6::SELECT_CH4_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2, HP*16.5)), module, ChSel6::SELECT_CH5_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*2, HP*18.5)), module, ChSel6::SELECT_CH6_PARAM));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*6)), module, ChSel6::POLYIN_INPUT));
 
-		addParam(createParamCentered<TL1105>(mm2px(Vec(HP*3.25, HP*19.75)), module, ChSel6::BUTTON_MODE_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*8.0)), module, ChSel6::SELECT_CH1_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*10.0)), module, ChSel6::SELECT_CH2_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*12.0)), module, ChSel6::SELECT_CH3_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*14.0)), module, ChSel6::SELECT_CH4_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*16.0)), module, ChSel6::SELECT_CH5_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(HP*1.5, HP*18.0)), module, ChSel6::SELECT_CH6_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(HP*2, HP*6)), module, ChSel6::POLYIN_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*1.5, HP*21.0)), module, ChSel6::POLYOUT_OUTPUT));
+		addParam(createParamCentered<TL1105>(mm2px(Vec(HP*1.5, HP*22.5)), module, ChSel6::BUTTON_MODE_PARAM));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(HP*2, HP*22.5)), module, ChSel6::POLYOUT_OUTPUT));
 	}
 	
 	void appendContextMenu(Menu* menu) override {

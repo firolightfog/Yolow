@@ -44,7 +44,7 @@ struct NearMess : Module {
 	float inB=0;
 	
 	void process(const ProcessArgs& args) override {
-	
+		
 		inA=inputs[A_INPUT].getVoltage();
 		inB=inputs[B_INPUT].getVoltage();
 
@@ -57,7 +57,7 @@ struct NearMess : Module {
 		outputs[MIX_7TO3_OUTPUT].setVoltage(inA*0.7f+inB*0.3f); 
 		outputs[MIX_8TO2_OUTPUT].setVoltage(inA*0.8f+inB*0.2f); 
 		outputs[MIX_9TO1_OUTPUT].setVoltage(inA*0.9f+inB*0.1f); 
-
+		
 	}
 
 };

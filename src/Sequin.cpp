@@ -219,20 +219,20 @@ struct SequinWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
-		// childKnob(Sequin::CLOCK_MULTIPLACATION_PARAM, 1, HP*1, HP*3);
-		// childKnob(Sequin::CLOCK_DIVISION_PARAM, 1, HP*1, HP*6);
+		// childKnob(Sequin::CLOCK_MULTIPLACATION_PARAM, 1, HP*1.5, HP*3);
+		// childKnob(Sequin::CLOCK_DIVISION_PARAM, 1, HP*1.5, HP*6);
 		
-		childOutput(Sequin::CLOCK_OUTPUT, 		HP*1, HP*3);
-		childOutput(Sequin::MAIN_OUTPUT, 		HP*1, HP*6);
+		childOutput(Sequin::CLOCK_OUTPUT, 		HP*1.5, HP*3.5);
+		childOutput(Sequin::MAIN_OUTPUT, 		HP*1.5, HP*6.5);
 
-		childInput(Sequin::CLOCK_INPUT, 		HP*1, HP*9);
-		childInput(Sequin::TRIGGER_INPUT, 		HP*1, HP*12);
-		childInput(Sequin::PULSE_WIDTH_INPUT, 	HP*1, HP*15);
-		childInput(Sequin::NOTE_INPUT, 			HP*1, HP*18);
-		childSwitch(Sequin::	SH_PARAM, 0, HP*1, HP*19.75);
+		childInput(Sequin::CLOCK_INPUT, 		HP*1.5, HP*9.5);
+		childInput(Sequin::TRIGGER_INPUT, 		HP*1.5, HP*12.5);
+		childInput(Sequin::PULSE_WIDTH_INPUT, 	HP*1.5, HP*15.5);
+		childInput(Sequin::NOTE_INPUT, 			HP*1.5, HP*18);
+		childSwitch(Sequin::	SH_PARAM, 0, HP*1.5, HP*19.75);
 		
-		// childInput(Sequin::PROBABILITY_INPUT, 	HP*1, HP*22);
-		childKnob(Sequin::PROBABILITY_PARAM, 0, 	HP*1, HP*22);
+		// childInput(Sequin::PROBABILITY_INPUT, 	HP*1.5, HP*22.5);
+		childKnob(Sequin::PROBABILITY_PARAM, 1, 	HP*1.5, HP*22.5);
 		
 		// childLight(Sequin::CLOCK_LIGHT, 1, HP*0.5, HP*8);
 		// childLight(Sequin::CLOCK_MOD_LIGHT, 0, HP*1.5, HP*8);

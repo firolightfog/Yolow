@@ -358,7 +358,7 @@ struct Sheep : Module {
 	for (int notes_index=0; notes_index < 32; notes_index++) {
 		json_array_append_new(notes_json_array , json_real(theSeq[notes_index]));
 	}	
-	json_object_set(rootJ, "notes", notes_json_array);
+	json_object_set_new(rootJ, "notes", notes_json_array);
 	json_object_set_new(rootJ, "fieldred", json_real(fieldRed));
 	json_object_set_new(rootJ, "fieldgreen", json_real(fieldGreen));
 	json_object_set_new(rootJ, "fieldblue", json_real(fieldBlue));

@@ -9,7 +9,7 @@
 	for (int notes_index=0; notes_index < 256; notes_index++) {
 		json_array_append_new(notes_json_array , json_real(theSeq[notes_index]));
 	}	
-	json_object_set(rootJ, "notes", notes_json_array);
+	json_object_set_new(rootJ, "notes", notes_json_array);
 	return rootJ;}
 
 	void dataFromJson(json_t* rootJ) override {
@@ -26,6 +26,6 @@
 	json_t *json_value;
 	if (notes_json_array) {
 		json_array_foreach(notes_json_array, note_index, json_value)
-		{theSeq[note_index] = json_real_value(json_value);}
+		{theSeq[note_index] = json_number_value(json_value);}
 	}
 	}

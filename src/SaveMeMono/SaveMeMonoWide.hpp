@@ -50,6 +50,7 @@ struct SaveMeMonoWide : Module {
 		configParam(RECORD_PARAM, 	0.0f, 1.0f, 0.0f, "Start/stop recording");
 		paramQuantities[STEPS_PARAM]->snapEnabled = true;
 		paramQuantities[RECORD_PARAM]->snapEnabled = true;
+		paramQuantities[STEPS_PARAM]->randomizeEnabled = false;
 		paramQuantities[RECORD_PARAM]->randomizeEnabled = false;
 
 		configInput(MONO_LFO_INPUT, "External LFO"); 
@@ -203,6 +204,11 @@ struct SaveMeMonoWide : Module {
 		}
 		oldClock=newClock;
 	
+	}
+
+    void onRandomize() override {		
+		randomizeFields();
+		Module::onRandomize();		
 	}
 
 	#include "../SaveMeMono/SaveMe_json.hpp"
