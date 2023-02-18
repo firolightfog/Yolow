@@ -208,8 +208,40 @@ Keyboard shortcuts are also available:
 - `1` to `8` randomizes the relevant track with triggers (according to the denstiy and mode settings)
 - `Shift-1` to `Shift-9` sets the random density settings from 10% to 90%
 - `Ctrl-1` to `Ctrl-9` selects some of the mode settings (option `0` and `10` are ignored here)
+- `f` to switch the 'focus' switch
 
 There is a switch available for change between one-shot and looping sequencer mode. Another switch allows turning off the highlights for the current step.
+
+There one more unique feature that you can enable in the context menu: 'extended output'. By default all outputs sends the trigger sequence only. But enabling this feature the ouput becomes polyphonic and 
+- `channel 12` shows the number of step (e.g. 0V-15V represents step 1-16)
+- `channel 11` shows the current value of the step (e.g. 0V-9V represenst the trigger modes)
+- 'channel 1' to 'channel 9' sends a trigger is current step value is relevant (e.g. step value is 1 then channel 2 sends a trigger, step value is 2 then channel 3 sends a trigger)  
+
+### PokeMe
+
+A small 32 step trigger sequencer with many features I wanted for so long. First of all it is expandable. If you put a PokeMe next to a PokeMe then the clock and reset signal of the left module is read automatically. Coupling them you can also easily choke the track by the left module.
+
+Available trigger modes:
+- `0 Blank`
+- `1 Trigger` (green) always played
+- `2 Probability 95%` (yellowish) probability value is applied to the trigger
+- `3 Probability 80%` (yellowish) probability value is applied to the trigger
+- `4 Probability 80%` (yellowish) probability value is applied to the trigger
+- `5 Probability 80%` (yellowish) probability value is applied to the trigger
+- `6 Slicer` (purple) double trigger; hit on the rasing and the dropping edge of the clock
+- `7 Second hits only` (blueish) trigger is played only the Nth time 
+- `8 Third hits only` (blueish) trigger is played only the Nth time
+- `9 Third hits only` (blueish) trigger is played only the Nth time
+- `10 Restart` (red) it resets the track to the first step
+
+There is also a unique feature that you can enable in the context menu: 'extended output'. By default all outputs sends the trigger sequence only. But enabling this feature the ouput becomes polyphonic and 
+- `channel 12` shows the number of step (e.g. 0V-31V represents step 1-32)
+- `channel 11` shows the current value of the step (e.g. 0V-9V represenst the trigger modes)
+- 'channel 1' to 'channel 9' sends a trigger is current step value is relevant (e.g. step value is 1 then channel 2 sends a trigger, step value is 2 then channel 3 sends a trigger)  
+
+<img width="230" alt="image" src="https://user-images.githubusercontent.com/34127628/219855586-626b4b04-293d-4a71-afd0-d36833d5b605.png">
+
+This feature may sound a bit complex for the first time but it allows a single PokeMe to manage multiple drums.
 
 ### Euclk
 I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical imprtance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
