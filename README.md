@@ -122,7 +122,6 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
 ### PokeMe
-#### (unreleased, targeted for 2.1.20?)
 
 PokeMe is a 32-step single track trigger sequencer. There is a reset and clock input and a monophonic output. Although it is a fairly simple sequencer but there are a few additional tricks available. The context menu includes a `choke` function and selection between two `pulse width` modes.
 
@@ -140,7 +139,7 @@ By default triggers can be entered to the cell grid by mouse. Shift-Left-Click a
 - `9` only every 4th
 - `10` (red) restart
 
-Short keys from Alt-1 to Alt-9 can also be used to set the trigger mode of the next click. Alt-X is dedicated to entering a "restart" cell.
+Short keys from Ctrl-1 to Ctrl-9 can also be used to set the trigger mode of the next click. Ctrl-X is dedicated to entering a "restart" cell.
 
 An additional feature is that placing multiple PokeMe modules next to each other the clock and reset signals are shared. I wouldn't group too many of them but a 3-4 track sequencer can be built easily.
 
@@ -216,32 +215,6 @@ There one more unique feature that you can enable in the context menu: 'extended
 - `channel 12` shows the number of step (e.g. 0V-15V represents step 1-16)
 - `channel 11` shows the current value of the step (e.g. 0V-9V represenst the trigger modes)
 - 'channel 1' to 'channel 9' sends a trigger is current step value is relevant (e.g. step value is 1 then channel 2 sends a trigger, step value is 2 then channel 3 sends a trigger)  
-
-### PokeMe
-
-A small 32 step trigger sequencer with many features I wanted for so long. First of all it is expandable. If you put a PokeMe next to a PokeMe then the clock and reset signal of the left module is read automatically. Coupling them you can also easily choke the track by the left module.
-
-Available trigger modes:
-- `0 Blank`
-- `1 Trigger` (green) always played
-- `2 Probability 95%` (yellowish) probability value is applied to the trigger
-- `3 Probability 80%` (yellowish) probability value is applied to the trigger
-- `4 Probability 80%` (yellowish) probability value is applied to the trigger
-- `5 Probability 80%` (yellowish) probability value is applied to the trigger
-- `6 Slicer` (purple) double trigger; hit on the rasing and the dropping edge of the clock
-- `7 Second hits only` (blueish) trigger is played only the Nth time 
-- `8 Third hits only` (blueish) trigger is played only the Nth time
-- `9 Third hits only` (blueish) trigger is played only the Nth time
-- `10 Restart` (red) it resets the track to the first step
-
-There is also a unique feature that you can enable in the context menu: 'extended output'. By default all outputs sends the trigger sequence only. But enabling this feature the ouput becomes polyphonic and 
-- `channel 12` shows the number of step (e.g. 0V-31V represents step 1-32)
-- `channel 11` shows the current value of the step (e.g. 0V-9V represenst the trigger modes)
-- 'channel 1' to 'channel 9' sends a trigger is current step value is relevant (e.g. step value is 1 then channel 2 sends a trigger, step value is 2 then channel 3 sends a trigger)  
-
-<img width="230" alt="image" src="https://user-images.githubusercontent.com/34127628/219855586-626b4b04-293d-4a71-afd0-d36833d5b605.png">
-
-This feature may sound a bit complex for the first time but it allows a single PokeMe to manage multiple drums.
 
 ### Euclk
 I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical imprtance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
