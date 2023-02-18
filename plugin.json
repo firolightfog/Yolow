@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.19",
+  "version": "2.1.20",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -29,6 +29,18 @@
         "Utility"
       ]
     },
+    {
+      "slug": "PokeMe",
+      "name": "PokeMe Sequencer",
+      "description": "Not so simple",
+      "keywords": [
+        "trigger",
+		"drum sequencer"
+      ],
+      "tags": [
+        "Sequencer"
+      ]
+    },	
     {
       "slug": "PolyCopy16",
       "name": "PolyCopy16",
@@ -261,10 +273,10 @@
       "name": "Random Voltage 8",
       "description": "Provides 8 lovely random voltages in with adjustable range for a trigger",
       "keywords": [
+		"8volt",
 		"rnd",
 		"fix",
 		"volt8",
-		"8volt",
 		"8rv",
 		"RV8",
         "RandVolt",
@@ -367,19 +379,6 @@
       ]
     },
     {
-      "slug": "OneTxt",
-      "name": "OneTxt Sequencer",
-      "description": "Simple 8-track sequencer playing VosxGlitch OneZero and OnePoint text files",
-      "keywords": [
-        "text file",
-        "trigger",
-		"drum sequencer"
-      ],
-      "tags": [
-        "Sequencer"
-      ]
-    },
-    {
       "slug": "PushmeSeq",
       "name": "PushMeSeq Trigger Sequencer",
       "description": "Variable trigger sequencer in  4HP",
@@ -473,6 +472,13 @@
       "slug": "Quant12",
       "name": "Quant12",
       "description": "Traditional monophonic quantizer transpose and trigger inputs",
+      "keywords": [
+        "q12",
+		"EDO",
+        "ET",
+        "equal temperament",
+		"equal distribution scale"
+      ],
       "tags": [
         "Quantizer"
       ]
