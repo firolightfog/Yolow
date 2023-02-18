@@ -1,6 +1,6 @@
 # Changelog
 
-v2.1.20 changes unreleased
+v2.1.20 changes 2023-02-18 (Libényi release)
 - bug fix in Vulcan: row reference in tooltip text modified
 - new hotkey: Vulcan focus switch can be toggled by 'F'
 - new feature to Vulcan: option for extended outputs
