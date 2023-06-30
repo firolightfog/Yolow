@@ -54,4 +54,4 @@ extern Model* modelEuclkMore;
 extern Model* modelTicklet;
 extern Model* modelVulcan;
 extern Model* modelPokeMe;
-
+extern Model* modelRouteSeq;

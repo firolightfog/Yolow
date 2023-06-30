@@ -70,6 +70,11 @@ struct FromTo : Module {
 		}
 
 		// let's see the clock signal by channels
+		newReset=inputs[RESET_INPUT].getVoltage();
+		if (newReset>2.0f && oldReset<=2.0f) {
+			for (int c=0;c<16;c++) {currPos[c]=-1;}
+		} 
+		oldReset=newReset;
 		for (int c=0;c<16;c++) {
 			newClock[c]=inputs[CLOCK_INPUT].getVoltage(c);
 			// special situation if more output is needed than input

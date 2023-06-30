@@ -89,6 +89,7 @@ struct SeqP16 : Module {
 	int rdChan=1;   	// to record number of POLYIN_INPUT channels
 	bool allowEmpty;	// to handle the case of knob requesting a greater channel than available
 	bool clockIn=false;
+	bool polyIn=false;
 
 
 	float paramVal[PARAMS_LEN];
@@ -99,8 +100,9 @@ struct SeqP16 : Module {
 		if (loop-- ==0) {
 			loop=7525;
 			for (int p=0;p<PARAMS_LEN;p++) {paramVal[p]=params[p].getValue();}
-			nrChan=(inputs[POLYIN_INPUT].isConnected())?inputs[POLYIN_INPUT].channels:1;
 			clockIn=inputs[CLK_INPUT].isConnected();
+			polyIn=inputs[POLYIN_INPUT].isConnected();
+			nrChan=(polyIn)?inputs[POLYIN_INPUT].channels:1;
 			// place to do somethings
 		}
 		
@@ -155,9 +157,14 @@ struct SeqP16 : Module {
 		// tell me which one needs to be sent
 		int requestedOut=paramVal[SELECT_CH1_PARAM+stepPos-1]-1;	// sourece channels (1, 2, 3, ... 16) or 0 for random
 		if (requestedOut>=nrChan || requestedOut<0) {requestedOut = rdChan;}
-		
-		// send the selected input to the output!
-		outputs[MONOOUT_OUTPUT].setVoltage(inputs[POLYIN_INPUT].getVoltage(requestedOut));
+
+		if (!polyIn) {
+			outputs[MONOOUT_OUTPUT].setVoltage(paramVal[SELECT_CH1_PARAM+stepPos-1]);
+			}
+		else {			
+			// send the selected input to the output!
+			outputs[MONOOUT_OUTPUT].setVoltage(inputs[POLYIN_INPUT].getVoltage(requestedOut));
+		}
 
 	}
 };

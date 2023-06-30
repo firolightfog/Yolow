@@ -134,8 +134,8 @@ struct PokeMe : Module {
 				case 0: newVolt=0; break;	
 				case 1: newVolt=10; break;	
 				case 2: newVolt=(0.95>rack::random::uniform())?10:0.2; break;	
-				case 3: newVolt=(0.85>rack::random::uniform())?10:0.3; break;	
-				case 4: newVolt=(0.75>rack::random::uniform())?10:0.4; break;	
+				case 3: newVolt=(0.80>rack::random::uniform())?10:0.3; break;	
+				case 4: newVolt=(0.50>rack::random::uniform())?10:0.4; break;	
 				case 5: newVolt=(0.60>rack::random::uniform())?10:0.5; break;
 				case 6: newVolt=3+(rand() % 7); CONT_SAMP=25; break; 			// lame but it provides some random voltage above 2V
 				case 7: newVolt=(CONT_LAPS[0]==0)?10:0.7; break;	
@@ -182,6 +182,11 @@ struct PokeMe : Module {
 			if (indexExt) {
 				for (int i=1;i<10;i++) {outputs[SEQ_OUTPUT].setVoltage(0,i);}
 			}
+		}
+		else if (grid_data[CURR_STEP]==5 && hitClock==OFF) {
+			if (0.50>rack::random::uniform()) {
+				outputs[SEQ_OUTPUT].setVoltage(0,0);
+			}			
 		}
 		else if (indexPW==0 && hitClock==OFF) {
 			outputs[SEQ_OUTPUT].setVoltage(0,0);
