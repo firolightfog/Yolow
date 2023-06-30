@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Andr·s SzabÛ
+// Copyright (c) 2023 Andr√°s Szab√≥
 #include "plugin.hpp"
 
 struct RouteSeq : Module {
@@ -104,7 +104,7 @@ struct RouteSeq : Module {
 	int randval=1;
 
 	// for the additional labels of channel selector knobs
-	const std::string valNotes[16]={
+	const std::string valNotes[17]={"random",
 	"C-4","C#4","D-4","D#4","E-4",
 	"F-4","F#4","G-4","G#4","A-4",
 	"A#4","B-4","C-5","C#5","D-5","D#5"};
@@ -162,7 +162,7 @@ struct RouteSeq : Module {
 			needed=0;
 			for (int p=0;p<8;p++) {
 				xS=xS+paramVal[STEP_FREEZER_1_PARAM+p];
-				// na Ès mosta currentStep szerint ezen a gombon kell lenni?
+				// na √©s mosta currentStep szerint ezen a gombon kell lenni?
 				lights[LIGHT_1_LIGHT+p].setBrightness(0);					
 				if (currentStep>=xS) {needed=(p==7)?0:p+1;}
 			}
