@@ -233,6 +233,9 @@ A tricky 4-step sequencer that returns one of the 5 input sources according to t
 ### RouteSeq 
 It is a versatile sequencer that can act as a switch. Without a polyphonic in you can dial eight notes (C-4 to D#5) and you can also set the the time spent there. Hence you can create an 8-steps pattern or a 128-steps pattern if you whish. It a polyphonic input is provided then the left knobs allow you to select one of the channels and the module will return that. In a nutshell... but you better give it a try instead of waiting for a proper operational manual.
 
+One of the typical usages:
+<img width="280" alt="image" src="https://github.com/firolightfog/Yolow/assets/34127628/815d8eaf-60b4-4c1b-83fc-e85e01dacd86">
+
 -----
 
 ### MKnob
