@@ -21,8 +21,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Vulcan](#Vulcan)|Simple 8-track trigger sequencer with 16-steps|
 |[Euclk](#Euclk)|Basic Euclidean sequencer|
 |[EuclkMore](#EuclkMore)|Expander module with additional tracks for Euclk|
-|[SeqP16](#SeqP16)|4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[SeqP5](#SeqP5)|4 step sequential switch to choose from 5 inputs|
+|[RouteSeq](#RouteSeq)|An 8 step sequential switch with option to a 128 steps pattern|
 |[MKnob](#MKnob)|Simple 4 channel fix voltage provider (4xmono & 1xpoly)|
 |[RandVolt8](#RandVolt8)|Provider of fix (7V, 6V, 5V, etc) or random stepped voltage with range settings|
 |[FromTo](#FromTo)|Provides stepped voltage in a range|
@@ -45,6 +45,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Quant12](#Quant12)|Quantizer with transpose and VCA|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
+|[SeqP16](#SeqP16)|*Deprecated.* 4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 |[PolyExp10](#PolyExp10):zzz:|*Deprecated.* Polyphonic split in 2HP|
 |[RandVolt10](#RandVolt10):zzz:|*Deprecated.* Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
@@ -229,8 +230,8 @@ An expander for Euclk. It uses the clock and reset signal of Euclk and adds an a
 ### SeqP5
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources. See a VCV selection demo here: [demo/Demo_SeqP5.vcvs](demo/Demo_SeqP5.vcvs).
 
-### SeqP16
-A tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step a clock (see CLK) is needed. Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels. (Recommended reading: [musical dice game](https://en.wikipedia.org/wiki/Musikalisches_Würfelspiel).)
+### RouteSeq 
+It is a versatile sequencer that can act as a switch. Without a polyphonic in you can dial eight notes (C-4 to D#5) and you can also set the the time spent there. Hence you can create an 8-steps pattern or a 128-steps pattern if you whish. It a polyphonic input is provided then the left knobs allow you to select one of the channels and the module will return that. In a nutshell... but you better give it a try instead of waiting for a proper operational manual.
 
 -----
 
@@ -397,6 +398,9 @@ The active block is also indicated by the yellow LEDs on the top. Some keyboard 
 The concept of the module is based on Sha#Bang! Modules [Stochastic Sequencer Grid](https://library.vcvrack.com/Sha-Bang-Modules/StochSeqGrid) but the implementation is greatly simplified (clock, layout, operation).
 
 -----
+
+### SeqP16
+This module is *deprecated*:zzz:. RouteSeq replaces it with more steps and features. Anyway SeqP16 was a tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step a clock (see CLK) is needed. Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels. (Recommended reading: [musical dice game](https://en.wikipedia.org/wiki/Musikalisches_Würfelspiel).)
 
 ### tHex 
 This module is *deprecated*:zzz:. [Nibble Sequencer](https://library.vcvrack.com/CountModula/NibbleTriggerSequencer) of Count Modula is built on the [same concept](https://github.com/countmodula/VCVRackPlugins/issues/89) but provides better features.
