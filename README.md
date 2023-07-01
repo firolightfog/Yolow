@@ -45,7 +45,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Quant12](#Quant12)|Quantizer with transpose and VCA|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
-|[SeqP16](#SeqP16)|*Deprecated.* 4 step sequential switch to choose from 16 channels of a polyphonic input|
+|[SeqP16](#SeqP16):zzz:|*Deprecated.* 4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 |[PolyExp10](#PolyExp10):zzz:|*Deprecated.* Polyphonic split in 2HP|
 |[RandVolt10](#RandVolt10):zzz:|*Deprecated.* Provider of fix (10V, 9V, 8V, etc) or random stepped voltage|
