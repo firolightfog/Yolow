@@ -1,4 +1,4 @@
-// Copyright (c) 2023 AndrÃ¡s SzabÃ³
+// Copyright (c) 2023 András Szabó
 #include "plugin.hpp"
 
 struct RouteSeq : Module {
@@ -31,23 +31,23 @@ struct RouteSeq : Module {
 	RouteSeq() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		
-		configParam(CHANNEL_SELECTOR_1_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 1");
-		configParam(CHANNEL_SELECTOR_2_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 2");
-		configParam(CHANNEL_SELECTOR_3_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 3");
-		configParam(CHANNEL_SELECTOR_4_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 4");
-		configParam(CHANNEL_SELECTOR_5_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 5");
-		configParam(CHANNEL_SELECTOR_6_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 6");
-		configParam(CHANNEL_SELECTOR_7_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 7");
-		configParam(CHANNEL_SELECTOR_8_PARAM, 	1.0f, 16.0f, 1.0f, "Channel selector 8");
-		
-		configParam(STEP_FREEZER_1_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 1");
-		configParam(STEP_FREEZER_2_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 2");
-		configParam(STEP_FREEZER_3_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 3");
-		configParam(STEP_FREEZER_4_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 4");
-		configParam(STEP_FREEZER_5_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 5");
-		configParam(STEP_FREEZER_6_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 6");
-		configParam(STEP_FREEZER_7_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 7");
-		configParam(STEP_FREEZER_8_PARAM, 	1.0f, 16.0f, 1.0f, "Step freezer 8");
+		configParam(CHANNEL_SELECTOR_1_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 1");
+		configParam(CHANNEL_SELECTOR_2_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 2");
+		configParam(CHANNEL_SELECTOR_3_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 3");
+		configParam(CHANNEL_SELECTOR_4_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 4");
+		configParam(CHANNEL_SELECTOR_5_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 5");
+		configParam(CHANNEL_SELECTOR_6_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 6");
+		configParam(CHANNEL_SELECTOR_7_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 7");
+		configParam(CHANNEL_SELECTOR_8_PARAM, 	0.0f, 16.0f, 1.0f, "Channel selector 8");
+
+		configParam(STEP_FREEZER_1_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 1");
+		configParam(STEP_FREEZER_2_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 2");
+		configParam(STEP_FREEZER_3_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 3");
+		configParam(STEP_FREEZER_4_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 4");
+		configParam(STEP_FREEZER_5_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 5");
+		configParam(STEP_FREEZER_6_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 6");
+		configParam(STEP_FREEZER_7_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 7");
+		configParam(STEP_FREEZER_8_PARAM, 	0.0f, 16.0f, 1.0f, "Step freezer 8");
 		
 		paramQuantities[CHANNEL_SELECTOR_1_PARAM]->snapEnabled = true;
 		paramQuantities[CHANNEL_SELECTOR_2_PARAM]->snapEnabled = true;
@@ -109,6 +109,75 @@ struct RouteSeq : Module {
 	"F-4","F#4","G-4","G#4","A-4",
 	"A#4","B-4","C-5","C#5","D-5","D#5"};
 
+	// OK so in the menu these are the options: 
+	/* 
+	const int valPatterns[9]={8,12,16,24,32,48,64,96,128};
+	const char* txtPatterns[8]={"8 steps", // 0
+			"12 steps", // 1
+			"16 steps", // 2
+			"24 steps", // 3
+			"32 steps", // 4
+			"64 steps", // 5
+			"96 steps", // 6
+			"128 steps"};
+	 */
+	int getPattern() {
+		if (totalSteps==8) {return 0;}
+		else if (totalSteps==12) {return 1;}
+		else if (totalSteps==16) {return 2;}
+		else if (totalSteps==24) {return 3;}
+		else if (totalSteps==32) {return 4;}
+		else if (totalSteps==64) {return 5;}
+		else if (totalSteps==96) {return 6;}
+		else if (totalSteps==128) {return 7;}
+		else {return -1;}
+	}
+	
+	// and this is a routine called from the menu
+	void rndPattern(int ptx) {
+		int tries=0;
+		int valSteps[8]={1,1,1,1,1,1,1,1};
+		if (ptx==7) {
+			for (int i=0;i<8;i++) {valSteps[i]=16;};
+		}
+		else {
+			int pty=0;
+			if (ptx==1) {tries=12;}
+			else if (ptx==2) {tries=16;}
+			else if (ptx==3) {tries=24;}
+			else if (ptx==4) {tries=32;}
+			else if (ptx==5) {tries=64;}
+			else if (ptx==6) {tries=96;}
+			for (int i=0;i<tries-8;i++) {
+				for (int d=0;d<9999;d++) {
+					pty=rand() % 8;
+					if (valSteps[pty]<16) {break;}
+				}
+				valSteps[pty]+=1;
+			};
+		}
+		for (int p=0;p<8;p++) {params[STEP_FREEZER_1_PARAM+p].setValue(valSteps[p]);};
+	}
+
+	// this is called from the menu and it's shuffling the selection knobs
+	void shuffleSelectors() {
+		int newOrder[8]={-1,-1,-1,-1,-1,-1,-1,-1};
+		int theOrder=-1;
+			for (int p=0;p<8;p++) {
+				// OK this in not nice; it's to avoid unutilized slots
+				for (int r=0;r<999;r++) { 
+					theOrder=rand() % 8;
+					if (newOrder[theOrder]==-1) {
+						newOrder[theOrder]=paramVal[CHANNEL_SELECTOR_1_PARAM+p];
+						break;
+					}
+				}
+			}
+			for (int p=0;p<8;p++) {
+				params[CHANNEL_SELECTOR_1_PARAM+p].setValue(newOrder[p]);
+			}		
+	}
+
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
@@ -154,20 +223,19 @@ struct RouteSeq : Module {
 		if (newClock>2.0f && oldClock<=2.0f) {
 			hitClock=true;
 			// let's see the number of step we're at
-			if (hitReset==true) {currentStep=1; hitReset=false;}
-			else if (currentStep>=totalSteps) {currentStep=1;}
+			if (hitReset==true) {currentStep=1; randval= 1 + (rand() % 16); hitReset=false;}
+			else if (currentStep>=totalSteps) {currentStep=1; randval= 1 + (rand() % 16);}
 			else {currentStep++;}
 			// which of the positions is active?
 			int xS=0;
 			needed=0;
 			for (int p=0;p<8;p++) {
 				xS=xS+paramVal[STEP_FREEZER_1_PARAM+p];
-				// na Ã©s mosta currentStep szerint ezen a gombon kell lenni?
+				// na és most a currentStep szerint ezen a gombon kell lenni?
 				lights[LIGHT_1_LIGHT+p].setBrightness(0);					
 				if (currentStep>=xS) {needed=(p==7)?0:p+1;}
 			}
 			lights[LIGHT_1_LIGHT+needed].setBrightness(1);					
-			randval= 1 + (rand() % 16);
 		}
 		// else if (newClock>2.0f && oldClock>2.0f) {}
 		// else if (newClock<=2.0f && oldClock<=2.0f) {}
@@ -175,12 +243,23 @@ struct RouteSeq : Module {
 
 		// I know which position to look at, let's send the voltage
 		if (inputs[POLY_INPUT].isConnected()) {
-			outputs[MONO_OUTPUT].setVoltage(
-				inputs[POLY_INPUT].getVoltage(
-					paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1));
+			if (paramVal[CHANNEL_SELECTOR_1_PARAM+needed]==0) {
+				outputs[MONO_OUTPUT].setVoltage(
+					inputs[POLY_INPUT].getVoltage(randval));
+			}
+			else {
+				outputs[MONO_OUTPUT].setVoltage(
+					inputs[POLY_INPUT].getVoltage(
+						paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1));
+			}
 		} 
 		else if (loop % 400 == 25) { // if no input is connected then C-4, C#4, D-4, etc.
-			outputs[MONO_OUTPUT].setVoltage((paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1)/12);
+			if (paramVal[CHANNEL_SELECTOR_1_PARAM+needed]==0) {
+				outputs[MONO_OUTPUT].setVoltage((paramVal[CHANNEL_SELECTOR_1_PARAM+(int)(randval/2)])/12);
+			}
+			else {
+				outputs[MONO_OUTPUT].setVoltage((paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1)/12);
+			}
 		}
 
 		// outputs[DEBUG_OUTPUT].setVoltage(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1,3);
@@ -248,6 +327,34 @@ struct RouteSeqWidget : ModuleWidget {
 		// childLabel(HP*1,HP*23.5, "DEV", 12);
 	
 	}
+
+	void appendContextMenu(Menu* menu) override {
+		RouteSeq* module = dynamic_cast<RouteSeq*>(this->module);
+		assert(module);
+		menu->addChild(new MenuSeparator);
+
+		// menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
+
+		// menu->addChild(createIndexPtrSubmenuItem("Get a pattern", {"8 steps","16 steps","24 steps","32 steps","64 steps","96 steps","128 steps"}, &module->indexPattern()));
+
+        menu->addChild(createMenuItem("Shuffle selectors", "", [=]() {module->shuffleSelectors();}));
+
+		menu->addChild(createIndexSubmenuItem("Set a pattern",
+			// module->txtPatterns,
+ 			{"8 steps", // 0
+			"12 steps", // 1
+			"16 steps", // 2
+			"24 steps", // 3
+			"32 steps", // 4
+			"64 steps", // 5
+			"96 steps", // 6
+			"128 steps"},
+			[=]() {return module->getPattern();},
+			[=](int ptx) {module->rndPattern(ptx);}
+		));
+		
+	}
+
 
 	// #include "RouteSeq/RouteSeq_menu.hpp"
 	// #include "RouteSeq/RouteSeq_keys.hpp"
