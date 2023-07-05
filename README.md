@@ -347,7 +347,7 @@ The little sister of NearMess. But this module has nine inputs and two outputs. 
 -----
 
 ### TrigPrec1
-It's a simple trigger precision ruiner. Probability can be set by a knob or CV input. Probability allows to skip triggers from the input sequence (see IN socket) and/or to add a few triggers from the clock (see CLK socket on the top). 
+It's a simple trigger precision ruiner. Probability can be set by a knob or CV input. Probability allows to skip triggers from the input sequence (see IN socket) and/or to add a few triggers from the clock (see CLK socket on the top). I also would like to draw your attention to the similarly useful [HetrickCV Probability](https://library.vcvrack.com/HetrickCV/Probability) module!
 
 ### TrigPrec2
 It's a dual trigger precision ruiner. Each knob define the probability to skip triggers from the input sequence (see socket under the knob) and/or to add a few triggers from the clock (see CLK on the top). The module follows the concept discussed [here](https://github.com/clone45/voxglitch/issues/74). 
