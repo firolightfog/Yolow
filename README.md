@@ -15,6 +15,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Celesta](#Celesta)|Three 8 step CV sequencers|
 |[Celei](#Celesta)|Single 8 step CV sequencer|
 |[Sequin](#Sequin)|Queen of Sequencers|
+|[Rubber](#Rubber)|Barebone looking sequencer and more|
 |[PokeMe](#PokeMe)|Simple single track trigger sequencer with upto 32 steps|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
@@ -121,6 +122,31 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 <img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178428799-2d8b313c-cc95-4329-a937-dd83713b903d.png">
 
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
+
+### Rubber (unreleased)
+
+Rubber is collection of utility modules I tend to use regularly. It has 4 inputs, 4 outputs, a button and a mode selector.
+- Mode #0 - A, B, C, D inputs are sent to SUM, AVG, MIN, MAX CV outputs
+- Mode #1 - S&H random CVs. Pressing the button or sending a trigger (>2V) to the inputs generate a new CV on the output. Outputs provide CVs in different ranges. (See +1V to +2V, 0V to +1V, -1V to 0V, -2V to -1V.)
+- Mode #2 - Same us mode #1 but the voltages are quantized. 
+- Mode #3 - Basic quantizer. Incoming voltages of input A-D will be returned on the output sockets as quantized.
+- Mode #4 - Advanced quantizer.
+- Mode #5 - Merge 4 inputs into a polyphonic output.
+- Mode #6 - Split a polyphonic input into 4 solo outputs.
+- Mode #7 - Drum pattern. Pressing the button generates a repeating random 4-channel drum pattern. 
+Input A is reset, B is the clock, and C is allows changing the length of the pattern. (I.e. 1.6v = 16 steps, 2.5v = 25 steps.) 
+Input D is tricky. 
+  * Option 1 by sending a gate (>5V) to the input the pattern will be temporarily overwritten.
+  * Option 2 by sending a special CV to the socket a certain output can be forced (i.e. 1v for output A, 2v for output B, 3v for output C, or 4v for output D)
+  * Option 3 by sending a negative voltage a specific pattern variation can be set. 
+- Mode #8 - Looped random CV. Pressing the button generates a repeating random 4-channel pattern of random CVs. 
+Input A is reset, B is the clock, and C is allows changing the length of the pattern. (I.e. 1.6v = 16 steps, 2.5v = 25 steps.) 
+Input D is tricky. 
+  * Option 1 by sending a gate (>5V) to the input the pattern will be temporarily overwritten.
+  * Option 2 by sending a special CV to the socket a certain output can be forced (i.e. 1v for output A, 2v for output B, 3v for output C, or 4v for output D)
+  * Option 3 by sending a negative voltage a specific pattern variation can be set. 
+The outputs provide the same pattern but in different range. (0v to 1v, -1v to 1v, 0v to 10v, -5v to 5v.)
+- Mode #9-#16 - empty slot
 
 ### PokeMe
 
