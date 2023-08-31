@@ -157,10 +157,10 @@ By default triggers can be entered to the cell grid by mouse. Shift-Left-Click a
 - `0` (grey) blank
 - `1` (green) 100% probability hit
 - `2` 95% probability hit
-- `3` 85% probability hit
-- `4` 75% probability hit
-- `5` 60% probability hit
-- `6` racheting
+- `3` 80% probability hit
+- `4` 50% probability hit
+- `5` ... something something ...
+- `6` ... something something ...
 - `7` only every 2nd 
 - `8` only every 3rd
 - `9` only every 4th
@@ -172,7 +172,7 @@ An additional feature is that placing multiple PokeMe modules next to each other
 
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
 
-There is also an experimental `Extended output` option in the context menu. By default the output is monophonic but switching this on additional channels are opened with a counter of the current step (0-31V), the step value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
+By default the module provides gates but using the context menu it is possible the get distinct voltages or a polyphonic `Extended output`. Additionl channels of the polyphonic output include counter of the current step (0-31V), the step value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
 
 <img width="252" alt="image" src="https://user-images.githubusercontent.com/34127628/215619594-f328d0e0-e4ca-455b-8580-07338b1f0b45.png">
 
