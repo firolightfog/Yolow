@@ -1,5 +1,28 @@
 # Changelog
 
+v2.1.22 changes 2023-10-13 (György Konrád release)
+- new ranges added to MKnobs
+- randomization of precision knob in Euclik is disabled
+- programmer function (Euclidean) added to PokeMe reset input (see: polycable 0/len/hit/shift)
+- new feature: clock sharing in RouteSeq 
+- new feature: RouteSeq context menu fot an octave transposition option 
+- new label: Slide16 received some input socket labels
+- new module: Organic sequencer with crazy probability melodies
+- new module: Rubber a collection of utilities I usually use (incomplete, there are placeholders for future functions)
+- temporary bug fix: PokeMe extended mode sent strange voltage for grey (0) cells (this needs revisit)
+- new feature: PokeMe got a new output mode ('values only') beside the 'triggers' and 'extended' mode; I needed it way to often to hide it into the 11th channel of the extended mode
+- new feature: PokeMe context menu allows changing the 7, 8, 9 modes (hit only Nth time)
+- bug fix: PokeMe reset behavior changed to play the first position
+- new labels: EuClk has output labels for convience
+- new feature: last voltages are reloading in Randvolt8
+
+v2.1.21 changes (unreleased)
+- new feature in PokeMe: probability weights are changed in step mode 2-4 from 95%-85%-75%-60% to 95%-80%-50% 
+- new feature in PokeMe: step mode 5 is changed a random PW trigger (skip it, hit it with clock PW, hit it with 100% PW) to assist easier bass line creation
+- some new labels to SaveMeMore 
+- new feature: SeqP16 returns knob values if no polyphonic input is connected
+- new module: RouteSeq switching between sequences
+
 v2.1.20 changes 2023-02-18 (Libényi release)
 - bug fix in Vulcan: row reference in tooltip text modified
 - new hotkey: Vulcan focus switch can be toggled by 'F'
