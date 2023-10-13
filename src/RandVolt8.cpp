@@ -50,9 +50,12 @@ struct RandVolt8 : Module {
 	// for managing the CLOCK signals
 	float newClock=0.0f;
 	float oldClock=0.0f;
-	bool doItRarely=false;
-	float newVolt=0.0f;
+
 	bool clockIn=false;
+	bool doItRarely=false;	// if no input is available then it's enough to send the voltage only rarely (not all cycle)
+	
+	float newVolt=0.0f;
+	float allCv[8]={0.0f};
 	
 	void process(const ProcessArgs& args) override {
 
@@ -65,30 +68,50 @@ struct RandVolt8 : Module {
 		}
 
 		// let's see the clock signal
-		if (clockIn) {		
-		
+		if (clockIn) {
 			newClock=inputs[CLOCK_INPUT].getVoltage();
-			if (newClock>2.0f && oldClock<=2.0f) {
-				for (int o=OUT_1_OUTPUT; o<=OUT_8_OUTPUT; o++) {
-					newVolt=rack::random::uniform();
-					newVolt=newVolt*abs(paramVal[RANGE_PARAM]-paramVal[BOTTOM_PARAM])+paramVal[BOTTOM_PARAM];
-					outputs[o].setVoltage(newVolt);
+			if (newClock>2.0f && oldClock<=2.0f) {	// it is plugged in and there's a clock
+				for (int o=0; o<8; o++) {
+					allCv[o]=rack::random::uniform();
+					allCv[o]=allCv[o]*abs(paramVal[RANGE_PARAM]-paramVal[BOTTOM_PARAM])+paramVal[BOTTOM_PARAM];
+					outputs[OUT_1_OUTPUT+o].setVoltage(allCv[o]);
 				}
 			}
+			else if (doItRarely==true) {	// it is plugged in but there's no clock
+				doItRarely=false;
+				for (int o=0; o<8; o++) {outputs[OUT_1_OUTPUT+o].setVoltage(allCv[o]);}
+			}
 			oldClock=newClock;
-		}
-		
-		else if (doItRarely==true) {
+		}	
+		else if (doItRarely==true) {	// it is not plugged in at all
 			doItRarely=false;
 			for (int o=0; o<8; o++) {
-				newVolt=paramVal[BOTTOM_PARAM]+o*abs(paramVal[RANGE_PARAM]-paramVal[BOTTOM_PARAM])/8;
-				outputs[OUT_1_OUTPUT+o].setVoltage(newVolt);				
+				allCv[o]=paramVal[BOTTOM_PARAM]+o*abs(paramVal[RANGE_PARAM]-paramVal[BOTTOM_PARAM])/8;
+				outputs[OUT_1_OUTPUT+o].setVoltage(allCv[o]);
 			}
 		}
 	}
 
-// --------------------------------------------------
+	// this block is to save and reload a variable
+	json_t* dataToJson() override {
+	json_t* rootJ = json_object();
+	json_t* cv_json_array = json_array();
+	for (int cv_index=0; cv_index < 8; cv_index++) {
+		json_array_append_new(cv_json_array , json_real(allCv[cv_index]));
+	}	
+	json_object_set_new(rootJ, "allCv", cv_json_array);
+	return rootJ;}
 
+	void dataFromJson(json_t* rootJ) override {
+	json_t *cv_json_array = json_object_get(rootJ, "allCv");
+	size_t cv_index;
+	json_t *json_value;
+	if (cv_json_array) {
+		json_array_foreach(cv_json_array, cv_index, json_value)
+		{allCv[cv_index] = json_number_value(json_value);}
+	}
+	}
+	
 };
 
 // --------------------------------------------------

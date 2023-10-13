@@ -100,18 +100,22 @@ struct SaveMeMono : Module {
 			lights[LED_RECORD_PARAM].setBrightness(hitRecord);
 			clockIn=inputs[CLOCK_INPUT].isConnected();
 			lfoIn=inputs[MONO_LFO_INPUT].isConnected();
-			// paramQuantities[RECORD_PARAM]->description = ("Recording mode: " + indexRec);
 			if (indexShift!=-1) {shiftSeq();}	// ugly stuff
-			lights[FIRST_HIT_LIGHT].setBrightness(theSeq[0]);
+
+			// lights[FIRST_HIT_LIGHT].setBrightness(theSeq[0]);
 
 			// this section is only about updating the descriptions
 			std::string sx="";
 			if (indexRec==0) {sx+="Single cycle";}
 			else if (indexRec==1) {sx+="Single step";}
 			else if (indexRec==2) {sx+="Non-stop";}
-			if (indexLFO==0) {sx+=(lfoIn)?" from LFO":" & Gates";}
-			else if (indexLFO==1) {sx+=(lfoIn)?" from LFO":" & -5V to +5V";}
+			else if (indexRec==3) {sx+="Rewrite all CVs";}			
+			// else if (indexRec==4) {sx+="Rewrite some CVs";}			
+			if (indexRec==3) {sx+=" (ignore LFO input)";}
+			// else if (indexRec==4) {sx+=" (ignore LFO input)";}
 			else if (indexLFO==2) {sx+=(lfoIn)?" from LFO":" & 0V to 10V";}
+			else if (indexLFO==1) {sx+=(lfoIn)?" from LFO":" & -5V to +5V";}
+			else if (indexLFO==0) {sx+=(lfoIn)?" from LFO":" & Gates";}
 			paramQuantities[RECORD_PARAM]->description = sx;
 
 		}
@@ -139,18 +143,21 @@ struct SaveMeMono : Module {
 			childClockWarning=true;
 			if (hitRecord==1) {
 				
-				// this section grabs the internal/external LFO signal and saves it
-				if (lfoIn) {pickVolt=inputs[MONO_LFO_INPUT].getVoltage();}
-				else if (indexLFO==1) {pickVolt=(rack::random::uniform()*10)-5;}	// internal LFO for '-5V to 5V'
-				else if (indexLFO==2) {pickVolt=(rack::random::uniform()*10);}		// internal LFO for '0V to 10V'
-				else if (indexLFO==3) {pickVolt=(rack::random::uniform()*2-1);}		// internal LFO for '-1V to 1V'
-				else if (indexLFO==4) {pickVolt=(rack::random::uniform());}		// internal LFO for '0V to 1V'
-				else if (indexLFO==0) {pickVolt=(rand() % 2) *10;}					// internal LFO for gate sequences
-				theSeq[currPos]=pickVolt;	// write it to the sequence step/slot
-				// theShuffle[currPos]=currPos;
-		
+				if (indexRec==3) {randomizeFields();}	// dump all 256 CVs
+				else {				
+					// this section grabs the internal/external LFO signal and saves it
+					if (lfoIn) {pickVolt=inputs[MONO_LFO_INPUT].getVoltage();}
+					else if (indexLFO==1) {pickVolt=(rack::random::uniform()*10)-5;}	// internal LFO for '-5V to 5V'
+					else if (indexLFO==2) {pickVolt=(rack::random::uniform()*10);}		// internal LFO for '0V to 10V'
+					else if (indexLFO==3) {pickVolt=(rack::random::uniform()*2-1);}		// internal LFO for '-1V to 1V'
+					else if (indexLFO==4) {pickVolt=(rack::random::uniform());}		// internal LFO for '0V to 1V'
+					else if (indexLFO==0) {pickVolt=(rand() % 2) *10;}					// internal LFO for gate sequences
+					theSeq[currPos]=pickVolt;	// write it to the sequence step/slot
+					// theShuffle[currPos]=currPos;
+				}
+				
 				// this sction allows switching off recording (see toggle/momentary)
-				if (indexRec==1) {params[RECORD_PARAM].setValue(0);}	// momentary
+				if (indexRec==1 || indexRec==3) {params[RECORD_PARAM].setValue(0);}	// momentary or dump
 				else if (indexRec==0) {									// single cycle
 					if (countRec<=0) {params[RECORD_PARAM].setValue(0);}
 					else {countRec--;}
@@ -211,11 +218,11 @@ struct SaveMeMonoWidget : ModuleWidget {
 		
 		childKnob(SaveMeMono::STEPS_PARAM, 1, HP*1.5, HP*2);
 		// childPushbutton(SaveMeMono::RECORD_PARAM, SaveMeMono::LED_RECORD_PARAM, HP*1, HP*8);	// this is yellow
-		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<RedLight>>>(mm2px(Vec(HP*1.5, HP*8)), module, SaveMeMono::RECORD_PARAM, SaveMeMono::LED_RECORD_PARAM));	// this is red
+		addParam(createLightParamCentered<VCVLightLatch<MediumSimpleLight<RedLight>>>(mm2px(Vec(HP*1.5, HP*8)), module, SaveMeMono::RECORD_PARAM, SaveMeMono::LED_RECORD_PARAM));	// this is red 
 		
 		childInput(SaveMeMono::MONO_LFO_INPUT, HP*1.5, HP*5.5);
 		childInput(SaveMeMono::RECORD_INPUT, HP*1.5, HP*9.5);
-		childLight(SaveMeMono::FIRST_HIT_LIGHT, 14, HP*2.5, HP*8.75);
+		// childLight(SaveMeMono::FIRST_HIT_LIGHT, 14, HP*2.5, HP*8.75);
 		childInput(SaveMeMono::CLOCK_INPUT, HP*1.5, HP*13);
 		childInput(SaveMeMono::RESET_INPUT, HP*1.5, HP*15.5);		
 		childOutput(SaveMeMono::MONO_REPLAY_OUTPUT, HP*1.5, HP*19);
@@ -228,9 +235,18 @@ struct SaveMeMonoWidget : ModuleWidget {
 	void appendContextMenu(Menu* menu) override {
 		SaveMeMono* module = dynamic_cast<SaveMeMono*>(this->module);
 		assert(module);
-		menu->addChild(new MenuSeparator);
-		menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
 
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createMenuItem("Empty all CVs", "", [=]() {module->emptyFields();}));	
+		menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
+		menu->addChild(createIndexPtrSubmenuItem("Record button mode", {"One cycle","Momentary","Non-stop","Rewrite all" /*,"Dump some"*/ }, &module->indexRec));
+		
+		menu->addChild(new MenuSeparator);
+		menu->addChild(createIndexPtrSubmenuItem("Pulse width", {"Full width","Only clock wide"}, &module->indexPW));
+		menu->addChild(createIndexPtrSubmenuItem("Internal LFO", {"Gates","-5V to 5V","0V to 10V","-1V to 1V","0V to 1V"}, &module->indexLFO));
+		menu->addChild(createIndexPtrSubmenuItem("Shift sequence", {"Earlier","Later"}, &module->indexShift));	// ugly stuff
+
+		menu->addChild(new MenuSeparator);
 		menu->addChild(createSubmenuItem("Text export/import", "",
 			[=](Menu* menu) {
 				menu->addChild(createMenuLabel("(OneZero format: 10101101)"));
@@ -242,12 +258,6 @@ struct SaveMeMonoWidget : ModuleWidget {
 			}
 		));
 
-		menu->addChild(new MenuSeparator);
-		menu->addChild(createIndexPtrSubmenuItem("Pulse width", {"Full width","Only clock wide"}, &module->indexPW));
-		menu->addChild(createIndexPtrSubmenuItem("Internal LFO", {"Gates","-5V to 5V","0V to 10V","-1V to 1V","0V to 1V"}, &module->indexLFO));
-		menu->addChild(createIndexPtrSubmenuItem("Record mode", {"One cycle","Momentary","Always"}, &module->indexRec));
-		menu->addChild(createIndexPtrSubmenuItem("Shift sequence", {"Earlier","Later"}, &module->indexShift));	// ugly stuff
-		menu->addChild(new MenuSeparator);
 	}
 
 };

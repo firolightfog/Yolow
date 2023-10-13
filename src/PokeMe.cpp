@@ -67,13 +67,24 @@ struct PokeMe : Module {
 	int hitClock=NA;
 	int hitReset=NA;
 	
+	int indexPRG=1;
 	int indexPW=0;
 	bool indexLoop=true;
 	// int indexPrec=0;
 	// int indexPrecMode=0;
 	bool indexChoke=false;
 	bool indexExt=false;
+	int indexOut=0;
 	float newVolt=0;
+	
+	float defProb1=1.0f;
+	float defProb2=0.95f;
+	float defProb3=0.80f;
+	float defProb4=0.50f;
+	int defProb7=2;
+	int defProb8=3;
+	int defProb9=4;
+
 	
 	PokeMe* findHostModulePtr(Module* module) {
 		if (module) {
@@ -90,8 +101,10 @@ struct PokeMe : Module {
 	void process(const ProcessArgs& args) override {
 		
 		// outputs[DEBUG_OUTPUT].channels=16;
-		if (indexExt) {outputs[SEQ_OUTPUT].channels=12;}
+		if (indexOut==1 || indexExt) {outputs[SEQ_OUTPUT].channels=12;}
 		else outputs[SEQ_OUTPUT].channels=1;
+
+		#include "PokeMe/PokeMe_programmer.hpp"
 
 		// let's see if we have mother here
 		PokeMe const* mother = findHostModulePtr(this);
@@ -126,16 +139,24 @@ struct PokeMe : Module {
 			if (grid_data[CURR_STEP]==10) {CURR_STEP=(indexLoop)?0:100;}
 			// if (CURR_STEP>99 && mother && mother->indexLoop && mother->CURR_STEP>99) {CURR_STEP=0;}
 			if (CURR_STEP==0) {					
-				CONT_LAPS[0]++; if (CONT_LAPS[0]>=2) {CONT_LAPS[0]=0;}
-				CONT_LAPS[1]++; if (CONT_LAPS[1]>=3) {CONT_LAPS[1]=0;}
-				CONT_LAPS[2]++; if (CONT_LAPS[2]>=4) {CONT_LAPS[2]=0;}
+				// CONT_LAPS[0]++; if (CONT_LAPS[0]>=2) {CONT_LAPS[0]=0;}
+				// CONT_LAPS[1]++; if (CONT_LAPS[1]>=3) {CONT_LAPS[1]=0;}
+				// CONT_LAPS[2]++; if (CONT_LAPS[2]>=4) {CONT_LAPS[2]=0;}
+				CONT_LAPS[0]++; if (CONT_LAPS[0]>=defProb7) {CONT_LAPS[0]=0;}
+				CONT_LAPS[1]++; if (CONT_LAPS[1]>=defProb8) {CONT_LAPS[1]=0;}
+				CONT_LAPS[2]++; if (CONT_LAPS[2]>=defProb9) {CONT_LAPS[2]=0;}
 			}
 			switch (grid_data[CURR_STEP]) {
 				case 0: newVolt=0; break;	
+				// case 1: newVolt=10; break;	
+				// case 2: newVolt=(0.95>rack::random::uniform())?10:0.2; break;	
+				// case 3: newVolt=(0.80>rack::random::uniform())?10:0.3; break;	
+				// case 4: newVolt=(0.50>rack::random::uniform())?10:0.4; break;	
+				// case 5: newVolt=(0.60>rack::random::uniform())?10:0.5; break;
 				case 1: newVolt=10; break;	
-				case 2: newVolt=(0.95>rack::random::uniform())?10:0.2; break;	
-				case 3: newVolt=(0.80>rack::random::uniform())?10:0.3; break;	
-				case 4: newVolt=(0.50>rack::random::uniform())?10:0.4; break;	
+				case 2: newVolt=(defProb1>rack::random::uniform())?10:0.2; break;	
+				case 3: newVolt=(defProb2>rack::random::uniform())?10:0.3; break;	
+				case 4: newVolt=(defProb3>rack::random::uniform())?10:0.4; break;	
 				case 5: newVolt=(0.60>rack::random::uniform())?10:0.5; break;
 				case 6: newVolt=3+(rand() % 7); CONT_SAMP=25; break; 			// lame but it provides some random voltage above 2V
 				case 7: newVolt=(CONT_LAPS[0]==0)?10:0.7; break;	
@@ -145,11 +166,19 @@ struct PokeMe : Module {
 			}
 			
 			if (indexChoke && mother && mother->newVolt>2) {newVolt=0;} // choked
-			outputs[SEQ_OUTPUT].setVoltage(newVolt,0);
-			if (indexExt) {
+			if (indexOut==0) {
+				outputs[SEQ_OUTPUT].setVoltage(newVolt,0);
+			}
+			else if (indexOut==2) {
+				outputs[SEQ_OUTPUT].setVoltage(grid_data[CURR_STEP],0);
+			}
+			else if (indexOut==1 || indexExt) {
 				for (int i=1;i<10;i++) {
 					outputs[SEQ_OUTPUT].setVoltage((grid_data[CURR_STEP]==i)?10:0,i);
 				}
+// itt van egy kis gond
+// hogy lehet, hogy grid_data[CURR_STEP]>999999?!?!?!?
+if (grid_data[CURR_STEP]>10) {grid_data[CURR_STEP]=0;}
 				outputs[SEQ_OUTPUT].setVoltage(grid_data[CURR_STEP],10);
 				outputs[SEQ_OUTPUT].setVoltage(CURR_STEP,11);
 			} 
@@ -164,7 +193,7 @@ struct PokeMe : Module {
 			CONT_LAPS[1]=0;
 			CONT_LAPS[2]=0;
 			outputs[SEQ_OUTPUT].setVoltage((grid_data[CURR_STEP]>0)?10:0);
-			if (indexExt) {
+			if (indexOut==1 || indexExt) {
 				for (int i=1;i<10;i++) {
 					outputs[SEQ_OUTPUT].setVoltage((grid_data[CURR_STEP]==i)?10:0,i);
 				}
@@ -174,12 +203,12 @@ struct PokeMe : Module {
 		}
 		else if (hitReset==ON && !(hitClock==ON)) {
 			// new reset and no new clock
-			CURR_STEP=0;
+			CURR_STEP=-1;
 			CONT_LAPS[0]=0;
 			CONT_LAPS[1]=0;
 			CONT_LAPS[2]=0;
 			outputs[SEQ_OUTPUT].setVoltage(0,0);
-			if (indexExt) {
+			if (indexOut==1 || indexExt) {
 				for (int i=1;i<10;i++) {outputs[SEQ_OUTPUT].setVoltage(0,i);}
 			}
 		}
@@ -190,7 +219,7 @@ struct PokeMe : Module {
 		}
 		else if (indexPW==0 && hitClock==OFF) {
 			outputs[SEQ_OUTPUT].setVoltage(0,0);
-			if (indexExt) {
+			if (indexOut==1 || indexExt) {
 				for (int i=1;i<10;i++) {outputs[SEQ_OUTPUT].setVoltage(0,i);}
 			}
 		}
@@ -222,12 +251,15 @@ struct PokeMe : Module {
 
 	}
 
+	// Ctrl-I
     void onReset() override {
 		grid_data[0] = 1;
 		for (int i=1;i<SEQLEN;i++) {grid_data[i] = 0;}
+		grid_data[16] = 10;
 		Module::onReset();		
 	}
 
+	// Ctrl-R
 	int indexRandom=1;
     void onRandomize() override {		
 		for (int i=0;i<SEQLEN;i++) {

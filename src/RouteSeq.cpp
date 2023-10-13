@@ -88,16 +88,22 @@ struct RouteSeq : Module {
 
 	int loop=0;     // save some CPU in process()
 
+	int indexOctave=3; 	// -3,-2,-1,0,1,2,3
+
 	// for managing the RESET and CLOCK signals
 	float newReset=0.0f;
 	float oldReset=0.0f;
 	float newClock=0.0f;
 	float oldClock=0.0f;
-	bool hitClock=false;
-	bool hitReset=false;
+	const int ON=1; 
+	const int OFF=0;
+	const int NA=-1;
+	int hitClock=NA;
+	int hitReset=NA;
+	
 	
 	// for calculating the sequencer steps
-	int currentStep=1;
+	int currentStep=0;
 	int totalSteps=0;
 	int knobSteps=1;
 	int needed=0;
@@ -178,6 +184,19 @@ struct RouteSeq : Module {
 			}		
 	}
 
+	// OK, so this is going to identify if there's a mother to the left
+	RouteSeq* findHostModulePtr(Module* module) {
+		if (module) {
+			if (module->leftExpander.module) {
+				// if it's the mother module, we're done
+				if (module->leftExpander.module->model == modelRouteSeq) {
+					return reinterpret_cast<RouteSeq*>(module->leftExpander.module);
+				}
+			}
+		}
+		return nullptr;
+	}
+
 	void process(const ProcessArgs& args) override {
 
 		if (loop--<=0) {
@@ -200,33 +219,47 @@ struct RouteSeq : Module {
 				}
 			}
 			
-		// outputs[DEBUG_OUTPUT].channels=4;
-		// outputs[DEBUG_OUTPUT].setVoltage(totalSteps,0);
-		// outputs[DEBUG_OUTPUT].setVoltage(currentStep,1);
-		// outputs[DEBUG_OUTPUT].setVoltage(needed,2);
+			outputs[DEBUG_OUTPUT].channels=8;
+			
+		}
 
+		// let's see if we have mother here
+		// RouteSeq const* mother = nullptr; // findHostModulePtr(this);
+		RouteSeq const* mother = findHostModulePtr(this);
+
+		// let's see the clock signal
+		// if there is a RouteSeq on the left then grab the clock and reset info
+		if (mother && inputs[CLOCK_INPUT].isConnected()==false) {hitClock=mother->hitClock;}
+		else {
+			// let's see if the CLOCK has just been ON, OFF or else (NA)
+			newClock=inputs[CLOCK_INPUT].getVoltage();
+			if (newClock>2.0f && oldClock<=2.0f) {hitClock=ON;}
+			else if (oldClock>2.0f && newClock<=2.0f) {hitClock=OFF;}
+			else {hitClock=NA;}
+			oldClock=newClock;
 		}
 
 		// let's see the reset signal
-		newReset=inputs[RESET_INPUT].getVoltage();
-		if (newReset>2.0f && oldReset<=2.0f) {
-			hitReset=true; 
-			currentStep=1;
+		if (mother && inputs[RESET_INPUT].isConnected()==false) {hitReset=mother->hitReset;}
+		else {
+			newReset=inputs[RESET_INPUT].getVoltage();
+			if (newReset>2.0f && oldReset<=2.0f) {hitReset=ON;}
+			else if (oldReset>2.0f && newReset<=2.0f) {hitReset=OFF;}
+			else if (hitReset==ON) {hitReset=NA;}
+			oldReset=newReset;
 		}
-		// else if (newReset>2.0f && oldReset>2.0f) {}
-		// else if (newReset<=2.0f && oldReset>2.0f) {}
-		// else if (newReset<=2.0f && oldReset<=2.0f) {}
 
-		// let's see the clock signal
-		hitClock=false;
-		newClock=inputs[CLOCK_INPUT].getVoltage();
-		if (newClock>2.0f && oldClock<=2.0f) {
-			hitClock=true;
-			// let's see the number of step we're at
-			if (hitReset==true) {currentStep=1; randval= 1 + (rand() % 16); hitReset=false;}
-			else if (currentStep>=totalSteps) {currentStep=1; randval= 1 + (rand() % 16);}
+		// let's find the right step	
+		if (hitClock==ON && !(hitReset==ON)) {
+			if (currentStep>=totalSteps) {currentStep=0; randval= 1 + (rand() % 16);}
 			else {currentStep++;}
-			// which of the positions is active?
+		} 
+		else if (hitClock==ON && hitReset==ON) {currentStep=0;}
+		else if (!(hitClock==ON) && hitReset==ON) {currentStep=-1;}
+		else if (hitClock==OFF && hitReset==OFF) {/* do nothing */}
+		
+		// which of the positions is active?
+		if (hitClock==ON) {
 			int xS=0;
 			needed=0;
 			for (int p=0;p<8;p++) {
@@ -236,39 +269,47 @@ struct RouteSeq : Module {
 				if (currentStep>=xS) {needed=(p==7)?0:p+1;}
 			}
 			lights[LIGHT_1_LIGHT+needed].setBrightness(1);					
+			// hitClock=OFF;
 		}
-		// else if (newClock>2.0f && oldClock>2.0f) {}
-		// else if (newClock<=2.0f && oldClock<=2.0f) {}
-		// else if (newClock<=2.0f && oldClock>2.0f) {}
-
+		
 		// I know which position to look at, let's send the voltage
 		if (inputs[POLY_INPUT].isConnected()) {
 			if (paramVal[CHANNEL_SELECTOR_1_PARAM+needed]==0) {
 				outputs[MONO_OUTPUT].setVoltage(
-					inputs[POLY_INPUT].getVoltage(randval));
+					indexOctave - 3 + 
+					inputs[POLY_INPUT].getVoltage(randval) );
 			}
 			else {
 				outputs[MONO_OUTPUT].setVoltage(
+					indexOctave - 3 + 
 					inputs[POLY_INPUT].getVoltage(
-						paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1));
+						paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1) );
 			}
 		} 
 		else if (loop % 400 == 25) { // if no input is connected then C-4, C#4, D-4, etc.
 			if (paramVal[CHANNEL_SELECTOR_1_PARAM+needed]==0) {
-				outputs[MONO_OUTPUT].setVoltage((paramVal[CHANNEL_SELECTOR_1_PARAM+(int)(randval/2)])/12);
+				outputs[MONO_OUTPUT].setVoltage(
+				indexOctave - 3 + 
+				(paramVal[CHANNEL_SELECTOR_1_PARAM+(int)(randval/2)])/12);
 			}
 			else {
-				outputs[MONO_OUTPUT].setVoltage((paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1)/12);
+				outputs[MONO_OUTPUT].setVoltage(
+				indexOctave - 3 + 
+				(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1)/12);
 			}
 		}
-
-		// outputs[DEBUG_OUTPUT].setVoltage(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1,3);
 		
-		oldReset=newReset;
-		oldClock=newClock;
-
 	}
 
+	// this block is to save and reload a variable
+	json_t* dataToJson() override {
+	json_t* rootJ = json_object();
+	json_object_set_new(rootJ, "octave", json_integer(indexOctave));
+	return rootJ;}
+
+	void dataFromJson(json_t* rootJ) override {
+	json_t *modeJ = json_object_get(rootJ, "octave");
+	if (modeJ) indexOctave = json_integer_value(modeJ);}
 	// #include "RouteSeq/RouteSeq_json.hpp"
 
 };
@@ -323,7 +364,7 @@ struct RouteSeqWidget : ModuleWidget {
 		childInput(RouteSeq::POLY_INPUT, HP*1, HP*23);
 		childOutput(RouteSeq::MONO_OUTPUT, HP*3, HP*23);
 
-		// childOutput(RouteSeq::DEBUG_OUTPUT, HP*2, HP*24.5);
+		childOutput(RouteSeq::DEBUG_OUTPUT, HP*222, HP*24.5);
 		// childLabel(HP*1,HP*23.5, "DEV", 12);
 	
 	}
@@ -336,8 +377,6 @@ struct RouteSeqWidget : ModuleWidget {
 		// menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
 
 		// menu->addChild(createIndexPtrSubmenuItem("Get a pattern", {"8 steps","16 steps","24 steps","32 steps","64 steps","96 steps","128 steps"}, &module->indexPattern()));
-
-        menu->addChild(createMenuItem("Shuffle selectors", "", [=]() {module->shuffleSelectors();}));
 
 		menu->addChild(createIndexSubmenuItem("Set a pattern",
 			// module->txtPatterns,
@@ -353,6 +392,10 @@ struct RouteSeqWidget : ModuleWidget {
 			[=](int ptx) {module->rndPattern(ptx);}
 		));
 		
+        menu->addChild(createMenuItem("Shuffle selectors", "", [=]() {module->shuffleSelectors();}));
+
+		menu->addChild(createIndexPtrSubmenuItem("Octave transposition", {"-3","-2","-1","0","1","2","3"}, &module->indexOctave));
+
 	}
 
 

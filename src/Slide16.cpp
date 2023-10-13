@@ -103,6 +103,7 @@ struct Slide16 : Module {
 		configInput(SOCKETJUMP_INPUT, "");
 		configOutput(POLYOUT_OUTPUT, "");
 		configOutput(SEQOUT_OUTPUT, "");
+		getInputInfo(SOCKETJUMP_INPUT)->description = "Expects 0v-10v";
 		highlightSlider(0);
 	}
 

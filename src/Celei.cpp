@@ -151,6 +151,8 @@ int freezCv=0;
 	int indexQuant=0;	// this means no quantization
 	int indexStepo=0;	// this means 10V output on active step
 	int indexStepl=0;	// clock width, full width
+	
+	// const std:string labelStepo[3]=("gates for next", "0-10V to jump", "gates for random"};
 
 	float quantMe(float oldVal) {
 		// oldVal=oldVal+5*indexRange;
@@ -202,6 +204,7 @@ int freezCv=0;
 			pSx[5]=params[5+SEQ_1_VOLTAGE_PARAM].getValue();
 			pSx[6]=params[6+SEQ_1_VOLTAGE_PARAM].getValue();
 			pSx[7]=params[7+SEQ_1_VOLTAGE_PARAM].getValue();
+			
 //			for (int j=0;j<8;j++) {
 //				vOct[j]=pOct+pRng*pSx[j];
 //				lengthInBeats[j]=0.9;
@@ -381,8 +384,8 @@ struct CeleiWidget : ModuleWidget {
 		assert(module);
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes" /*,"Gates (>2V)"*/}, &module->indexQuant));
-		menu->addChild(createIndexPtrSubmenuItem("Active step CV", {"10V","CV","Random"}, &module->indexStepo));
-		menu->addChild(createIndexPtrSubmenuItem("Active step length", {"Clock length","Step length"}, &module->indexStepl));
+		menu->addChild(createIndexPtrSubmenuItem("Active step output mode", {"gates (0V or 10V)","knob CV value","Random CV"}, &module->indexStepo));
+		menu->addChild(createIndexPtrSubmenuItem("Active step length (PW)", {"Clock length","Full step length"}, &module->indexStepl));
 	}
 
 	// shortkey

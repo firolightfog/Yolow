@@ -55,3 +55,5 @@ extern Model* modelTicklet;
 extern Model* modelVulcan;
 extern Model* modelPokeMe;
 extern Model* modelRouteSeq;
+extern Model* modelOrganic;
+extern Model* modelRubber;

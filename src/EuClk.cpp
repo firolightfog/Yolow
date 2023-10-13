@@ -21,6 +21,7 @@ struct Euclk : Module {
 		paramQuantities[LENGTH_PARAM]->snapEnabled = true;
 		paramQuantities[HITS_PARAM]->snapEnabled = true;
 		paramQuantities[SHIFTS_PARAM]->snapEnabled = true;
+		paramQuantities[PREC_PARAM]->randomizeEnabled = false;
 
 		configInput(RESET_INPUT, "Reset"); 
 		configInput(CLOCK_INPUT, "Clock"); 
@@ -200,10 +201,15 @@ struct EuclkMore : Module {
 		paramQuantities[LENGTH_PARAM]->snapEnabled = true;
 		paramQuantities[HITS_PARAM]->snapEnabled = true;
 		paramQuantities[SHIFTS_PARAM]->snapEnabled = true;
+		paramQuantities[PREC_PARAM]->randomizeEnabled = false;
 
 		configParam(MIXED_PARAM, 	0.0f, 7.0f, 1.0f, "Mixed clock modes");
 		paramQuantities[MIXED_PARAM]->snapEnabled = true;
 		paramQuantities[MIXED_PARAM]->description = ("Mixed output modes inverted, random, XOR and OR with mother, etc...");
+
+		getInputInfo(LENGTH_INPUT)->description = "0-10V expected for 1-64 steps";
+		getInputInfo(HITS_INPUT)->description = "0-10V expected for 0-64 hits";
+
 	}
 
  	Euclk* findHostModulePtr(Module* module) {
@@ -243,6 +249,19 @@ struct EuclkMore : Module {
 	
 	// int storedRhythm[64]={0};
 
+	const std::string labels[10]={
+		"Random clock",
+		"Inverted output",
+		"XOR with mother module",
+		"OR with mother module",
+		"NOR with mother module",
+		"XNOR with mother module",
+		"AND with mother module",
+		"NAND with mother module",
+		"Not ready yet ...",
+		"Not ready yet ..."
+	};
+	
 	void process(const ProcessArgs& args) override {		
 		
 		Euclk const* mother = findHostModulePtr(this);
@@ -261,11 +280,15 @@ struct EuclkMore : Module {
 				loop=9925;
 				
 				// collect the main params for easier referencing
-				MXD=params[MIXED_PARAM].getValue();				
+				MXD=params[MIXED_PARAM].getValue();
 				LEN=params[LENGTH_PARAM].getValue();
 				HIT=params[HITS_PARAM].getValue();
 				SHF=params[SHIFTS_PARAM].getValue();
 				PRC=params[PREC_PARAM].getValue();
+
+				// MIXED output and  knob labels are updated
+				paramQuantities[MIXED_PARAM]->description = labels[MXD];	
+				getOutputInfo(MIXED_OUTPUT)->description = labels[MXD];
 
 				std::string sx="...";	// variable to construct the knob desc.
 
@@ -287,6 +310,12 @@ struct EuclkMore : Module {
 					else {sx="Knob sets ca. " + std::to_string((int)(100*HIT/LEN)) + "% density";}
 				}
 				paramQuantities[HITS_PARAM]->description = (sx);	
+
+				// let's check the general info for the output
+				sx=std::to_string(HIT) + "/" + std::to_string(LEN) 
+					// + " ... " + std::to_string(SHF) 
+					+ " prec.: "+ std::to_string((int)(100*PRC)) +"%";
+				getOutputInfo(OUTPUT_OUTPUT)->description = sx;
 
 			}
 
@@ -312,42 +341,21 @@ struct EuclkMore : Module {
 
 				outputs[OUTPUT_OUTPUT].setVoltage(newVolt*10);
 				
-				if (MXD==0) {
-					outputs[MIXED_OUTPUT].setVoltage(activePrec?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("Random clock");	
-					}
-				else if (MXD==1) {
-					outputs[MIXED_OUTPUT].setVoltage(newVolt*-10+10);
-					paramQuantities[MIXED_PARAM]->description = ("Inverted output");	
-					}
-				else if (MXD==2) {
-					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt + newVolt==1)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("XOR with mother module");	
-					}
-				else if (MXD==3) {
-					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==1 || newVolt==1)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("OR with mother module");	
-					}
-				else if (MXD==4) {
-					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==0 || newVolt==0)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("NOR with mother module");	
-					}
-				else if (MXD==5) {
-					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt == newVolt)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("XNOR with mother module");	
-					}
-				else if (MXD==6) {
-					outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==1 && newVolt==1)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("AND with mother module");	
-					}
-				else if (MXD==7) {
-					outputs[MIXED_OUTPUT].setVoltage(!(mother->newVolt==1 && newVolt==1)?10:0);
-					paramQuantities[MIXED_PARAM]->description = ("NAND with mother module");	
-					}
-				else {
+				switch (MXD) {
+				case 0: {outputs[MIXED_OUTPUT].setVoltage(activePrec?10:0); break; }
+				case 1: {outputs[MIXED_OUTPUT].setVoltage(newVolt*-10+10); break; }
+				case 2: {outputs[MIXED_OUTPUT].setVoltage((mother->newVolt + newVolt==1)?10:0); break; }
+				case 3: {outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==1 || newVolt==1)?10:0); break; }
+				case 4: {outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==0 || newVolt==0)?10:0); break; }
+				case 5: {outputs[MIXED_OUTPUT].setVoltage((mother->newVolt == newVolt)?10:0); break; }
+				case 6: {outputs[MIXED_OUTPUT].setVoltage((mother->newVolt==1 && newVolt==1)?10:0); break; }
+				case 7: {outputs[MIXED_OUTPUT].setVoltage(!(mother->newVolt==1 && newVolt==1)?10:0); break; }
+				default: {
 					outputs[MIXED_OUTPUT].setVoltage(10*activeStep/LEN);
-					paramQuantities[MIXED_PARAM]->description = ("Not ready yet ...");	
+					paramQuantities[MIXED_PARAM]->description = "Not ready yet ...";	
+					getOutputInfo(MIXED_OUTPUT)->description = "Not ready yet ...";
 					}
+				}
 
 				activeStep++;
 				if (activeStep>=LEN) {activeStep=0;};

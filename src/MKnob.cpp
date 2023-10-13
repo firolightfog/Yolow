@@ -60,19 +60,23 @@ struct MKnob : Module {
 		configOutput(POLYOUT_OUTPUT, "Polyphonic");
 	}
 
-// these are OK
-float newVal=0;	// reading the knob value
-int loopKnobs=1;
-int indexChan=3;	// this means 4 channels :)
-int indexRange=0;
-int indexQuant=0;	// this means no quantization
+	// these are OK
+	float newVal=0;	// reading the knob value
+	int loopKnobs=1;
+	int indexChan=3;	// this means 4 channels :)
+	int indexRange=0;
+	int indexQuant=0;	// this means no quantization
 
 	float quantMe(float oldVal) {
 		paramQuantities[KNOBA_PARAM]->snapEnabled = false;
 		paramQuantities[KNOBB_PARAM]->snapEnabled = false;
 		paramQuantities[KNOBC_PARAM]->snapEnabled = false;
 		paramQuantities[KNOBD_PARAM]->snapEnabled = false;
-		oldVal=oldVal+5*indexRange;
+		if (indexRange==0) {oldVal=oldVal;}
+		else if (indexRange==1) {oldVal=oldVal+5;}
+		else if (indexRange==2) {oldVal=(oldVal+5)/10;}		
+		else if (indexRange==3) {oldVal=oldVal*2;}		
+		// oldVal=oldVal+5*indexRange;
 		if (indexQuant==0) {return oldVal;}
 		else if (indexQuant==1) {
 			paramQuantities[KNOBA_PARAM]->snapEnabled = true;
@@ -84,37 +88,35 @@ int indexQuant=0;	// this means no quantization
 		else {return round(oldVal*12)/12;}
 	}
 
+	// needed to properly show voltages according to indexRange
+	float xMult[4]={1,1,0.1,2};
+	float xOffs[4]={0,5,0.5,0};
+
+	const std::string tmpNotes[12]={
+		"C ","C# ","D ",
+		"D# ","E ","F ",
+		"F# ","G ","G# ",
+		"A ","A# ","B " };
+
 	void process(const ProcessArgs& args) override {
 		
 		if (loopKnobs-- ==0) {
 			loopKnobs=500;
-
-			// change the display only
-			paramQuantities[KNOBA_PARAM]->displayOffset=5*indexRange;
-			paramQuantities[KNOBB_PARAM]->displayOffset=5*indexRange;
-			paramQuantities[KNOBC_PARAM]->displayOffset=5*indexRange;
-			paramQuantities[KNOBD_PARAM]->displayOffset=5*indexRange;			
 			
-			// knob A
-			newVal=params[KNOBA_PARAM].getValue();
-			outputs[SOCKETA_OUTPUT].setVoltage(quantMe(newVal));
-			outputs[POLYOUT_OUTPUT].setVoltage(quantMe(newVal), 0);
+			// OK I admit, this is a bit crazy here... but trust me!
+			for (int k=0;k<4;k++) {
+				newVal=params[KNOBA_PARAM+k].getValue();
+				outputs[SOCKETA_OUTPUT+k].setVoltage(quantMe(newVal));
+				outputs[POLYOUT_OUTPUT].setVoltage(quantMe(newVal), k);
+				paramQuantities[KNOBA_PARAM+k]->displayOffset=xOffs[indexRange];
+				paramQuantities[KNOBA_PARAM+k]->displayMultiplier=xMult[indexRange];
+				if (indexQuant<2) {paramQuantities[KNOBA_PARAM+k]->description = "";}
+				// else {
+					// newVal = clamp(newVal - round(newVal),0,11/12)*12;
+					// paramQuantities[KNOBA_PARAM+k]->description = tmpNotes[(int)newVal];
+					// }
+			}
 
-			// knob B
-			newVal=params[KNOBB_PARAM].getValue();
-			outputs[SOCKETB_OUTPUT].setVoltage(quantMe(newVal));
-			outputs[POLYOUT_OUTPUT].setVoltage(quantMe(newVal), 1);
-
-			// knob C
-			newVal=params[KNOBC_PARAM].getValue();
-			outputs[SOCKETC_OUTPUT].setVoltage(quantMe(newVal));
-			outputs[POLYOUT_OUTPUT].setVoltage(quantMe(newVal), 2);
-
-			// knob D
-			newVal=params[KNOBD_PARAM].getValue();
-			outputs[SOCKETD_OUTPUT].setVoltage(quantMe(newVal));
-			outputs[POLYOUT_OUTPUT].setVoltage(quantMe(newVal), 3);
-			
 			outputs[POLYOUT_OUTPUT].channels=indexChan+1;
 		
 				}
@@ -182,7 +184,7 @@ struct MKnobWidget : ModuleWidget {
 	
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Quantize", {"Nope","Octaves","Notes"}, &module->indexQuant));
-		menu->addChild(createIndexPtrSubmenuItem("Range", {"-5V to 5V","0 to 10V"}, &module->indexRange));
+		menu->addChild(createIndexPtrSubmenuItem("Range", {"-5V to 5V","0 to 10V","0 to 1V","-10v to 10v"}, &module->indexRange));
 		menu->addChild(createIndexPtrSubmenuItem("Poly channels", {"1","2","3","4"}, &module->indexChan));
 		
 		
