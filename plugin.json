@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.21",
+  "version": "2.1.22",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -155,6 +155,7 @@
       "slug": "SeqP16",
       "name": "Sequential Switch Programmer 16",
       "description": "Four knobs to choose from the channels of a polyphonic input",
+	  "hidden": true,
       "keywords": [
         "SeqP16",
 		"selector"
@@ -561,6 +562,26 @@
         "Sequencer"
       ]
     },	
+    {
+      "slug": "Organic",
+      "name": "Organic",
+      "description": "A sequencer with an inprobable route",
+      "keywords": [
+        "organic",
+		"generative"
+      ],
+      "tags": [
+        "Sequencer"
+      ]
+    },	
+    {
+      "slug": "Rubber",
+      "name": "Rubber",
+      "description": "A 2HP module with various motors",
+      "tags": [
+        "Sequencer"
+      ]
+    },
    {
       "slug": "ChSel2",
       "name": "Channel Selector 2",
