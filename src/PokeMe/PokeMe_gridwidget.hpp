@@ -68,9 +68,10 @@ struct GridWidgetPokeMe : TransparentWidget {
 					else if (this_step == 2) {nvgFillColor(vg, nvgRGBA(190,190,90,highlight));}
 					else if (this_step == 3) {nvgFillColor(vg, nvgRGBA(180,180,60,highlight));}
 					else if (this_step == 4) {nvgFillColor(vg, nvgRGBA(170,170,30,highlight));}
-					else if (this_step == 5) {nvgFillColor(vg, nvgRGBA(160,160,00,highlight));}
 					
+					else if (this_step == 5) {nvgFillColor(vg, nvgRGBA(251,160,90,highlight));}
 					else if (this_step == 6) {nvgFillColor(vg, nvgRGBA(190,90,190,highlight));}
+
 					else if (this_step == 7) {nvgFillColor(vg, nvgRGBA(60,180,180,highlight));}
 					else if (this_step == 8) {nvgFillColor(vg, nvgRGBA(30,170,170,highlight));}
 					else if (this_step == 9) {nvgFillColor(vg, nvgRGBA(00,160,160,highlight));}

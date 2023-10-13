@@ -17,13 +17,23 @@ void shiftSeq() {
 
 // this will roll the dice for all 256 slots :)
 void randomizeFields() {
+	float rndVal=0;
 	for (int i=0; i<256; i++) {
-		if (indexLFO==1) {theSeq[i]=(rack::random::uniform()*10)-5;}	// internal LFO for '-5V to 5V'
-		else if (indexLFO==2) {theSeq[i]=(rack::random::uniform()*10);}		// internal LFO for '0V to 10V'
-		else if (indexLFO==3) {theSeq[i]=(rack::random::uniform()*2-1);}		// internal LFO for '-1V to 1V'
-		else if (indexLFO==4) {theSeq[i]=(rack::random::uniform());}		// internal LFO for '0V to 1V'
-		else if (indexLFO==0) {theSeq[i]=(rand() % 2) *10;}					// internal LFO for gate sequences
+		rndVal=rack::random::uniform();
+		switch (indexLFO) {
+		case 1: {theSeq[i]=(rndVal*10)-5;	break;}	// internal LFO for '-5V to 5V'
+		case 2: {theSeq[i]=(rndVal*10); 	break;}	// internal LFO for '0V to 10V'
+		case 3: {theSeq[i]=(rndVal*2-1);	break;}	// internal LFO for '-1V to 1V'
+		case 4: {theSeq[i]=(rndVal);    	break;}	// internal LFO for '0V to 1V'
+		// case 0: {theSeq[i]=(rand()%2)*10;	break;}	// internal LFO for gate sequences
+		default: {theSeq[i]=(rand()%2)*10;	break;}	// internal LFO for gate sequences
+		}
 	}
+}
+
+// this will emopty all 256 slots
+void emptyFields() {
+	for (int i=0; i<256; i++) {theSeq[i]=0;}
 }
 
 // -------------------------------------

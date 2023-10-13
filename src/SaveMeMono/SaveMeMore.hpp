@@ -26,6 +26,7 @@ struct SaveMeMore : Module {
 		paramQuantities[LENGT_PARAM]->snapEnabled = true;
 		paramQuantities[START_PARAM]->description = "Can also be modulated by 0-10V CV";
 		configInput(START_INPUT, "Start position CV"); 
+		getInputInfo(START_INPUT)->description = "0V-10V modifying the START knob";		
 		configOutput(MONO_REPLAY_OUTPUT, "Mono replay"); 
 		configOutput(REVERSE_REPLAY_OUTPUT, "Reverse replay"); 
 		configOutput(RANDOM_REPLAY_OUTPUT, "Random replay"); 
