@@ -244,7 +244,7 @@ There one more unique feature that you can enable in the context menu: 'extended
 - 'channel 1' to 'channel 9' sends a trigger is current step value is relevant (e.g. step value is 1 then channel 2 sends a trigger, step value is 2 then channel 3 sends a trigger)  
 
 ### Euclk
-I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical imprtance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
+I found [Euclidean rhythms](https://en.wikipedia.org/wiki/Euclidean_rhythm) fascinating ever since my high school math teacher, Mr. Tamás Kötél introduced me to their musical importance. There are many fantastic implementation of this concept in VCV but I thought it's worth for me to give a try. 
 
 Euclk is a single track sequencer with clock (CLK) and reset (RST) inputs. There is a knob for the pattern length (LEN), hits (HIT), shift (SHF) paramters. There is also a precision (PRC) settings available for instant randomization. The two outputs provide the calculated trigger sequence and its inverted variation.
 
@@ -257,14 +257,18 @@ An expander for Euclk. It uses the clock and reset signal of Euclk and adds an a
 A tricky 4-step sequencer that returns one of the 5 input sources according to the knob selections. To advance the step you need a clock (see CLK). Red LEDs indicate the active step, yellow LEDs indicate the currently selected input. Setting any of the knobs to zero will randomly forward one of the input sources. <-- See a VCV selection demo here: [demo/Demo_SeqP5.vcvs](demo/Demo_SeqP5.vcvs).-->
 
 ### RouteSeq 
-It is a versatile sequencer that can act as a switch. Without a polyphonic in you can dial eight notes (C-4 to D#5) and you can also set the the time spent there. Hence you can create an 8-steps pattern or a 128-steps pattern if you whish. It a polyphonic input is provided then the left knobs allow you to select one of the channels and the module will return that. In a nutshell... but you better give it a try instead of waiting for a proper operational manual. See a VCV selection demo here: [demo/Demo_RouteSeq_with_BogAudio.vcvs](demo/Demo_RouteSeq_with_BogAudio.vcvs).
+It is a versatile sequencer that can act as a switch. The right column of knobs allows you to set the time spent at a ccertain step. Hence you can create an 8-steps pattern or a 128-steps pattern, or anything in between. If a polyphonic input is provided then the left knobs allow you to select one of the channels and the module will return that. Without providing a polyphonic input the left column of knobs allow you to dial specific CVs. (See the context menu for alternative ranges.) 
+
+But you better give it a try instead of waiting for a proper operational manual. See a VCV selection demo here: [demo/Demo_RouteSeq_with_BogAudio.vcvs](demo/Demo_RouteSeq_with_BogAudio.vcvs).
+
+One more thing: if you put multiple RouteSeq modules next to each other then they share the clock of the very left one! 
 
 -----
 
 ### MKnob
 A simple fix voltage provider module. The context menu offers
 - Quantize: `nope` / `octave` / `notes`
-- Range: `0V to 10V` or `-5V to 5V`
+- Range: `0V to 10V`, `-10V to 10V`, `0V to 1V`, or `-5V to 5V`
 - Poly channels: limiting polyphonic output from 1 to 4 channels if needed
 
 If no poly output or quantization is needed then go for [VCV 8vert](https://library.vcvrack.com/Fundamental/8vert) instead. It's the standard module to provide fix voltages.  
@@ -404,7 +408,23 @@ The module is less of a faithful recreation of historical scales than a quick ex
 
 ### Quant12
 
-Quantizer with some commonly used features like trigger and transpose. This module replicates the functions of a bunch of module that I usually pair with my quantizers.
+Quantizer with some commonly used features like trigger and transpose. This module replicates the functions of a bunch of module that I usually pair with my quantizers. This module has become one of my most used modules. I really like it. Some features:
+
+- TRIG knob changes the probability of catching the trigger input (i.e. setting to 50% means that about half of the incoming triggers are ignored)
+- NOISE knob is an attenuator of the noise input
+- TRANSP knob is an attenuator of the same input
+
+ If no input is provided for
+ - TRIG then it simply continously calculates the quantized voltage
+ - NOISE then it automatically uses an internal noise in the 0V to 1V range
+ - TRANSP then it is ignored
+
+Please note that depending on the MODE switch the TRANSP input signal can be completely ignored, or added to the quantized CV (i.e. dynamically detune), or quantized together with the NOISE input (i.e. transpose the melody).
+
+As of the outputs 
+- left top: provides the enabled notes in a polyphonic output; note that with proper settings the TRANSP also transposes these values (read: a chord is provided)
+- right top: provides a single note as calculated from NOISE (and possibly TRANSP)
+- bottom middle: provides a trigger every time the TRIG input signal is used  
 
 ### tXOr
 This is a clock modification module. Each knob sets the division of the clock signal (see CLK). The output is the XOR (exclusive OR) signal of the modified clocks. The concept is similar to JWM's [1Pattern](https://library.vcvrack.com/JW-Modules/1Pattern) but the tXOr inputs allow dynamic modification of the knobs. 
