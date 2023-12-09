@@ -123,7 +123,7 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
-### Rubber (unreleased)
+### Rubber (still in progress)
 
 Rubber is collection of utility modules I tend to use regularly. It has 4 inputs, 4 outputs, a button and a mode selector.
 - Mode #0 - A, B, C, D inputs are sent to SUM, AVG, MIN, MAX CV outputs
@@ -146,7 +146,9 @@ Input D is tricky.
   * Option 2 by sending a special CV to the socket a certain output can be forced (i.e. 1v for output A, 2v for output B, 3v for output C, or 4v for output D)
   * Option 3 by sending a negative voltage a specific pattern variation can be set. 
 The outputs provide the same pattern but in different range. (0v to 1v, -1v to 1v, 0v to 10v, -5v to 5v.)
-- Mode #9-#16 - empty slot
+- Mode #9 - A, B, C, D inputs are added and converted into a linear drum sequence on the outputs
+- Mode #10-#15 - empty slot
+- Mode #16 - A, B, C, D inputs are sent to ABS, +5V, inverted, and SIN outputs
 
 ### PokeMe
 
@@ -156,17 +158,17 @@ By default triggers can be entered to the cell grid by mouse. Shift-Left-Click a
 
 - `0` (grey) blank
 - `1` (green) 100% probability hit
-- `2` 95% probability hit
-- `3` 80% probability hit
-- `4` 50% probability hit
-- `5` ... something something ...
-- `6` ... something something ...
-- `7` only every 2nd 
-- `8` only every 3rd
-- `9` only every 4th
+- `2` (yellow) 90% probability hit
+- `3` (yellow) 80% probability hit
+- `4` (yellow) 50% probability hit
+- `5` (orange) gate or trigger or nothing (I think) 
+- `6` (purple) trigger or double hit or nothing (I think) 
+- `7` (blue) only every 2nd 
+- `8` (blue) only every 3rd
+- `9` (blue) only every 4th
 - `10` (red) restart
 
-Short keys from Ctrl-1 to Ctrl-9 can also be used to set the trigger mode of the next click. Ctrl-X is dedicated to entering a "restart" cell.
+Short keys from Ctrl-1 to Ctrl-9 can also be used to set the trigger mode of the next click. Ctrl-X is dedicated to entering a "restart" cell. Paramters for mode 2-4 and 7-9 can be set in the context menu. 
 
 An additional feature is that placing multiple PokeMe modules next to each other the clock and reset signals are shared. I wouldn't group too many of them but a 3-4 track sequencer can be built easily.
 
@@ -201,6 +203,7 @@ Keyboard shortcuts are also available:
 - `b`: records a hit to the fourth sequence (if available)
 - `n`: records a hit to the fifth sequence (if available)
 - `m`: records a hit to the sixth sequence (if available)
+- `Alt-R`: special dice mode designed for the 1x48 random mode
 
 ![image](https://user-images.githubusercontent.com/34127628/177716736-c3e5015c-f4cc-47f2-a232-451239b25a2f.png)
 
