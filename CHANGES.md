@@ -1,5 +1,23 @@
 # Changelog
 
+v2.1.23 changes 2024-04-06 (Zsolt Palotai release)
+- bug fix: Rotatrig startup cleaned up
+- bug fix: Channel Selector 2 display labels reviewed
+- bug fix: Channel Selector 2 numeric shortcuts for top slider revised
+- bug fix: Quant12 note calculation rewritten
+- new feature: RouteSeq selection for a range in context menu
+- new feature: SaveMeMono creates alternate pattern based on the number of steps set
+- bug fix: RouteSeq timing issue
+- new module: HighLow utility to switch between two pre-defined voltages
+- new module: SimpleLFO with bleeding waves
+- new feature: PokeMe context menu allows changing the 2, 3, 4 modes (set probability)
+- new feature: PokeMe context menu allows changing the 7, 8, 9 modes (not to hit Nth time)
+- new feature: PokeMe context menu allows syncing to the left (mother) module 
+- new labels: Rubber mode 16 input labels are clarified
+- new feature: Rubber mode 7, 8, 10 allows decreasing precision (see probability) between 6V and 7V
+- new feature: Rubber got a new, a layered drum pattern (two-handed-drummer) mode and patch breaking rearrangement of older modes
+- new feature: Rubber got a new, Bernoulli gate mode with multiple merged inputs
+
 v2.1.22 changes 2023-10-13 (György Konrád release)
 - new ranges added to MKnobs
 - randomization of precision knob in Euclik is disabled
