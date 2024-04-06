@@ -56,6 +56,9 @@ void init(Plugin* p) {
 	p->addModel(modelRouteSeq);
 	p->addModel(modelOrganic);
 	p->addModel(modelRubber);
+	p->addModel(modelHighLow);
+	p->addModel(modelSimpleLFO);
+	p->addModel(modelKcik);
 
 	// Any other plugin initialization may go here.
 	// As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.

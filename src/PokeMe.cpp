@@ -67,6 +67,7 @@ struct PokeMe : Module {
 	int hitClock=NA;
 	int hitReset=NA;
 	
+	int indexMumSync=1;
 	int indexPRG=1;
 	int indexPW=0;
 	bool indexLoop=true;
@@ -78,9 +79,12 @@ struct PokeMe : Module {
 	float newVolt=0;
 	
 	float defProb1=1.0f;
-	float defProb2=0.95f;
-	float defProb3=0.80f;
-	float defProb4=0.50f;
+	// float defProb2=0.95f;
+	// float defProb3=0.80f;
+	// float defProb4=0.50f;	
+	int defProb2=9;	// 90%
+	int defProb3=8;	// 80%
+	int defProb4=5;	// 50%
 	int defProb7=2;
 	int defProb8=3;
 	int defProb9=4;
@@ -96,6 +100,21 @@ struct PokeMe : Module {
 			}
 		}
 		return nullptr;
+	}
+
+	void onReset(const ResetEvent& e) override {
+		Module::onReset(e);
+		
+		indexChoke=false;
+		indexExt=false;
+		indexOut=0;
+		
+		defProb2=9;	// 90%
+		defProb3=8;	// 80%
+		defProb4=5;	// 50%
+		defProb7=2;
+		defProb8=3;
+		defProb9=4;
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -119,6 +138,8 @@ struct PokeMe : Module {
 			else {hitClock=NA;}
 			oldClock=newClock;
 		}
+
+		if (mother && indexMumSync==1 && mother->CURR_STEP==1) {indexMumSync=0;CURR_STEP=0;}
 			
 		if (mother && inputs[RESET_INPUT].isConnected()==false) {hitReset=mother->hitReset;}
 		else {
@@ -142,27 +163,32 @@ struct PokeMe : Module {
 				// CONT_LAPS[0]++; if (CONT_LAPS[0]>=2) {CONT_LAPS[0]=0;}
 				// CONT_LAPS[1]++; if (CONT_LAPS[1]>=3) {CONT_LAPS[1]=0;}
 				// CONT_LAPS[2]++; if (CONT_LAPS[2]>=4) {CONT_LAPS[2]=0;}
-				CONT_LAPS[0]++; if (CONT_LAPS[0]>=defProb7) {CONT_LAPS[0]=0;}
-				CONT_LAPS[1]++; if (CONT_LAPS[1]>=defProb8) {CONT_LAPS[1]=0;}
-				CONT_LAPS[2]++; if (CONT_LAPS[2]>=defProb9) {CONT_LAPS[2]=0;}
+				CONT_LAPS[0]++; if (CONT_LAPS[0]>=abs(defProb7)) {CONT_LAPS[0]=0;}
+				CONT_LAPS[1]++; if (CONT_LAPS[1]>=abs(defProb8)) {CONT_LAPS[1]=0;}
+				CONT_LAPS[2]++; if (CONT_LAPS[2]>=abs(defProb9)) {CONT_LAPS[2]=0;}
+				// CONT_LAPS[0]++; if (defProb7>0) {if (CONT_LAPS[0]>=defProb7) {CONT_LAPS[0]=0;}}
+				// CONT_LAPS[1]++; if (defProb8>0) {if (CONT_LAPS[1]>=defProb8) {CONT_LAPS[1]=0;}}
+				// CONT_LAPS[2]++; if (defProb9>0) {if (CONT_LAPS[2]>=defProb9) {CONT_LAPS[2]=0;}}
 			}
 			switch (grid_data[CURR_STEP]) {
 				case 0: newVolt=0; break;	
-				// case 1: newVolt=10; break;	
-				// case 2: newVolt=(0.95>rack::random::uniform())?10:0.2; break;	
-				// case 3: newVolt=(0.80>rack::random::uniform())?10:0.3; break;	
-				// case 4: newVolt=(0.50>rack::random::uniform())?10:0.4; break;	
-				// case 5: newVolt=(0.60>rack::random::uniform())?10:0.5; break;
 				case 1: newVolt=10; break;	
-				case 2: newVolt=(defProb1>rack::random::uniform())?10:0.2; break;	
-				case 3: newVolt=(defProb2>rack::random::uniform())?10:0.3; break;	
-				case 4: newVolt=(defProb3>rack::random::uniform())?10:0.4; break;	
+				case 2: newVolt=(rack::random::uniform()*10<defProb2)?10:0.2; break;	
+				case 3: newVolt=(rack::random::uniform()*10<defProb3)?10:0.3; break;	
+				case 4: newVolt=(rack::random::uniform()*10<defProb4)?10:0.4; break;	
+				// case 4: float rndF=rack::random::uniform();newVolt=(rndF<(defProb4/10))?10:rndF*10; break;	
 				case 5: newVolt=(0.60>rack::random::uniform())?10:0.5; break;
-				case 6: newVolt=3+(rand() % 7); CONT_SAMP=25; break; 			// lame but it provides some random voltage above 2V
-				case 7: newVolt=(CONT_LAPS[0]==0)?10:0.7; break;	
-				case 8: newVolt=(CONT_LAPS[1]==0)?10:0.8; break;	
-				case 9: newVolt=(CONT_LAPS[2]==0)?10:0.9; break;	
-				default: newVolt=0.25; 	// possibly never gets here
+				case 6: newVolt=3+(rand() % 7); CONT_SAMP=25; break; 	// lame but it provides some random voltage above 2V
+				case 7: if (defProb7>0) {newVolt=(CONT_LAPS[0]==0)?10:0.7;}
+					else {newVolt=(CONT_LAPS[0]==0)?0.7:10;} break;	
+				case 8: if (defProb8>0) {newVolt=(CONT_LAPS[1]==0)?10:0.8;}
+					else {newVolt=(CONT_LAPS[0]==0)?0.8:10;} break;	
+				case 9: if (defProb9>0) {newVolt=(CONT_LAPS[2]==0)?10:0.9;}
+					else {newVolt=(CONT_LAPS[0]==0)?0.9:10;} break;	
+				// case 7: newVolt=(CONT_LAPS[0]==0)?10:0.7; break;	
+				// case 8: newVolt=(CONT_LAPS[1]==0)?10:0.8; break;	
+				// case 9: newVolt=(CONT_LAPS[2]==0)?10:0.9; break;	
+				default: newVolt=0.0404; 	// possibly never gets here
 			}
 			
 			if (indexChoke && mother && mother->newVolt>2) {newVolt=0;} // choked

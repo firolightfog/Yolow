@@ -89,6 +89,7 @@ struct RouteSeq : Module {
 	int loop=0;     // save some CPU in process()
 
 	int indexOctave=3; 	// -3,-2,-1,0,1,2,3
+	int indexRange=0;	// if no poly input then 0 semitones, 1 octaves
 
 	// for managing the RESET and CLOCK signals
 	float newReset=0.0f;
@@ -213,9 +214,46 @@ struct RouteSeq : Module {
 				paramQuantities[STEP_FREEZER_1_PARAM+p]->description = ("Total steps: " + std::to_string(totalSteps));
 				if (inputs[POLY_INPUT].isConnected()) {
 					paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = "Poly cable channel selected";
+					paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->snapEnabled = true;
+					paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 1;
+					paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset = 0;					
 				}
 				else {
-					paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: " + valNotes[(int)paramVal[CHANNEL_SELECTOR_1_PARAM+p]]);
+					paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->snapEnabled = (indexRange>0)?false:true;
+					// v2.1.23 added next section
+					switch (indexRange) {
+						case 0: 
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: " + valNotes[(int)paramVal[CHANNEL_SELECTOR_1_PARAM+p]]);
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 1;
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset =0; 
+							break;
+						case 1: 
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: -1V to 1V");
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 0.125f;
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset = -1; 
+							break;						
+						case 2: 
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: -3V to 3V");
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 0.375;
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset = -3; 
+							break;						
+						case 3: 
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: -5V to 5V");
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 0.625;
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset = -5; 
+							break;						
+						case 4: 
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: -10V to 10V");
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 1.25;
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset = -10; 
+							break;						
+						default: 
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->description = ("Without cable: that's for sure");
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayMultiplier = 1;
+							paramQuantities[CHANNEL_SELECTOR_1_PARAM+p]->displayOffset =0; 
+					}
+
+					
 				}
 			}
 			
@@ -251,11 +289,12 @@ struct RouteSeq : Module {
 
 		// let's find the right step	
 		if (hitClock==ON && !(hitReset==ON)) {
+			currentStep++;	// v2.1.23 added
 			if (currentStep>=totalSteps) {currentStep=0; randval= 1 + (rand() % 16);}
-			else {currentStep++;}
+			// else {currentStep++;} // v2.1.23 removed
 		} 
 		else if (hitClock==ON && hitReset==ON) {currentStep=0;}
-		else if (!(hitClock==ON) && hitReset==ON) {currentStep=-1;}
+		else if (!(hitClock==ON) && hitReset==ON) {currentStep=-1;}	// itt ez rossz lehet
 		else if (hitClock==OFF && hitReset==OFF) {/* do nothing */}
 		
 		// which of the positions is active?
@@ -287,15 +326,42 @@ struct RouteSeq : Module {
 			}
 		} 
 		else if (loop % 400 == 25) { // if no input is connected then C-4, C#4, D-4, etc.
-			if (paramVal[CHANNEL_SELECTOR_1_PARAM+needed]==0) {
+			if (indexRange==0 && paramVal[CHANNEL_SELECTOR_1_PARAM+needed]==0) {
 				outputs[MONO_OUTPUT].setVoltage(
 				indexOctave - 3 + 
 				(paramVal[CHANNEL_SELECTOR_1_PARAM+(int)(randval/2)])/12);
 			}
-			else {
-				outputs[MONO_OUTPUT].setVoltage(
-				indexOctave - 3 + 
-				(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1)/12);
+			else { // frozen, wait longer
+				// v2.1.23 added next section
+				switch (indexRange) {
+					case 0: 
+						outputs[MONO_OUTPUT].setVoltage(
+						indexOctave - 3 + 
+						(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1)/12);
+						break;
+					case 1: 
+						outputs[MONO_OUTPUT].setVoltage(
+						indexOctave - 3 + 
+						(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]/16)*2-1);
+						break;
+					case 2: 
+						outputs[MONO_OUTPUT].setVoltage(
+						indexOctave - 3 + 
+						(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]/16)*6-3);
+						break;
+					case 3: 
+						outputs[MONO_OUTPUT].setVoltage(
+						indexOctave - 3 + 
+						(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]/16)*10-5);
+						break;
+					case 4: 
+						outputs[MONO_OUTPUT].setVoltage(
+						indexOctave - 3 + 
+						(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]/16)*20-10);
+						break;
+					default: 
+						outputs[MONO_OUTPUT].setVoltage(paramVal[CHANNEL_SELECTOR_1_PARAM+needed]-1);
+				}
 			}
 		}
 		
@@ -305,12 +371,23 @@ struct RouteSeq : Module {
 	json_t* dataToJson() override {
 	json_t* rootJ = json_object();
 	json_object_set_new(rootJ, "octave", json_integer(indexOctave));
+	json_object_set_new(rootJ, "range", json_integer(indexRange));
 	return rootJ;}
 
 	void dataFromJson(json_t* rootJ) override {
+	json_t *modeJ = json_object_get(rootJ, "mode");
+	if (modeJ) indexOctave = json_integer_value(modeJ);
+	json_t *rangeJ = json_object_get(rootJ, "range");
+	if (rangeJ) indexRange = json_integer_value(rangeJ);
+	}
+
+/* 	void dataFromJson(json_t* rootJ) override {
 	json_t *modeJ = json_object_get(rootJ, "octave");
 	if (modeJ) indexOctave = json_integer_value(modeJ);}
-	// #include "RouteSeq/RouteSeq_json.hpp"
+	json_t *rangeJ = json_object_get(rootJ, "range");
+	if (rangeJ) indexRange = json_integer_value(rangeJ);}
+ */
+ 	// #include "RouteSeq/RouteSeq_json.hpp"
 
 };
 
@@ -378,6 +455,10 @@ struct RouteSeqWidget : ModuleWidget {
 
 		// menu->addChild(createIndexPtrSubmenuItem("Get a pattern", {"8 steps","16 steps","24 steps","32 steps","64 steps","96 steps","128 steps"}, &module->indexPattern()));
 
+		menu->addChild(createIndexPtrSubmenuItem("Octave transposition", {"-3","-2","-1","0","1","2","3"}, &module->indexOctave));
+
+		menu->addChild(createIndexPtrSubmenuItem("Range", {"Semitones","-1V to 1V","-3V to 3V","-5V to 5V","-10V to 10V"}, &module->indexRange));
+
 		menu->addChild(createIndexSubmenuItem("Set a pattern",
 			// module->txtPatterns,
  			{"8 steps", // 0
@@ -393,8 +474,6 @@ struct RouteSeqWidget : ModuleWidget {
 		));
 		
         menu->addChild(createMenuItem("Shuffle selectors", "", [=]() {module->shuffleSelectors();}));
-
-		menu->addChild(createIndexPtrSubmenuItem("Octave transposition", {"-3","-2","-1","0","1","2","3"}, &module->indexOctave));
 
 	}
 

@@ -9,7 +9,7 @@ struct RotaTrig : Module {
 		NUMBER_OF_SLOTS_PARAM, MODE_PARAM, PARAMS_LEN};
 
 	enum InputId    {
-		TRIGGER_INPUT, ENABLE_1_INPUT, ENABLE_2_INPUT, ENABLE_3_INPUT, ENABLE_4_INPUT, 
+		CLOCK_INPUT, ENABLE_1_INPUT, ENABLE_2_INPUT, ENABLE_3_INPUT, ENABLE_4_INPUT, 
 		ENABLE_5_INPUT, ENABLE_6_INPUT, INPUTS_LEN};
 
 	enum OutputId    {
@@ -34,7 +34,7 @@ struct RotaTrig : Module {
 		paramQuantities[MODE_PARAM]->snapEnabled = true;
 		paramQuantities[NUMBER_OF_SLOTS_PARAM]->snapEnabled = true;
 
-		configInput(TRIGGER_INPUT, "Trigger"); 
+		configInput(CLOCK_INPUT, "Trigger"); 
 		configInput(ENABLE_1_INPUT, "Enable 1"); 
 		configInput(ENABLE_2_INPUT, "Enable 2"); 
 		configInput(ENABLE_3_INPUT, "Enable 3"); 
@@ -61,9 +61,9 @@ struct RotaTrig : Module {
 	int currStep=0;			// calculated step (aka output) for the next step
 	int maxStep=6;			// PARAM value; max number of outputs available
 	int selOut=0;			// selected output
-	int CLOCK_INPUT=TRIGGER_INPUT;
+	// int CLOCK_INPUT=CLOCK_INPUT;
 	
-	std::string labelMode[3]={"Random mode","Step-by-step mode","0v-10V CV driven selection"};
+	const std::string labelMode[3]={"Random mode","Step-by-step mode","0v-10V CV driven selection"};
 	
 	void process(const ProcessArgs& args) override {
 
@@ -150,7 +150,7 @@ struct RotaTrigWidget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		// addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		
-		childInput(RotaTrig::TRIGGER_INPUT, HP*1, HP*5);
+		childInput(RotaTrig::CLOCK_INPUT, HP*1, HP*5);
 		childSwitch(RotaTrig::MODE_PARAM, 1, HP*3, HP*5);
 
 		childKnob(RotaTrig::NUMBER_OF_SLOTS_PARAM, 1, HP*2, HP*8);

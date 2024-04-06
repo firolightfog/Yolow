@@ -45,6 +45,7 @@ struct SaveMeMono : Module {
 		configOutput(MONO_REPLAY_OUTPUT, "Mono replay"); 
 		configOutput(REVERSE_REPLAY_OUTPUT, "Reverse replay"); 
 		configOutput(RANDOM_REPLAY_OUTPUT, "Random replay"); 
+				
 	}
 
 // --------------------------------------------------
@@ -110,6 +111,7 @@ struct SaveMeMono : Module {
 			else if (indexRec==1) {sx+="Single step";}
 			else if (indexRec==2) {sx+="Non-stop";}
 			else if (indexRec==3) {sx+="Rewrite all CVs";}			
+			else if (indexRec==4) {sx+="Alternate patterns";}			
 			// else if (indexRec==4) {sx+="Rewrite some CVs";}			
 			if (indexRec==3) {sx+=" (ignore LFO input)";}
 			// else if (indexRec==4) {sx+=" (ignore LFO input)";}
@@ -117,6 +119,8 @@ struct SaveMeMono : Module {
 			else if (indexLFO==1) {sx+=(lfoIn)?" from LFO":" & -5V to +5V";}
 			else if (indexLFO==0) {sx+=(lfoIn)?" from LFO":" & Gates";}
 			paramQuantities[RECORD_PARAM]->description = sx;
+
+			// SaveMeMore->hidden = (indexLFO==0)?true:false;	// delete it; just for testing
 
 		}
 
@@ -144,6 +148,7 @@ struct SaveMeMono : Module {
 			if (hitRecord==1) {
 				
 				if (indexRec==3) {randomizeFields();}	// dump all 256 CVs
+				else if (indexRec==4) {alternateFields();}	// create variations of the first N steps
 				else {				
 					// this section grabs the internal/external LFO signal and saves it
 					if (lfoIn) {pickVolt=inputs[MONO_LFO_INPUT].getVoltage();}
@@ -157,7 +162,7 @@ struct SaveMeMono : Module {
 				}
 				
 				// this sction allows switching off recording (see toggle/momentary)
-				if (indexRec==1 || indexRec==3) {params[RECORD_PARAM].setValue(0);}	// momentary or dump
+				if (indexRec==1 || indexRec==3 || indexRec==4) {params[RECORD_PARAM].setValue(0);}	// momentary or dump
 				else if (indexRec==0) {									// single cycle
 					if (countRec<=0) {params[RECORD_PARAM].setValue(0);}
 					else {countRec--;}
@@ -237,9 +242,10 @@ struct SaveMeMonoWidget : ModuleWidget {
 		assert(module);
 
 		menu->addChild(new MenuSeparator);
-		menu->addChild(createMenuItem("Empty all CVs", "", [=]() {module->emptyFields();}));	
+		menu->addChild(createMenuItem("Empty all CVs", "", [=]() {module->emptyFields();}));
 		menu->addChild(createMenuItem("Randomize all CVs", "", [=]() {module->randomizeFields();}));	
-		menu->addChild(createIndexPtrSubmenuItem("Record button mode", {"One cycle","Momentary","Non-stop","Rewrite all" /*,"Dump some"*/ }, &module->indexRec));
+		menu->addChild(createMenuItem("Alternate patterns", "", [=]() {module->alternateFields();}));	
+		menu->addChild(createIndexPtrSubmenuItem("Record button mode", {"One cycle","Momentary","Non-stop","Rewrite all" ,"Alternate patterns" /*,"Dump some"*/ }, &module->indexRec));
 		
 		menu->addChild(new MenuSeparator);
 		menu->addChild(createIndexPtrSubmenuItem("Pulse width", {"Full width","Only clock wide"}, &module->indexPW));

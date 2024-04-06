@@ -90,10 +90,10 @@ struct ChSel2 : Module {
 			else {
 				paramQuantities[SLIDER1_PARAM]->snapEnabled = false;
 				paramQuantities[SLIDER2_PARAM]->snapEnabled = false;
-				paramQuantities[SLIDER1_PARAM]->displayMultiplier = 0.66666667f;
-				paramQuantities[SLIDER2_PARAM]->displayMultiplier = 0.66666667f;
-				paramQuantities[SLIDER1_PARAM]->displayOffset = -0.66666667f;
-				paramQuantities[SLIDER2_PARAM]->displayOffset = -0.66666667f;
+				paramQuantities[SLIDER1_PARAM]->displayMultiplier = 1.33333333f;
+				paramQuantities[SLIDER2_PARAM]->displayMultiplier = 1.33333333f;
+				paramQuantities[SLIDER1_PARAM]->displayOffset = -11.33333333;
+				paramQuantities[SLIDER2_PARAM]->displayOffset = -11.33333333;
 				paramQuantities[SLIDER1_PARAM]->description = "Set a fixed voltage";
 				paramQuantities[SLIDER2_PARAM]->description = "Set a fixed voltage";
 				voltA=(params[SLIDER1_PARAM].getValue()-1)/15*20-10;
@@ -153,7 +153,7 @@ struct ChSel2Widget : ModuleWidget {
 		if (e.action == GLFW_PRESS) {
 			if (e.key >= GLFW_KEY_1 && e.key <= GLFW_KEY_9) {
 				float key_number = e.key - 49; // 49 is the ascii number for key #1
-				module->contextSetFirstChan(key_number);
+				module->contextSetFirstChan(key_number+1);
 				e.consume(this);
 			}
 		}

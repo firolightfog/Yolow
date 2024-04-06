@@ -92,13 +92,28 @@ struct Quant12 : Module {
 
 	// this gets a 0v-1v value and returns a quantized one
 	float roundTo(float nx) {
+		nx=nx*12.0f;
+		nx=floor(nx+0.5f);
+		float xn=-99.0f;
+		for (int p=0; p<12; p++) {
+			if (paramVal[NOTE_PARAM+p]==1) {
+				if (nx==p) {return nx/12.0f;}
+				if (abs(nx-p)<abs(nx-xn)) {xn=p;}
+			}
+		}
+		return xn/12.0f;
+	}
+	
+	// this is the old version of rounding that I need to delete probably
+/* 	float roundTo(float nx) {
 		float beforeNote=-1;
 		float afterNote=-1;
 		nx=nx*12;
 		for (int p=0; p<12; p++) {
 			if (paramVal[NOTE_PARAM+p]==1) {
 				if (nx>=p) {
-					if (beforeNote==-1) {afterNote=12+p;}
+					// if (beforeNote==-1) {afterNote=12+p;}
+					afterNote=p;
 					beforeNote=p;
 				}
 				else {
@@ -109,9 +124,9 @@ struct Quant12 : Module {
 		}	
 		if (beforeNote==-1) {return nx/12;}
 		else if (afterNote==-1) {return beforeNote/12;}
-		else {return ((afterNote-nx>nx-beforeNote)?beforeNote:afterNote)/12;}
+		else {return ((afterNote - nx > nx - beforeNote) ? beforeNote : afterNote)/12;}
 	}
-
+ */
 	// this manipulates the incoming voltage based on MODE and sends it to the output
 	float oldVoltOut=0;
 	float newVoltOut=0;

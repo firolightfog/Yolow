@@ -91,7 +91,7 @@ struct MKnob : Module {
 	// needed to properly show voltages according to indexRange
 	float xMult[4]={1,1,0.1,2};
 	float xOffs[4]={0,5,0.5,0};
-
+	
 	const std::string tmpNotes[12]={
 		"C ","C# ","D ",
 		"D# ","E ","F ",

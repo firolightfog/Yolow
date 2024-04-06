@@ -57,3 +57,6 @@ extern Model* modelPokeMe;
 extern Model* modelRouteSeq;
 extern Model* modelOrganic;
 extern Model* modelRubber;
+extern Model* modelHighLow;
+extern Model* modelSimpleLFO;
+extern Model* modelKcik;
