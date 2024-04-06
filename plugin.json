@@ -1,7 +1,7 @@
 {
   "slug": "Yolow",
   "name": "Yolow",
-  "version": "2.1.22",
+  "version": "2.1.23",
   "license": "GPL-3.0-or-later",
   "brand": "Yolow",
   "authorEmail": "firolightfog@gmail.com",
@@ -499,7 +499,7 @@
       "description": "Step voltage generator based on predefined map and a single reading head. (Read: a predefined field with a single eating sheep.)",
       "tags": [
         "Random",
-        "Low-frequency",
+        "Low-frequency oscillator",
         "Sequencer"
       ]
     }, 
@@ -510,7 +510,7 @@
       "tags": [
         "Random",
         "Expander",
-        "Low-frequency",
+        "Low-frequency oscillator",
         "Sequencer"
       ]
     }, 
@@ -580,6 +580,31 @@
       "description": "A 2HP module with various motors",
       "tags": [
         "Sequencer"
+      ]
+    },
+    {
+      "slug": "HighLow",
+      "name": "High Low",
+      "description": "Switching between two fixed voltages",
+      "tags": [
+        "Utility"
+      ]
+    },
+    {
+      "slug": "SimpleLFO",
+      "name": "SimpleLFO",
+      "description": "A simple LFO developed in cooperation with ChatGPT4",
+      "tags": [
+        "Low-frequency oscillator"
+      ]
+    }, 
+    {
+      "slug": "Kcik",
+      "name": "Kcik",
+      "description": "A drum synth developed in cooperation with ChatGPT4",
+	  "hidden": true,
+      "tags": [
+        "Low-frequency oscillator"
       ]
     },
    {
