@@ -15,7 +15,6 @@ This is a polyphonic utility to merge monophonic signals.
 
 #include "plugin.hpp"
 
-
 struct PolyCopy16 : Module {
 	enum ParamId {
 		PARAMS_LEN
