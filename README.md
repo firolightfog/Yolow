@@ -127,28 +127,34 @@ Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. I
 
 Rubber is collection of utility modules I tend to use regularly. It has 4 inputs, 4 outputs, a button and a mode selector.
 - Mode #0 - A, B, C, D inputs are sent to SUM, AVG, MIN, MAX CV outputs
-- Mode #1 - S&H random CVs. Pressing the button or sending a trigger (>2V) to the inputs generate a new CV on the output. Outputs provide CVs in different ranges. (See +1V to +2V, 0V to +1V, -1V to 0V, -2V to -1V.)
-- Mode #2 - Same us mode #1 but the voltages are quantized. 
+- Mode #1 - A, B, C, D inputs are sent to ABS, +5V, inverted, and SIN outputs
+- Mode #2 - Quantized random CVs
 - Mode #3 - Basic quantizer. Incoming voltages of input A-D will be returned on the output sockets as quantized.
-- Mode #4 - Advanced quantizer.
+- Mode #4 - Advanced quantizer for 1 input.
 - Mode #5 - Merge 4 inputs into a polyphonic output.
 - Mode #6 - Split a polyphonic input into 4 solo outputs.
-- Mode #7 - Drum pattern. Pressing the button generates a repeating random 4-channel drum pattern. 
+- Mode #7 - Linear drum pattern. (Uses one output at a time.) Pressing the button generates a repeating random 4-channel drum pattern. 
 Input A is reset, B is the clock, and C is allows changing the length of the pattern. (I.e. 1.6v = 16 steps, 2.5v = 25 steps.) 
 Input D is tricky. 
-  * Option 1 by sending a gate (>5V) to the input the pattern will be temporarily overwritten.
-  * Option 2 by sending a special CV to the socket a certain output can be forced (i.e. 1v for output A, 2v for output B, 3v for output C, or 4v for output D)
-  * Option 3 by sending a negative voltage a specific pattern variation can be set. 
-- Mode #8 - Looped random CV. Pressing the button generates a repeating random 4-channel pattern of random CVs. 
+  * >=8V forces a random output selection
+  * 7.00V-7.99V uses the same pattern but with an alternative output selection
+  * 6.00V-6.99V uses the same pattern with 100%-1% probability
+  * 5.00V-5.99V mutes all outputs
+  * 4.00V-4.99V forces all gates to ouput D
+  * 3.00V-3.99V forces all gates to ouput C
+  * 2.00V-2.99V forces all gates to ouput B
+  * 1.00V-1.99V forces all gates to ouput A
+  * 0.00V-0.99V returns the regular output pattern
+  * <0.00V returns a specific, redialable pattern variation
+- Mode #8 - Layered drum pattern. (Uses two outputs at a time.)
+Input D offers options are similar to mode #7.
+- Mode #9 - Phasor drums (+-5V CV to hits).
+- Mode #10 - Looped random CV. Pressing the button generates a repeating random 4-channel pattern of random CVs. 
 Input A is reset, B is the clock, and C is allows changing the length of the pattern. (I.e. 1.6v = 16 steps, 2.5v = 25 steps.) 
-Input D is tricky. 
-  * Option 1 by sending a gate (>5V) to the input the pattern will be temporarily overwritten.
-  * Option 2 by sending a special CV to the socket a certain output can be forced (i.e. 1v for output A, 2v for output B, 3v for output C, or 4v for output D)
-  * Option 3 by sending a negative voltage a specific pattern variation can be set. 
-The outputs provide the same pattern but in different range. (0v to 1v, -1v to 1v, 0v to 10v, -5v to 5v.)
-- Mode #9 - A, B, C, D inputs are added and converted into a linear drum sequence on the outputs
-- Mode #10-#15 - empty slot
-- Mode #16 - A, B, C, D inputs are sent to ABS, +5V, inverted, and SIN outputs
+Input D offers options are similar to mode #7. The outputs provide the same pattern but in different ranges. (0v to 1v, -1v to 1v, 0v to 10v, -5v to 5v.)
+- Mode #11 - Bernoulli random triggers
+- Mode #12 - Mono to poly
+- Mode #13-#16 - empty slots
 
 ### PokeMe
 
