@@ -1,5 +1,11 @@
 name: Build VCV Rack Plugin
-on: [push, pull_request]
+# on: [push, pull_request]
+on:
+  push:
+    paths:
+      - '**.json'
+      - 'src/**'
+      - 'res/**'
 
 env:
   rack-sdk-version: latest
