@@ -18,7 +18,7 @@ This module is to modify the incoming two trigger sequences by randomly removing
 
 */
 
-#include "plugin.HPp"
+#include "plugin.hpp"
 
 struct TrigPrec1 : Module {
 	enum ParamId {
