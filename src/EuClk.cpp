@@ -245,7 +245,8 @@ struct EuclkMore : Module {
 	
 	int activeStep=0;
 	int shiftedStep=0;
-	int activePrec=0.5;
+	// int activePrec=0.5;
+	bool activePrec=false;
 	float newVolt=0;
 	
 	// int storedRhythm[64]={0};

@@ -31,7 +31,9 @@ struct PushmeSeq : Module {
 		configParam(SEQ_PARAM,0.0f, 1.0f, 1.0f, "Zone 1 - SeqA1");
 		char lx[25];
 		for (int b=1;b<48;b++) {
-			sprintf(lx,"Zone %d - SeqA%d", (int(b/8)+1), (b+1));
+			// snprintf(lx, sizeof(lx), "Zone %d - SeqA%d", (int(b/8)+1), (b+1));
+			snprintf(lx, 25, "Zone %d - SeqA%d", (int(b/8)+1), (b+1));
+			// sprintf(lx,"Zone %d - SeqA%d", (int(b/8)+1), (b+1));
 			configParam(SEQ_PARAM+b,0.0f, 1.0f, 0.0f, lx);
 		}
 	}
