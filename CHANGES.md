@@ -1,5 +1,11 @@
 # Changelog
 
+v2.1.25 changes in progress (unreleased)
+- bug fix: PokeMe not to mess up 5V and 6V values in case of "value only" mode
+- new feature: PokeMe menu received some shortcut info text
+
+v2.1.24 skipped changes
+
 v2.1.23 changes 2024-04-06 (Zsolt Palotai release)
 - bug fix: Rotatrig startup cleaned up
 - bug fix: Channel Selector 2 display labels reviewed
