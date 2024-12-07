@@ -90,7 +90,7 @@ int indexChan=0;	// this means 0-10 channels :)
 			outputs[POLYOUT_OUTPUT].channels = totalPolyChans;
 
 			outputs[POLYOUT_OUTPUT].channels = totalPolyChans+6*indexChan;
-			if (! indexChan==0) {
+			if (!(indexChan==0)) {
 				outputs[POLYOUT_OUTPUT].setVoltage(valNew, 5);
 				outputs[POLYOUT_OUTPUT].setVoltage(valNew, 4);
 				outputs[POLYOUT_OUTPUT].setVoltage(valNew, 3);
