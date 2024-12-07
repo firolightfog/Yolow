@@ -86,7 +86,7 @@ struct Rubber : Module {
 		"0v to 1v","-1v to 1v","0v to 10v","-5v to 5v"}, 
 		/* 11 */ {"Bernoulli random triggers","Ignored" /* "Manual trigger" */,"This does literally nothing",
 		"Define A weight (0-10v)","Trigger >2v","Additional trigger >2v","Additional trigger >2v",
-		"","","",""},
+		"As A input requests","Busy","Not so busy","Rarest"},
 		/* 12 */ {"Mono to poly","Ignored","This does literally nothing",
 		"Note CV","Gate >2v","Note CV","Gate >2v",
 		"Polyphonic notes","Polyphonic gates","Polyphonic notes","Polyphonic gates"},
@@ -380,9 +380,10 @@ Rock dobritmus 4:
 			}
 			// step length received?
 			if (inputs[C_INPUT].isConnected()==true) {
-				steps=clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
+				// steps=clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
+				steps=rack::math::clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
 			else { /* steps=16; */
-				steps=clamp(floor(params[DEF_C_PARAM].getValue()*10+0.5),0,99);
+				steps=rack::math::clamp(floor(params[DEF_C_PARAM].getValue()*10+0.5),0,99);
 				if (steps<1) {steps=16;}
 			}
 			// reset received?
@@ -421,7 +422,7 @@ Rock dobritmus 4:
 					else if (lastIn[D]>=2.0f) {lastOut[B]=10;}
 					else if (lastIn[D]>=1.0f) {lastOut[A]=10;}
 					else if (lastIn[D]<0.0f) {
-						lastOut[A-1+(int)pattern[active+clamp(floor(-10*(lastIn[D])),0,256-1-steps)]]=10;
+						lastOut[A-1+(int)pattern[active+rack::math::clamp(floor(-10*(lastIn[D])),0,256-1-steps)]]=10;
 					}
 					else {lastOut[A-1+(int)pattern[active]]=10;}
 				}
@@ -444,13 +445,13 @@ Rock dobritmus 4:
 			// new pattern needed?
 			if (buttonON==true) {for (int i=0;i<256;i++) {pattern[i]=rand()%6+1;}}
 			// step length received?
-			if (inputs[C_INPUT].isConnected()==true) {steps=clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
+			if (inputs[C_INPUT].isConnected()==true) {steps=rack::math::clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
 			else { /* steps=16; */
-				steps=clamp(floor(params[DEF_C_PARAM].getValue()*10+0.5),0,99);
+				steps=rack::math::clamp(floor(params[DEF_C_PARAM].getValue()*10+0.5),0,99);
 				if (steps<1) {steps=16;}
 			}
 							
-			/* else {steps=clamp(floor(inputs[DEF_C_PARAM].getVoltage()*10+0.5),0,99);} */
+			/* else {steps=rack::math::clamp(floor(inputs[DEF_C_PARAM].getVoltage()*10+0.5),0,99);} */
 			// reset received?
 			if (lastIn[A]<=0 && inputs[A_INPUT].getVoltage()>2.0f) {active=-1;}
 			lastIn[A]=inputs[A_INPUT].getVoltage();
@@ -507,10 +508,10 @@ Rock dobritmus 4:
 					else if (lastIn[D]>=2.0f) {lastOut[B]=10; lastOut[A+(rand() % 4)]=10;}
 					else if (lastIn[D]>=1.0f) {lastOut[A]=10; lastOut[A+(rand() % 4)]=10;}
 					else if (lastIn[D]<0.0f) {
-						// lastOut[A-1+(int)pattern[active+clamp(floor(-10*(lastIn[D])),0,256-1-steps)]]=10;
+						// lastOut[A-1+(int)pattern[active+rack::math::clamp(floor(-10*(lastIn[D])),0,256-1-steps)]]=10;
 						std::copy(
-							layerVar[(int)pattern[active+clamp(floor(-10*(lastIn[D])),0,255-steps)]], 
-							layerVar[(int)pattern[active+clamp(floor(-10*(lastIn[D])),0,255-steps)]]+4, 
+							layerVar[(int)pattern[active+rack::math::clamp(floor(-10*(lastIn[D])),0,255-steps)]], 
+							layerVar[(int)pattern[active+rack::math::clamp(floor(-10*(lastIn[D])),0,255-steps)]]+4, 
 							lastOut);
 					}
 					else {lastOut[A-1+(int)pattern[active]]=10;}
@@ -558,9 +559,9 @@ Rock dobritmus 4:
 				for (int i=0; i<256; i++) {pattern[i]=rack::random::uniform();}
 			}
 			// step length received?
-			if (inputs[C_INPUT].isConnected()==true) {steps=clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
+			if (inputs[C_INPUT].isConnected()==true) {steps=rack::math::clamp(floor(inputs[C_INPUT].getVoltage()*10+0.5),0,99);}
 			else { /* steps=16; */
-				steps=clamp(floor(params[DEF_C_PARAM].getValue()*10+0.5),0,99);
+				steps=rack::math::clamp(floor(params[DEF_C_PARAM].getValue()*10+0.5),0,99);
 				if (steps<1) {steps=16;}
 			}
 			// reset received?
@@ -598,8 +599,8 @@ Rock dobritmus 4:
 					else if (lastIn[D]>=2.0f) {lastOut[A]=pattern[active+2];}
 					else if (lastIn[D]>=1.0f) {lastOut[A]=pattern[active+1];}
 					else if (lastIn[D]<0.0f) {
-						// lastOut[A-1+(int)pattern[active+clamp(floor(-10*(lastIn[D])),0,256-1-steps)]]=10;
-						lastOut[A]=pattern[active+clamp(floor(-10*(lastIn[D])),0,256-1-steps)];
+						// lastOut[A-1+(int)pattern[active+rack::math::clamp(floor(-10*(lastIn[D])),0,256-1-steps)]]=10;
+						lastOut[A]=pattern[active+rack::math::clamp(floor(-10*(lastIn[D])),0,256-1-steps)];
 						}
 					else {lastOut[A]=pattern[active];}
 				}
@@ -635,7 +636,6 @@ Rock dobritmus 4:
 				lastIn[A]=abs(params[DEF_A_PARAM].getValue()/10);
 				if (lastIn[A]==0) {lastIn[A]=params[GENERAL_PARAM].getValue();} // this is the screw :) delete me
 			}
-			// new clock needed?
 			if ((lastIn[B]<=0 && inputs[B_INPUT].getVoltage()>2.0f)
 				|| (lastIn[C]<=0 && inputs[C_INPUT].getVoltage()>2.0f) 
 				|| (lastIn[D]<=0 && inputs[D_INPUT].getVoltage()>2.0f)) {
