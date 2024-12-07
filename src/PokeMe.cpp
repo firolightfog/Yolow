@@ -238,7 +238,7 @@ if (grid_data[CURR_STEP]>10) {grid_data[CURR_STEP]=0;}
 				for (int i=1;i<10;i++) {outputs[SEQ_OUTPUT].setVoltage(0,i);}
 			}
 		}
-		else if (grid_data[CURR_STEP]==5 && && indexOut!=2 && hitClock==OFF) {
+		else if (!(indexOut==2) && grid_data[CURR_STEP]==5 && hitClock==OFF) {
 			if (0.50>rack::random::uniform()) {
 				outputs[SEQ_OUTPUT].setVoltage(0,0);
 			}			
@@ -252,7 +252,7 @@ if (grid_data[CURR_STEP]>10) {grid_data[CURR_STEP]=0;}
 		else {}
 
 		// this is the slicer function for the trigger mode 6
-		if (grid_data[CURR_STEP]==6 && indexOut!=2) { 
+		if (!(indexOut==2) && grid_data[CURR_STEP]==6) { 
 			CONT_SAMP--;
 			if (hitClock==OFF) {
 				CONT_SAMP=25;
