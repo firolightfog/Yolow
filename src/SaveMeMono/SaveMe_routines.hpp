@@ -15,6 +15,17 @@ void shiftSeq() {
 	indexShift=-1;
 }
 
+// this will get the first N step and creates alternate patterns by shuffle at 50% probability :)
+void alternateFields() {
+	int j=0;
+	for (int i=allSteps; i<256; i++) {
+		// theSeq[i] = theSeq[j];
+		if (rand() % 2 == 0) {theSeq[i] = theSeq[j];}
+		else {theSeq[i] = theSeq[rand() % allSteps];}
+		if (j<allSteps-1) {j++;} else {j=0;}
+	}
+}
+
 // this will roll the dice for all 256 slots :)
 void randomizeFields() {
 	float rndVal=0;

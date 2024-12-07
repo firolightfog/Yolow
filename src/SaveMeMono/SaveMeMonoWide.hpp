@@ -234,6 +234,8 @@ struct VCVBezelLightBig : TBase {
 	}
 };
 
+/*
+
 template <typename TBase, typename TLight = WhiteLight>
 struct LightButton : TBase {
 	app::ModuleLightWidget* light;
@@ -242,6 +244,8 @@ struct LightButton : TBase {
 		this->addChild(light);}
 	app::ModuleLightWidget* getLight() {return light;}
 };
+
+*/
 
 using VCVBezelLightBigRed = LightButton<VCVBezelBig, VCVBezelLightBig<RedLight>>;
 

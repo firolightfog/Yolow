@@ -19,6 +19,7 @@ struct SaveMeMore : Module {
 		configParam(PW_PARAM, 		0.0f, 1.0f, 1.0f, "Clock pulse width or full");
 		configParam(SYNC_PARAM, 	0.0f, 1.0f, 0.0f, "Sync to mother");
 		configParam(DELAY_PARAM, 	0.0f, 16.0f, 0.0f, "Delay the beat");
+		paramQuantities[SYNC_PARAM]->randomizeEnabled = false;
 		paramQuantities[DELAY_PARAM]->snapEnabled = true;
 		paramQuantities[SYNC_PARAM]->snapEnabled = true;
 		paramQuantities[PW_PARAM]->snapEnabled = true;
