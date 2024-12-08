@@ -1,6 +1,7 @@
 # Changelog
 
 v2.1.25 changes in progress (unreleased)
+- bug fix: multiple minor changes to provide compatility with the GitHub Actions script
 - bug fix: PokeMe not to mess up 5V and 6V values in case of "value only" mode
 - new feature: PokeMe menu received some shortcut info text
 
