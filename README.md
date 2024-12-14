@@ -6,6 +6,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 
 |Module|Short desc.|
 | --- | --- |
+|[ChSel1](#ChSel1)|Select your favourite channel from a polyphonic input|
 |[ChSel2](#ChSel2)|Select upto 2 of your favourite channels from a polyphonic input|
 |[ChSel6](#ChSel6)|Select upto 6 of your favourite channels from a polyphonic input|
 |[ChSel8](#ChSel8)|Select upto 8 of your favourite channels from a polyphonic input|
@@ -54,6 +55,9 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 Deprecated modules will be removed from the next major release.
 
 -----
+
+### ChSel1
+Select your favourite channel from a polyphonic input (see PIN) with the push buttons.
 
 ### ChSel2
 Select your favourite channel from a polyphonic input (see PIN). The upper section returns a single monophonic output as defined by the slider. The lower section works the same way but the input at the bottom allows you to modify the slider on the fly. This transforms the small 2HP module into a simple 16-step sequencer!
