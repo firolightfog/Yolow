@@ -184,7 +184,7 @@ An additional feature is that placing multiple PokeMe modules next to each other
 
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/34127628/214388300-552c0034-40c3-4233-9ab2-eb136b885f8c.png">
 
-By default the module provides gates but using the context menu it is possible the get distinct voltages or a polyphonic `Extended output`. Additionl channels of the polyphonic output include counter of the current step (0-31V), the step value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 6th channel). 
+By default the module provides gates but using the context menu it is possible the get distinct voltages or a polyphonic `Extended output`. Additional channels of the polyphonic output include counter of the current step (0-31V), the step value as voltage (0-9V) and a trigger is also sent to the relevant channel (i.e. `5` will send a trigger to the 5th channel). 
 
 <img width="252" alt="image" src="https://user-images.githubusercontent.com/34127628/215619594-f328d0e0-e4ca-455b-8580-07338b1f0b45.png">
 
