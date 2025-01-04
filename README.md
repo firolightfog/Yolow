@@ -156,8 +156,8 @@ Input D offers options are similar to mode #7.
 - Mode #10 - Looped random CV. Pressing the button generates a repeating random 4-channel pattern of random CVs. 
 Input A is reset, B is the clock, and C is allows changing the length of the pattern. (I.e. 1.6v = 16 steps, 2.5v = 25 steps.) 
 Input D offers options are similar to mode #7. The outputs provide the same pattern but in different ranges. (0v to 1v, -1v to 1v, 0v to 10v, -5v to 5v.)
-- Mode #11 - Bernoulli random triggers
-- Mode #12 - Mono to poly
+- Mode #11 - Bernoulli random triggers. The weight of output A can be set in the menu or by CV.
+- Mode #12 - Mono to poly. Rotates an incoming gate or CV among the 4 channels of the polyphonic output. 
 - Mode #13-#16 - empty slots
 
 ### PokeMe
