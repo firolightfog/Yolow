@@ -5,6 +5,7 @@ v2.1.25 changes in progress (unreleased)
 - bug fix: multiple minor changes to provide compatility with the GitHub Actions script
 - bug fix: PokeMe not to mess up 5V and 6V values in case of "value only" mode
 - new feature: PokeMe and Celei menu received some shortcut info text
+- new feature: PokeMe allows live resording by pressing 0-9 keys
 - new feature: PokeMe has a new Alt-D alternative randomizer (adding only 1,2,3,4) to assist drum patterns
 - bug fix: PokeMe extended mode sends to the relevant channel (i.e. 4 goes to channel 4 now) (a patch breaking change)
 - new feature: Rubber screw influences precision of Linear and Layered Drum Patterns (a patch breaking change)
