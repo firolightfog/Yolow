@@ -9,6 +9,8 @@ v2.1.25 changes in progress (unreleased)
 - new feature: PokeMe has a new Alt-D alternative randomizer (adding only 1,2,3,4) to assist drum patterns
 - bug fix: PokeMe extended mode sends to the relevant channel (i.e. 4 goes to channel 4 now) (a patch breaking change)
 - new feature: Rubber screw influences precision of Linear and Layered Drum Patterns (a patch breaking change)
+- new module: AbacSeq variable drum sequencer
+- bug fix: RouteSeq octave settings to be restored properly
 
 v2.1.24 skipped changes
 
