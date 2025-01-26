@@ -13,9 +13,9 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[PolyCopy10](#PolyCopy10)|Polyphonic merge with normalized input sockets in 2HP|
 |[PolyCopy16](#PolyCopy16)|Polyphonic merge with normalized input sockets in 4HP|
 |[PolyExp8](#PolyExp8)|Polyphonic split in 2HP|
+|[AbacSeq](#AbacSeq)|Variable trigger sequencer with randomization and pattern chaining|
 |[Celesta](#Celesta)|Three 8 step CV sequencers|
 |[Celei](#Celesta)|Single 8 step CV sequencer|
-|[Sequin](#Sequin)|Queen of Sequencers|
 |[Rubber](#Rubber)|Barebone looking sequencer and more|
 |[PokeMe](#PokeMe)|Simple single track trigger sequencer with upto 32 steps|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
@@ -47,6 +47,7 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Quant12](#Quant12)|Quantizer with transpose and VCA|
 |[tXOr](#tXOr)|Clock divider with XOR output and CV inputs|
 |[9lives](#9lives)|Clock multiplier, clock randomizer, trigger sequencer, CV sequencer|
+|[Sequin](#Sequin):zzz:|*Deprecated.* Queen of Sequencers|
 |[SeqP16](#SeqP16):zzz:|*Deprecated.* 4 step sequential switch to choose from 16 channels of a polyphonic input|
 |[tHex](#tHex):zzz:|*Deprecated.* A 16 step trigger sequencer with random options|
 |[PolyExp10](#PolyExp10):zzz:|*Deprecated.* Polyphonic split in 2HP|
@@ -89,6 +90,12 @@ A simple 2HP split module it returns either channel 1-8 or 9-16 a polyphonic inp
 
 -----
 
+### AbacSeq
+
+AbacSeq is a simple trigger sequencer. It is upto 32 steps and directs each clock signal to one of the outputs (Track 1, 2, or 3). There is a way to set up unique pattern chain. I.e. the image below shows that the pattern length is 4 steps and the pattern chain is AABC. In this case A pattern plays slot 1-4, B pattern plays slot 5-8, and C is for 9-12. As an additional feature you can set some randomization for each of the patterns. I.e. 30% on A means that the sequencer most likely will send the gate as programmed but there is a 30% chance that the signal appears on one of the other outputs.   
+
+<img width="185" alt="image" src="https://github.com/user-attachments/assets/18f92d0d-b119-4098-8326-52de4568dc9a" />
+
 ### Celesta
 Celesta is a unquantized note sequencer based on [Andre_M's idea](https://community.vcvrack.com/t/ideas-for-any-interested-developers/17697?u=firolfo) in the VCV Community forum. Practically it's a module with three 8 step sequencers (A, B, C). Pattern length is adjustable. However sequencer B advances to the next step only when A has finished. Similary sequencer C takes the next step only if B has completed its pattern.
 
@@ -113,19 +120,6 @@ Keyboard shortcuts are available:
 - `c`/`v`: change between 'clock mode' and 'voltage mode'
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/34127628/177008993-9b384b4c-4ca0-4ae8-92a4-8ce2eed897db.png">
-
-### Sequin
-Queen of Sequencers. Slim, smooth, beautiful but noone really understands her. It delivers a CV sequence according to a clock but the pulse width (PW), notes can be modified by external LFOs. You can also enable or disable any clock pulse by an external CV (ENBL) or set the probability (PRB) for instant excitement. A basic quantization function is available in the context menu.
-
-<img width="736" alt="image" src="https://user-images.githubusercontent.com/34127628/178427481-bc32b7a7-b5de-41bc-845c-4e7e6c22b7fb.png">
-
-<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178427526-c4b0a55a-09ae-4452-90e1-8baa10a67ff5.png">
-
-<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178427580-93929a80-1dbd-4be7-b3ec-12e1b89990e7.png">
-
-<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178428799-2d8b313c-cc95-4329-a937-dd83713b903d.png">
-
-<img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
 ### Rubber (still in progress)
 
@@ -457,6 +451,19 @@ The active block is also indicated by the yellow LEDs on the top. Some keyboard 
 The concept of the module is based on Sha#Bang! Modules [Stochastic Sequencer Grid](https://library.vcvrack.com/Sha-Bang-Modules/StochSeqGrid) but the implementation is greatly simplified (clock, layout, operation).
 
 -----
+
+### Sequin
+This module is *deprecated*:zzz:. I just don't find it useful any longer. Rubber is much better as general sequencer. Queen of Sequencers: slim, smooth, beautiful but noone really understands her. It delivers a CV sequence according to a clock but the pulse width (PW), notes can be modified by external LFOs. You can also enable or disable any clock pulse by an external CV (ENBL) or set the probability (PRB) for instant excitement. A basic quantization function is available in the context menu.
+
+<img width="736" alt="image" src="https://user-images.githubusercontent.com/34127628/178427481-bc32b7a7-b5de-41bc-845c-4e7e6c22b7fb.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178427526-c4b0a55a-09ae-4452-90e1-8baa10a67ff5.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178427580-93929a80-1dbd-4be7-b3ec-12e1b89990e7.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/34127628/178428799-2d8b313c-cc95-4329-a937-dd83713b903d.png">
+
+<img width="808" alt="image" src="https://user-images.githubusercontent.com/34127628/178428839-246ea34c-fb59-4874-b48f-7c7f58ee6bc2.png">
 
 ### SeqP16
 This module is *deprecated*:zzz:. RouteSeq replaces it with more steps and features. Anyway SeqP16 was a tricky 4-step sequencer that returns one of the 16 channels of a polyphonic input (POLY IN). To advance the step a clock (see CLK) is needed. Red LEDs indicate the active step. Setting any of the knobs to zero will randomly select one of the input channels. (Recommended reading: [musical dice game](https://en.wikipedia.org/wiki/Musikalisches_Würfelspiel).)
