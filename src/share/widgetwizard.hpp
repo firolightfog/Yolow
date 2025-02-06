@@ -1,7 +1,7 @@
 // a few shortcuts for me
 
-float hp=5.08;
-float HP=5.08;
+float hp=5.08f;
+float HP=5.08f;
 
 // to add a text label to this widget 
 // https://github.com/squinkylabs/SquinkyVCV
