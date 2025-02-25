@@ -16,8 +16,8 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[AbacSeq](#AbacSeq)|Variable trigger sequencer with randomization and pattern chaining|
 |[Celesta](#Celesta)|Three 8 step CV sequencers|
 |[Celei](#Celesta)|Single 8 step CV sequencer|
-|[Rubber](#Rubber)|Barebone looking sequencer and more|
-|[PokeMe](#PokeMe)|Simple single track trigger sequencer with upto 32 steps|
+|[Rubber](#Rubber):heart:|Barebone looking sequencer and more|
+|[PokeMe](#PokeMe):heart:|Simple single track trigger sequencer with upto 32 steps|
 |[PushMeSeq](#PushMeSeq)|Variable trigger sequencer|
 |[PushMeMore](#PushMeMore)|Expander module with additional tracks for PushMeSeq|
 |[Vulcan](#Vulcan)|Simple 8-track trigger sequencer with 16-steps|
@@ -38,9 +38,9 @@ Missing a few simple module from my VCV Rack patches I decided to code a bit. Bu
 |[Slide6](#Slide6)|Simple 6 channel fix voltage provider with adjustable range (1xpoly)|
 |[Slide16](#Slide16)|A 16 channel fix voltage provider (1xpoly); with simple 16 step sequencer (1xmono)|
 |[NearMess](#NearMess)|An almost passive VCA and mixer, 2-to-9|
-|[NearMix](#NearMix)|An almost passive VCA and mixer, 9-to-2|
+|[NearMix](#NearMix):heart:|An almost passive VCA and mixer, 9-to-2|
 |[TrigPrec1](#TrigPrec1)|Trigger sequence randomizer|
-|[TrigPrec2](#TrigPrec2)|Trigger sequence randomizer|
+|[TrigPrec2](#TrigPrec2):heart:|Trigger sequence randomizer|
 |[TrigPrec6](#TrigPrec6)|Trigger sequence randomizer|
 |[Enveloop](#Enveloop)|Looping envelope generator|
 |[QuantET](#QuantET)|Quantizer with variable equal distribution scales|
