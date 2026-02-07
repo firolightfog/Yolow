@@ -1,5 +1,7 @@
 # Changelog
 
+There are a lot of changes pedning. I'm uncertain how to release them... I may break it up into multiple repos. I don't know yet. 
+
 v2.1.25 changes in progress (unreleased)
 - new module: ChSel1 to select one channel from a polyinput
 - bug fix: multiple minor changes to provide compatility with the GitHub Actions script
@@ -11,6 +13,10 @@ v2.1.25 changes in progress (unreleased)
 - new feature: Rubber screw influences precision of Linear and Layered Drum Patterns (a patch breaking change)
 - new module: AbacSeq variable drum sequencer
 - bug fix: RouteSeq octave settings to be restored properly
+- new feature: PokeMe shortcuts revised
+- new module: DiceSeq is a single track, 16-steps sequencer, (kind of) random
+- new module: Binarythm is a six track, 16-steps sequencer, with probability
+- new module: Stomper kick drum module
 
 v2.1.24 skipped changes
 
